@@ -1,0 +1,17 @@
+	<ons-page>
+		<ons-toolbar>
+			<div class="left">
+				<ons-toolbar-button onclick="menu.toggleMenu()"><ons-icon icon="fa-bars"></ons-icon></ons-toolbar-button>
+			</div>
+			<div class="center" style="font-size:12px;">{{milestone_title}}</div>
+		</ons-toolbar>
+		<ons-carousel ng-if="milestonePostmetaMedia" style="height: 650px; width: 100%; text-align:center;" initial-index="0" swipeable overscrollable auto-scroll>
+			<ons-carousel-item ng-repeat="media in milestonePostmetaMedia">
+				<img ng-if="!checkVideo(media)" src="{{media}}" style="width:100%;"></img>
+				<video ng-if="checkVideo(media)" width="320" height="640" controls>
+					<source ng-src="{{trustSrc(media)}}" type="video/mp4">
+				</video>
+			</ons-carousel-item>
+		</ons-carousel>
+		<p  ng-bind-html="milestone_content" style="padding:10px;font-size:13px;text-align:right;"></p>
+	  </ons-page>

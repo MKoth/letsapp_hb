@@ -1,0 +1,16 @@
+<ons-page>
+	<ons-toolbar>
+		<div class="center">כניסה</div>
+	</ons-toolbar>
+	<section style="padding: 8px">
+		<input type="text" class="text-input" ng-model="registration.login" placeholder="שם משתמש או כתובת דוא״ל" style="display: block; width: 100%">
+	</section>
+	<section style="padding: 8px">
+		<input type="password" class="text-input" ng-model="registration.password" placeholder="סיסמה" style="display: block; width: 100%">
+	</section>
+	<section style="padding: 0 8px 8px">
+		<ons-button modifier="large" ng-click="userLogin()">כניסה</ons-button>
+	</section>
+	<a href="#" ng-click="menu.setMainPage('start-page.html', {closeMenu: true})">הרשמה</a>
+	<p style="color:red;">{{registration_error}}</p>
+</ons-page>

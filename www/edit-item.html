@@ -1,0 +1,23 @@
+	<div ng-repeat="(key, fieldList) in editFieldList">
+		<p ng-bind="fieldList['title']" style="padding:15px 10px;" ng-click="editFieldListSection($event)"></p>
+		<div class="editFieldsListHolder" style="display:none;">
+			<div ng-repeat="field in fieldList['fields']">
+				<section style="padding: 8px" ng-if="checkFieldType(field['type'],'google_map')">
+					<input type="text" class="text-input" ng-model="field['value']['address']" placeholder="Address" style="display: block; width: 100%">
+					<input type="text" class="text-input" ng-model="field['value']['lng']" placeholder="Longitude" style="display: block; width: 50%; float:right;">
+					<input type="text" class="text-input" ng-model="field['value']['lat']" placeholder="Latitude" style="display: block; width: 50%; float:right;">
+					<div style="clear:both;"></div>
+				</section>
+				<section style="padding: 8px" ng-if="checkFieldType(field['type'],'text')">
+					<input type="text" class="text-input" ng-model="field['value']" placeholder="{{field['label']}}" style="display: block; width: 100%">
+				</section>
+				<section style="padding: 8px" ng-if="checkFieldType(field['type'],'textarea')">
+					<textarea class="edit_item_map_holder text-input" ng-model="field['value']" placeholder="{{field['label']}}" style="display: block; width: 100%; min-height:150px;"></textarea>
+				</section>
+			</div>
+			<section style="padding: 0 8px 8px">
+				<ons-button modifier="large" ng-click="updateItemFunc(fieldList)">Update</ons-button>
+			</section>
+		</div>
+		
+	</div>

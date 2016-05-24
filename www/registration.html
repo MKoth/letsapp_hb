@@ -1,0 +1,22 @@
+<ons-page>
+	<ons-toolbar>
+		<div class="center">הרשמה לתוכנית LetsGetStartup</div>
+	</ons-toolbar>
+	<section style="padding: 8px">
+		<input type="text" class="text-input" ng-model="registration.login" placeholder="שם משתמש" style="display: block; width: 100%">
+	</section>
+	<section style="padding: 8px">
+		<input type="text" class="text-input" ng-model="registration.email" placeholder="כתובת דוא״ל" style="display: block; width: 100%">
+	</section>
+	<section style="padding: 8px">
+		<input type="password" class="text-input" ng-model="registration.password" placeholder="סיסמה" style="display: block; width: 100%">
+	</section>
+	<section style="padding: 8px">
+		<input type="password" class="text-input" ng-model="registration.repeat_pass" placeholder="כתוב שוב סיסמה" style="display: block; width: 100%">
+	</section>
+	<section style="padding: 0 8px 8px">
+		<ons-button modifier="large" ng-click="userRegister()">הצטרף ל LetsGetStartup</ons-button>
+	</section>
+	<a href="#" ng-click="menu.setMainPage('login.html', {closeMenu: true})">אני משתמש רשום</a>
+	<p style="color:red;">{{registration_error}}</p>
+</ons-page>
