@@ -22,4 +22,5 @@
 	<preference name="orientation" value="portrait" />
 	<access origin="*" />
 	<access origin="http://letsgetstartup.com/*" subdomains="true" />
+	<access origin="http://letsgetstartup.com/app-cloud/" subdomains="true" />
 </widget>
