@@ -7,9 +7,10 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
-	<access origin="*" />
+
 	<plugin name="org.apache.cordova.geolocation" />
 	<plugin name="org.apache.cordova.inappbrowser" />
+	<plugin name="cordova-plugin-whitelist" />
     <content src="index.html" />
 	<icon src="icon.png"/>
     <splash src="splash.png" />
@@ -21,6 +22,4 @@
     <preference name="webviewbounce" value="false" />	
 	<preference name="orientation" value="portrait" />
 	<access origin="*" />
-	<access origin="http://letsgetstartup.com/*" subdomains="true" />
-	<access origin="http://letsgetstartup.com/app-cloud/" subdomains="true" />
 </widget>

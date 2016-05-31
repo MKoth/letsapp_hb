@@ -13,11 +13,11 @@ module.controller('menuController', function($scope, $http, $sce) {
 					callback:'JSON_CALLBACK'
 				},
 			}).then(function(response) {
-				$scope.milestoneList = response.data;
+				$scope.milestoneList = response;
 			});
 		}
-		
-		$scope.addClassesToLeftMenu();
+		if(localStorage.getItem("login"))
+			$scope.addClassesToLeftMenu();
 		
 		//declaring variable for task commenting form
 		$scope.newTaskCommentContent = "";
@@ -176,7 +176,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//function get a list of posts from server or opens a login page if user is not registered
 		$scope.menuEditClickFunc = function(){
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php?proj_id="+localStorage.getItem("project_id"), 
 				method: "get",
 				params: {
 					action: "list_edit_arr",
@@ -222,6 +222,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				data: {
 					add_data: $scope.addNewItemFields,
 					add_name: name,
+					proj_id: localStorage.getItem("project_id")
 				},
 				params: {
 					action: "add_mobile_items_data",
