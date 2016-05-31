@@ -11,6 +11,7 @@
 				<video ng-if="checkVideo(media)" width="320" height="640" controls>
 					<source ng-src="{{trustSrc(media)}}" type="video/mp4">
 				</video>
+				<iframe ng-if="checkYoutube(media)" width="560" height="315" src="{{trustSrc(media)}}" frameborder="0" allowfullscreen></iframe>
 			</ons-carousel-item>
 		</ons-carousel>
 		<p  ng-bind-html="milestone_content" style="padding:10px;font-size:13px;text-align:right;"></p>

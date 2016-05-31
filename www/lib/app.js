@@ -109,10 +109,21 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//function checking if the link got from milestonePostmetaMedia variable is mp4 video, if not returns false
 		$scope.checkVideo = function(link){
 			var extn = link.split(".").pop();
-			if(extn=="mp4")
+			var matches = link.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/);
+			if(extn=="mp4"&&!matches)
 				return true;
 			else
 				return false;
+		}
+		
+		$scope.checkYoutube = function(link){
+			var matches = link.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/);
+			if (matches) {
+				//$scope.trustSrc(link);
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		//function allows the link to be used for getting video
