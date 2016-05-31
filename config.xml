@@ -21,4 +21,5 @@
     <preference name="webviewbounce" value="false" />	
 	<preference name="orientation" value="portrait" />
 	<access origin="*" />
+	<access origin="http://letsgetstartup.com/*" subdomains="true" />
 </widget>
