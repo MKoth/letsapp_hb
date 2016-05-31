@@ -13,7 +13,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					callback:'JSON_CALLBACK'
 				},
 			}).then(function(response) {
-				$scope.milestoneList = response;
+				$scope.milestoneList = response.data;
 			});
 		}
 		if(localStorage.getItem("login"))
