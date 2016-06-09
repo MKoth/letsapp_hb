@@ -3,10 +3,10 @@
 	<input type="text" class="text-input" ng-model="addNewItemName" placeholder="שם נקודת עניין" style="display: block; width: 100%">
 </section>
 <div ng-repeat="addField in addNewItemFields">
-	<section style="padding: 8px" ng-if="checkFieldType(addField['type'],'google_map')">
+	<section id="add-item-area" style="padding: 8px" ng-if="checkFieldType(addField['type'],'google_map')">
 		<input type="text" class="text-input" ng-model="addField['value']['address']" placeholder="כתובת" style="display: block; width: 100%">
-		<input type="text" class="text-input" ng-model="addField['value']['lng']" placeholder="קו אורך" style="display: block; width: 50%; float:right;">
-		<input type="text" class="text-input" ng-model="addField['value']['lat']" placeholder="קו רוחב" style="display: block; width: 50%; float:right;">
+		<input class="longitude" type="text" class="text-input" ng-model="addField['value']['lng']" placeholder="קו אורך" style="display: block; width: 50%; float:right;">
+		<input class="latitude" type="text" class="text-input" ng-model="addField['value']['lat']" placeholder="קו רוחב" style="display: block; width: 50%; float:right;">
 		<div style="clear:both;"></div>
 	</section>
 	<section style="padding: 8px" ng-if="checkFieldType(addField['type'],'text')">

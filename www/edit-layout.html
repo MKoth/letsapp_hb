@@ -1,0 +1,27 @@
+	<ons-page>
+		<ons-toolbar>
+		  <div class="left">
+			<ons-toolbar-button ng-click="menu.toggleMenu()"><ons-icon icon="fa-bars"></ons-icon></ons-toolbar-button>
+		  </div>
+		  <div class="center">Edit App Layout</div>
+		</ons-toolbar>
+		<div>
+			<section style="padding: 8px; padding-bottom:2px;">
+				<input type="text" class="text-input" ng-model="layout.main_title" placeholder="Change the main page title" style="display:block;width:70%;height:40px;float:left;border-top-right-radius:0px;border-bottom-right-radius: 0px;"><ons-button ng-click="saveText('main_title',layout.main_title)" style="width:30%;float:right;border-top-left-radius:0px;border-bottom-left-radius: 0px;">Save Text</ons-button>
+				<div style="clear:both;"></div>
+			</section>
+			<section style="padding: 8px; padding-bottom:2px; padding-top:0;">
+				<input type="text" class="text-input" ng-model="layout.app_title" placeholder="Change the title of your app" style="display:block;width:70%;height:40px;float:left;border-top-right-radius:0px;border-bottom-right-radius: 0px;"><ons-button ng-click="saveText('app_title',layout.app_title)" style="width:30%;float:right;border-top-left-radius:0px;border-bottom-left-radius: 0px;">Save Text</ons-button>
+				<div style="clear:both;"></div>
+			</section>
+			<section style="padding: 8px; padding-bottom:2px; padding-top:0;margin-bottom:40px;">
+				<h2>Change photo on main page</h2>
+				<ons-button modifier="large" ng-click="getPicFile()" style="width:49%;float:left;margin-right:2%;">Get saved photo</ons-button>
+				<ons-button modifier="large" ng-click="getPicCam()" style="width:49%;float:right;">Get photo from camera</ons-button>
+				<div style="clear:both;"></div>
+			</section>
+			<ons-button modifier="large" ng-click="startBuildingApp()">Rebuild app to implement changes</ons-button>
+			<a href="{{appLinkDownload.link}}" style="display:block;background:#00b822;padding:20px;margin:0 auto;color:#fff;text-decoration:none;text-align:center;margin-top:5px;">{{appLinkDownload.text}}</a>
+			<!--<img id="img" src="{img_url}"></img>-->
+		</div>
+	</ons-page>
