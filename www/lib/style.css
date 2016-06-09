@@ -8,5 +8,20 @@
 }
 .cover-label{
 	color:#000;
+}
+#loader{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+}
+#loader div{
+	position: absolute;
+	width: 100%;
+	height:100%;
+	//top: 35%;
+	background: url('../img/proloader.gif') no-repeat center center;
+	opacity:0.7;
+	//background-repeat:no-repeat;
 	
 }

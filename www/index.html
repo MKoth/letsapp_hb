@@ -3,9 +3,11 @@
   <head>
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
     <link rel="stylesheet" href="lib/onsen/css/onsenui.css"/>
     <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css"/>
 	<link rel="stylesheet" href="lib/style.css"/>
+	<script type="text/javascript" src="cordova.js"></script>
     <script src="lib/onsen/js/angular/angular.js"></script>
     <script src="lib/onsen/js/onsenui.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -21,6 +23,9 @@
 			var="menu"
 			swipeable={{swappable}}>
 		</ons-sliding-menu>
+		<div id="loader" style="display:none;">
+			<div></div>
+		</div>
 	</div>
 	<!--<script src="https://maps.googleapis.com/maps/api/js?callback=initMaps" ></script>-->
   </body>
