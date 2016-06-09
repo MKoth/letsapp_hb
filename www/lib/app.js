@@ -513,14 +513,3 @@ module.controller('PageController', function($scope) {
          // Init code here
 	});
 });	
-
-function onSuccess(imageURI) {
-    // here we can upload imageData to the server
-	//alert(imageURI);
-	var image = document.getElementById("myImg");
-	image.src = "data:image/jpeg;base64,"+imageURI;
-}
- 
-function onFail(message) {
-    alert('Failed because: ' + message);
-}
