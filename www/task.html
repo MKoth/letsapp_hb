@@ -7,13 +7,13 @@
 		</ons-toolbar>
 		<p ng-bind-html="milestone_content" style="padding:10px;text-align:right;"></p>
 		<section style="padding: 8px">
-			<textarea class="edit_item_map_holder" ng-model="newTaskCommentContent" placeholder="Your answer or comment" style="display: block; width: 100%; min-height:150px;">{{newTaskCommentContent}}</textarea>
+			<textarea class="edit_item_map_holder" ng-model="newTaskComment.content" placeholder="Your answer or comment" style="display: block; width: 100%; min-height:150px;">{{newTaskComment.content}}</textarea>
 		</section>
 		<section style="padding: 0 8px 8px">
-			<ons-button modifier="large" ng-click="insertTaskComment(newTaskCommentContent)">Add comment</ons-button>
+			<ons-button modifier="large" ng-click="insertTaskComment()">Add comment</ons-button>
 		</section>
 		<section style="padding: 8px" ng-repeat="taskInfo in currentTaskComments">
-			<div style="background:#00ba25; padding:10px; min-height:30px; color:#fff; font-size:12px; font-style:italic;">{{taskInfo.comment_author+" "+taskInfo.comment_author_email+" "+taskInfo.comment_date}}</div>
+			<div style="background:#00ba25; padding:10px; min-height:30px; color:#fff; font-size:12px; font-style:italic;">{{taskInfo.comment_author+" "+taskInfo.comment_author_email+" "+taskInfo.comment_date}}<img ng-if="taskInfo.comment_author_avatar" src="{{taskInfo.comment_author_avatar}}" style="width:50px;height:50px; float:left;border-radius:35px; margin-top: -22px; margin-right:10px;"/><img ng-if="!taskInfo.comment_author_avatar" src="img/anon.gif" style="width:50px;height:50px; float:left;border-radius:35px; margin-top: -22px; margin-right:10px;"/></div>
 			<div style="background:#BBE4C3; padding:15px; font-size:13px;text-align:right;">{{taskInfo.comment_content}}</div>
 		</section>
 	</ons-page>

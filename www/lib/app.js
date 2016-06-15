@@ -20,16 +20,16 @@ module.controller('menuController', function($scope, $http, $sce) {
 			navigator.geolocation.getCurrentPosition($scope.geolocationSuccess,$scope.geolocationError);
 		}
 		$scope.geolocationSuccess = function(position){
-		  jQuery("#add-item-area .longitude").val(position.coords.longitude);
-		  jQuery("#add-item-area .latitude").val(position.coords.latitude);
+		  jQuery("#add-item-area input[placeholder='Longitude']").val(position.coords.longitude);
+		  jQuery("#add-item-area input[placeholder='Latitude']").val(position.coords.latitude);
 		}
 		$scope.geolocationError = function(error){
 			alert(error);
 		}
-		$scope.appLinkDownload = {link:"#", text:"App is building, please wait..."};
+		$scope.appLinkDownload = {link:"#", text:"המתן בבקשה..."};
 		$scope.getAppLink = function(){
 			$scope.appLinkDownload.link = "#";
-			$scope.appLinkDownload.text = "App is building, please wait...";
+			$scope.appLinkDownload.text = "המתן בבקשה...";
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "GET",
@@ -45,7 +45,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					//$scope.appLinkDownload.link = trustSrc(response.data.location);
 					//trustSrc(response.data.location);
 					$scope.appLinkDownload.link = response.data.location;
-					$scope.appLinkDownload.text = "Download your app here";
+					$scope.appLinkDownload.text = "הורד האפליקציה שלך כאן";
 				}
 				else
 				{
@@ -74,6 +74,19 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.getAppLink();
 			});
 		}
+		
+		$scope.getUserCam  = function(){
+			navigator.camera.getPicture($scope.getUserPictureSuccess, $scope.onFail, { quality: 30,
+			destinationType: Camera.DestinationType.FILE_URI });
+		}
+		
+		$scope.getUserFile  = function(){
+			navigator.camera.getPicture($scope.getUserPictureSuccess, $scope.onFail, { quality: 100,
+			destinationType: Camera.DestinationType.FILE_URI,
+			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY	});
+		}
+		
+		
 		
 		$scope.getPicFile = function(){
 			//alert();
@@ -125,6 +138,44 @@ module.controller('menuController', function($scope, $http, $sce) {
 			var ft = new FileTransfer();
 			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
 			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+		}
+		
+		$scope.getUserPictureSuccess=function(fileURI) {
+			jQuery("#loader").fadeIn();
+			//document.getElementById('img').src = fileURI;
+			var win = function (r) {
+				$scope.clearCache();
+				retries = 0;
+				//alert('Done!');
+				//alert(r.response.toString());
+				$scope.userdata.profile_image = r.response.toString();
+				localStorage.setItem("users_profile_image",$scope.userdata.profile_image);
+				jQuery("#loader").fadeOut();
+				alert('User Photo saved!');
+			}
+		 
+			var fail = function (error) {
+				if (retries == 0) {
+					retries ++
+					setTimeout(function() {
+						getUserPictureSuccess(fileURI)
+					}, 1000)
+				} else {
+					retries = 0;
+					$scope.clearCache();
+					alert('Ups. Something wrong happens!');
+					jQuery("#loader").fadeIn();
+				}
+			}
+		 
+			var options = new FileUploadOptions();
+			options.fileKey = "file";
+			options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+			options.mimeType = "image/jpeg";
+			options.params = {action:"upload_user_profile", user_id: localStorage.getItem("id")}; // if we need to send parameters to the server request
+			var ft = new FileTransfer();
+			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+			//ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
 		}
 		
 		$scope.onFail=function(message) {
@@ -245,6 +296,18 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 		}
 		
+		$scope.addApp = function(){
+			ons.createDialog('add-app-dialog.html', {parentScope: $scope}).then(function(dialog) {
+				$scope.dialog = dialog;
+				dialog.show();
+			});
+		}
+		
+		$scope.createNewApp = function(){
+			//alert();
+			$scope.dialog.hide();
+		}
+		
 		//function which fires if task menu item from left menu clicked
 		$scope.getTaskComment = function(task_id){
 			$http({
@@ -303,7 +366,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		
 		//function sending new task comment to the server
-		$scope.insertTaskComment = function(content){
+		$scope.insertTaskComment = function(){
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "POST",
@@ -313,9 +376,12 @@ module.controller('menuController', function($scope, $http, $sce) {
 				},
 				data: {
 					task_id: $scope.currentCommentsTaskId,
-					content: content
+					content: $scope.newTaskComment.content,
+					user_id: localStorage.getItem("id"),
+					proj_id: localStorage.getItem("project_id")
 				},
 			}).then(function(response) {
+				//alert(response.data);
 				$scope.getTaskComment($scope.currentCommentsTaskId);
 				$scope.newTaskComment.content = "";
 			});
@@ -463,11 +529,20 @@ module.controller('menuController', function($scope, $http, $sce) {
 						$scope.swappable = true;
 						$scope.user_login = response.data['user_login'];
 						$scope.addClassesToLeftMenu();
+						if(response.data['users_profile_image'])
+						{
+							localStorage.setItem("users_profile_image",response.data['users_profile_image']);
+							$scope.userdata = {profile_image: localStorage.getItem("users_profile_image")};
+							alert();
+						}
 					}
 					$scope.registration_error = response.data['error'];
 				});
 		}
-		
+		  
+		 if(localStorage.getItem("users_profile_image")) 
+			 $scope.userdata = {profile_image: localStorage.getItem("users_profile_image")};
+		 else $scope.userdata = {profile_image: 'img/anon.gif'};
 		//logout the user and pushing the login page
 		$scope.menuLogoutClickFunc = function(){
 			$scope.swappable = false;
@@ -513,3 +588,14 @@ module.controller('PageController', function($scope) {
          // Init code here
 	});
 });	
+
+function onSuccess(imageURI) {
+    // here we can upload imageData to the server
+	//alert(imageURI);
+	var image = document.getElementById("myImg");
+	image.src = "data:image/jpeg;base64,"+imageURI;
+}
+ 
+function onFail(message) {
+    alert('Failed because: ' + message);
+}
