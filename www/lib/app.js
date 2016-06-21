@@ -402,11 +402,11 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//checking if set page to login or go to home main page
 		if(localStorage.getItem("login"))
 		{
-			menu.setMainPage('home.html', {closeMenu: true});
+			menu.setMainPage('classes-list.html', {closeMenu: true});
 		}
 		else
 		{
-			menu.setMainPage('login.html', {closeMenu: true});
+			menu.setMainPage('start-page.html', {closeMenu: true});
 			$scope.swappable = false;
 		}
 		
@@ -423,7 +423,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.editFieldList = response.data;
 				if(localStorage.getItem("login"))
 				{
-					menu.setMainPage('edit.html', {closeMenu: true});
+					menu.setMainPage('edit-item.html', {closeMenu: true});
 				}
 				else
 				{
@@ -525,7 +525,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 						localStorage.setItem("login",response.data['user_login']);
 						localStorage.setItem("id",response.data['user_id']);
 						localStorage.setItem("project_id",response.data['project_id']);
-						menu.setMainPage('home.html', {closeMenu: true});
+						menu.setMainPage('classes-list.html', {closeMenu: true});
 						$scope.swappable = true;
 						$scope.user_login = response.data['user_login'];
 						$scope.addClassesToLeftMenu();
@@ -533,7 +533,6 @@ module.controller('menuController', function($scope, $http, $sce) {
 						{
 							localStorage.setItem("users_profile_image",response.data['users_profile_image']);
 							$scope.userdata = {profile_image: localStorage.getItem("users_profile_image")};
-							alert();
 						}
 					}
 					$scope.registration_error = response.data['error'];

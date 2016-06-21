@@ -1,27 +1,25 @@
 	<ons-page>
-		<ons-toolbar>
-		  <div class="left">
-			<ons-toolbar-button ng-click="menu.toggleMenu()"><ons-icon icon="fa-bars"></ons-icon></ons-toolbar-button>
-		  </div>
-		  <div class="center">Edit App Layout</div>
-		</ons-toolbar>
-		<div>
-			<section style="padding: 8px; padding-bottom:2px;">
-				<input type="text" class="text-input" ng-model="layout.main_title" placeholder="שנה את כותרת האפליקציה" style="display:block;width:70%;height:40px;float:left;border-top-right-radius:0px;border-bottom-right-radius: 0px;"><ons-button ng-click="saveText('main_title',layout.main_title)" style="width:30%;float:right;border-top-left-radius:0px;border-bottom-left-radius: 0px;">טקסט שמור</ons-button>
-				<div style="clear:both;"></div>
-			</section>
-			<section style="padding: 8px; padding-bottom:2px; padding-top:0;">
-				<input type="text" class="text-input" ng-model="layout.app_title" placeholder="שנה את שם האפליקציה" style="display:block;width:70%;height:40px;float:left;border-top-right-radius:0px;border-bottom-right-radius: 0px;"><ons-button ng-click="saveText('app_title',layout.app_title)" style="width:30%;float:right;border-top-left-radius:0px;border-bottom-left-radius: 0px;">טקסט שמור</ons-button>
-				<div style="clear:both;"></div>
-			</section>
-			<section style="padding: 8px; padding-bottom:2px; padding-top:0;margin-bottom:40px;">
-				<h2>שנה את התמונה בדף הבית</h2>
-				<ons-button modifier="large" ng-click="getPicFile()" style="width:49%;float:left;margin-right:2%;">Get saved photo</ons-button>
-				<ons-button modifier="large" ng-click="getPicCam()" style="width:49%;float:right;">העלה תמונה מהמצלמה</ons-button>
-				<div style="clear:both;"></div>
-			</section>
-			<ons-button modifier="large" ng-click="startBuildingApp()">שמור את כל השינוים</ons-button>
-			<a href="{{appLinkDownload.link}}" style="display:block;background:#00b822;padding:20px;margin:0 auto;color:#fff;text-decoration:none;text-align:center;margin-top:5px;">{{appLinkDownload.text}}</a>
-			<!--<img id="img" src="{img_url}"></img>-->
+		<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Edit App Layout</h2>
+		<img src="img/editapp-top-bg.jpg" class="edit-app-top-bg"/>
+		<div style="height: 30%;margin-top: 10%;">
+			<input type="text" class="text-input edit_app_input" ng-model="layout.main_title" placeholder="שנה את כותרת האפליקציה" style="margin-top: 15%;"><button class="edit_app_but_top" ng-click="saveText('main_title',layout.main_title)" style="margin-top: 15%;">טקסט שמור</button>
+			<div style="clear:both;"></div>
+			<input type="text" class="text-input edit_app_input" ng-model="layout.app_title" placeholder="שנה את שם האפליקציה"><button class="edit_app_but_top" ng-click="saveText('app_title',layout.app_title)">טקסט שמור</button>
+			<div style="clear:both;"></div>
 		</div>
+		<div style="height: 30%;">
+			<button ng-click="getPicFile()" class="edit_app_but" style="margin-top: 10%;">Save photo</button>
+			<button ng-click="getPicCam()" class="edit_app_but">העלה תמונה מהמצלמה</button>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="height: 24%;">
+			<button ng-click="startBuildingApp()" class="edit_app_but" style="margin-top:7%;height: 36%;">שמור את כל השינוים</button>
+			<a href="{{appLinkDownload.link}}" class="edit_app_but" style="text-decoration: none;text-align: center;line-height: 53px;height: 36%;">{{appLinkDownload.text}}</a>
+		</div>
+		<img src="img/editapp-bottom-bg.jpg" class="edit-app-bottom-bg"/>
 	</ons-page>
+	<style>
+		.page__background {
+			background-color: #b3d354;
+		}
+	</style>

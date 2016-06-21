@@ -1,23 +1,31 @@
+<ons-page>
+	<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Edit app Item</h2>
+	<img src="img/green-top.jpg" class="select-proj-bg" style="top:0;"/>
+	<div class="tab-holder">
+		<div class="item-tab selected"><i class="fa fa-pencil"></i></div>
+		<div class="item-tab" style="float: right;margin-right: 70px;" ng-click="menu.setMainPage('add-item.html', {closeMenu: true})"><i class="fa fa-plus"></i></div>
+	</div>
+	<div style="margin-top:200px;"></div>
 	<div ng-repeat="(key, fieldList) in editFieldList">
-		<p ng-bind="fieldList['title']" style="padding:15px 10px;" ng-click="editFieldListSection($event)"></p>
+		<p class="item-edit-name" ng-bind="fieldList['title']" style="padding:15px 10px;text-align:center;" ng-click="editFieldListSection($event)"></p>
 		<div class="editFieldsListHolder" style="display:none;">
 			<div ng-repeat="field in fieldList['fields']">
-				<section style="padding: 8px" ng-if="checkFieldType(field['type'],'google_map')">
-					<input type="text" class="text-input" ng-model="field['value']['address']" placeholder="Address" style="display: block; width: 100%">
-					<input type="text" class="text-input" ng-model="field['value']['lng']" placeholder="Longitude" style="display: block; width: 50%; float:right;">
-					<input type="text" class="text-input" ng-model="field['value']['lat']" placeholder="Latitude" style="display: block; width: 50%; float:right;">
+				<section ng-if="checkFieldType(field['type'],'google_map')">
+					<input type="text" class="text-input" ng-model="field['value']['address']" placeholder="Address" style="display: block; width: 75%">
+					<input type="text" class="text-input" ng-model="field['value']['lng']" placeholder="Longitude" style="display: block; width: 37%; float:right; margin-right:13%;">
+					<input type="text" class="text-input" ng-model="field['value']['lat']" placeholder="Latitude" style="display: block; width: 37%; float:right; margin-right:1%;">
 					<div style="clear:both;"></div>
 				</section>
-				<section style="padding: 8px" ng-if="checkFieldType(field['type'],'text')">
-					<input type="text" class="text-input" ng-model="field['value']" placeholder="{{field['label']}}" style="display: block; width: 100%">
+				<section ng-if="checkFieldType(field['type'],'text')">
+					<input type="text" class="text-input" ng-model="field['value']" placeholder="{{field['label']}}" style="display: block; width: 75%">
 				</section>
-				<section style="padding: 8px" ng-if="checkFieldType(field['type'],'textarea')">
-					<textarea class="edit_item_map_holder text-input" ng-model="field['value']" placeholder="{{field['label']}}" style="display: block; width: 100%; min-height:150px;"></textarea>
+				<section ng-if="checkFieldType(field['type'],'textarea')">
+					<textarea class="edit_item_map_holder text-input" ng-model="field['value']" placeholder="{{field['label']}}" style="display: block; width: 75%; min-height:150px;"></textarea>
 				</section>
 			</div>
-			<section style="padding: 0 8px 8px">
-				<ons-button modifier="large" ng-click="updateItemFunc(fieldList)">Update</ons-button>
+			<section>
+				<button ng-click="updateItemFunc(fieldList)">Update</button>
 			</section>
 		</div>
-		
 	</div>
+</ons-page>

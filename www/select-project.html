@@ -1,10 +1,20 @@
 <ons-page>
-	<ons-toolbar>
-		<div class="center">בחר קורס</div>
-	</ons-toolbar>
-	<ons-list>
-		<ons-list-item ng-repeat="(key, value) in allProjTemplates" modifier="chevron" ng-click="projChooseFunc(value.ID)">
+	<img src="img/choose-project-top.jpg" class="select-proj-bg" style="top:0;"/>
+	<div id="logo" style="top:10%;">
+		<img src="img/lets-logo-w.png" style="width:100%;"></img>
+	</div>
+	<input type="text" class="text-input sign-input" style="padding-left:5px;margin-top:50%;text-align:center;" ng-model="registration.proj_id" placeholder="Please, enter project ID to join class">
+	<button ng-click="projChooseFunc(registration.proj_id)" class="sign_button" style="background:#b2d454;margin-top:5%;">Join Class</button>
+	<p class="or_class" style="margin-top:14%;margin-bottom:6%;">- or you can try free classes -</p>
+	<ul id="choose_project">
+		<li ng-repeat="(key, value) in allProjTemplates" ng-click="projChooseFunc(value.ID)">
 			{{value.post_title}}
-		</ons-list-item>
-	</ons-list>
+		</li>
+	</ul>
+	<img src="img/choose-project-bottom.jpg" class="select-proj-bg"/>
 </ons-page>
+<style>
+	.page__background {
+		background-color: #abdff4;
+	}
+</style>

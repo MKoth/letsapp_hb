@@ -1,11 +1,12 @@
 <ons-page>
-	<ons-toolbar>
-		<div class="center"></div>
-	</ons-toolbar>
-	<img src="pic.png" style="width:100%;"></img>
-	<section style="padding: 0 8px 8px">
-		<ons-button modifier="large" ng-click="joinClass()">הצטרף לקורס</ons-button>
-	</section>
+	<img src="img/top-bg.jpg" style="width:100%;height: 45%;"></img>
+	<div id="logo">
+		<img src="img/lets-logo-w.png" style="width:100%;"></img>
+	</div>
+	<h1 class="first_page_heading">Please choose the option</h1>
+	<button class="sign_button" style="background: #b2d454;" ng-click="joinClass()">Sign in</button>
+	<p class="or_class">- or -</p>
+	<button class="sign_button" ng-click="menu.setMainPage('login.html', {closeMenu: true})">Sign up</button>
 	<!--<section style="padding: 0 8px 8px">
 		<ons-button modifier="large" ng-click="createClass()">Create new class</ons-button>
 	</section>-->

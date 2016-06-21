@@ -1,0 +1,12 @@
+<ons-page>
+	<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Lessons</h2>
+	<img src="img/elliptic_sign_bg.png" style="width:100%;height: 25%;"></img>
+	<div id="logo-sign" style="top:5%;">
+		<img src="img/short-logo.png" style="width:100%;"></img>
+	</div>
+	<ul id="lessons-list">
+		<li ng-repeat="(key, value) in milestoneList" modifier="chevron" ng-click="menuLessonClickFunc(key)"  data-type='{{value.type}}' data-id='{{value.id}}'>
+				{{value.title}}
+		</li>
+	</ul>
+</ons-page>

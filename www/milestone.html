@@ -1,10 +1,9 @@
 	<ons-page>
-		<ons-toolbar>
-			<div class="left">
-				<ons-toolbar-button onclick="menu.toggleMenu()"><ons-icon icon="fa-bars"></ons-icon></ons-toolbar-button>
-			</div>
-			<div class="center" style="font-size:12px;">{{milestone_title}}</div>
-		</ons-toolbar>
+		<h2 class="menu-title" style="font-size:15px;"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;font-size:22px;"></i>{{milestone_title}}</h2>
+		<img src="img/elliptic_sign_bg.png" style="width:100%;height: 25%;"></img>
+		<div id="logo-sign" style="top:5%;">
+			<img src="img/short-logo.png" style="width:100%;"></img>
+		</div>
 		<ons-carousel ng-if="milestonePostmetaMedia" style="height: 650px; width: 100%; text-align:center;" initial-index="0" swipeable overscrollable auto-scroll>
 			<ons-carousel-item ng-repeat="media in milestonePostmetaMedia">
 				<img ng-if="!checkVideo(media)" src="{{media}}" style="width:100%;"></img>

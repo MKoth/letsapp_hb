@@ -1,22 +1,27 @@
 	  <ons-list>
 		<ons-list-header class="list__header"></ons-list-header>
-		<ons-list-item modifier="chevron" ng-click="menu.setMainPage('home.html', {closeMenu: true})">
+		<ons-list-item modifier="chevron" ng-click="menu.setMainPage('classes-list.html', {closeMenu: true})" style="background: #b2d454;color: #fff;font-weight: bold;">
 			דף הבית
 		</ons-list-item>
-		<ons-list-item modifier="chevron" ng-click="menuEditClickFunc()">
+		<ons-list-item modifier="chevron" ng-click="menuEditClickFunc()" style="background:#aae0f3;">
 			בניית אפליקציה
 		</ons-list-item>
-		<ons-list-item modifier="chevron" ng-click="menu.setMainPage('edit-layout.html', {closeMenu: true})">
+		<ons-list-item modifier="chevron" ng-click="menu.setMainPage('edit-layout.html', {closeMenu: true})" style="background:#d7edf5;">
 			פריסה ערוכה יישום
 		</ons-list-item>
-		<ons-list-item modifier="chevron" ng-click="menu.setMainPage('profile-page.html', {closeMenu: true})">
+		<ons-list-item modifier="chevron" ng-click="menu.setMainPage('profile-page.html', {closeMenu: true})" style="background:#ecfaff;">
 			עריכת פרופיל משתמש
 		</ons-list-item>
-		<ons-list-item modifier="chevron" ng-click="menuLogoutClickFunc()">
+		<ons-list-item modifier="chevron" ng-click="menuLogoutClickFunc()" style="background:#f3f3f3;">
 			יציאה
 		</ons-list-item>
-		<ons-list-header class="list__header">קורס סטארט אפ</ons-list-header>
-		<ons-list-item ng-repeat="(key, value) in milestoneList" modifier="chevron" ng-click="menuLessonClickFunc(key)"  data-type='{{value.type}}' data-id='{{value.id}}' style="font-size:10px;">
-			{{value.title}}
-		</ons-list-item>
 	  </ons-list>
+	  <style>
+		.list__header {
+			background-color: #def7ff;
+			padding: 25px;
+		}
+		.onsen-sliding-menu__menu .page__background{
+			background:#fff;
+		}
+	  </style>

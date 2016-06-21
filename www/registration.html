@@ -1,22 +1,24 @@
 <ons-page>
-	<ons-toolbar>
-		<div class="center">הרשמה לתוכנית LetsGetStartup</div>
-	</ons-toolbar>
-	<section style="padding: 8px">
-		<input type="text" class="text-input" ng-model="registration.login" placeholder="שם משתמש" style="display: block; width: 100%">
-	</section>
-	<section style="padding: 8px">
-		<input type="text" class="text-input" ng-model="registration.email" placeholder="כתובת דוא״ל" style="display: block; width: 100%">
-	</section>
-	<section style="padding: 8px">
-		<input type="password" class="text-input" ng-model="registration.password" placeholder="סיסמה" style="display: block; width: 100%">
-	</section>
-	<section style="padding: 8px">
-		<input type="password" class="text-input" ng-model="registration.repeat_pass" placeholder="כתוב שוב סיסמה" style="display: block; width: 100%">
-	</section>
-	<section style="padding: 0 8px 8px">
-		<ons-button modifier="large" ng-click="userRegister()">הצטרף ל LetsGetStartup</ons-button>
-	</section>
-	<a href="#" ng-click="menu.setMainPage('login.html', {closeMenu: true})">אני משתמש רשום</a>
-	<p style="color:red;">{{registration_error}}</p>
+	<img src="img/elliptic_sign_bg.png" style="width:100%;height: 35%;"></img>
+	<div id="logo-sign">
+		<img src="img/short-logo.png" style="width:100%;"></img>
+	</div>
+	<div style="position:relative;">
+		<div class="photo_holder"><i class="fa fa-camera"></i>Add your photo</div>
+		<i class="fa fa-user username-icon" style="left: 46%;"></i>
+		<input type="text" class="text-input sign-input" ng-model="registration.name" placeholder="שם משתמש" style="width: 45%;float: right;margin-right:13%;">
+		<div style="clear:both;"></div>
+		<i class="fa fa-envelope-o email-icon"></i>
+		<input type="text" class="text-input sign-input" ng-model="registration.email" placeholder="כתובת דוא״ל">
+		<i class="fa fa-lock password-icon" style="top: 83%;"></i>
+		<input type="password" class="text-input sign-input" ng-model="registration.password" placeholder="סיסמה">
+	</div>
+	<button class="sign-button" ng-click="userRegister()" style="margin-top: 10%;">הצטרף ל</button>
+	<p class="dont_have_message">Having an account? <a href="#" ng-click="menu.setMainPage('login.html', {closeMenu: true})">אני משתמש רשום</a></p>
+	<p style="color:red;margin:0;text-align:center;">{{registration_error}}</p>
 </ons-page>
+<style>
+	.page__background {
+		background-color: #b2d454;
+	}
+</style>
