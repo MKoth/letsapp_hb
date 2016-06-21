@@ -344,7 +344,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.checkVideo = function(link){
 			var extn = link.split(".").pop();
 			var matches = link.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/);
-			if(extn=="mp4"&&!matches)
+			if((extn=="mp4"||extn=="avi")&&!matches)
 				return true;
 			else
 				return false;
@@ -391,13 +391,19 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.swappable = true;
 		
 		//variable responsible for login, registration data
-		$scope.registration={
+		$scope.registration = {
 			login: "",
 			email: "",
 			password: "",
-			repeat_pass: ""
+			repeat_pass: "",
+			name: "",
+			last_name: ""
 		};
 		
+		if(localStorage.getItem("login"))
+		{
+			$scope.registration.login = localStorage.getItem("login");
+		}
 		
 		//checking if set page to login or go to home main page
 		if(localStorage.getItem("login"))

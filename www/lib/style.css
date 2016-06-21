@@ -112,6 +112,48 @@ img.edit-app-bottom-bg {
 	left:0;
     z-index: -1;
 }
+.user_name{
+	text-align: center;
+    font-size: 28px;
+    font-weight: 100;
+    margin: 0;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+.round_profile_bg {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    background: white;
+    z-index: -1;
+    border-radius: 50%;
+    top: -52%;
+    left: -50%;
+}
+p.prof_text {
+    width: 75%;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
+p.prof_text input {
+    width: 100%;
+    height: 28px;
+    border: none;
+    background: #a1e2ff;
+    color: #6d6d6d;
+    font-size: 18px;
+}
+.progile_img{
+	width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 60px;
+}
 .comment_content{
 	font-size: 13px;
     text-align: right;

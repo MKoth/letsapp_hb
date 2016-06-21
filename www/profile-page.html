@@ -1,17 +1,23 @@
 <ons-page>
-		<ons-toolbar>
-		  <div class="left">
-			<ons-toolbar-button ng-click="menu.toggleMenu()"><ons-icon icon="fa-bars"></ons-icon></ons-toolbar-button>
-		  </div>
-		  <div class="center">עריכת פרופיל משתמש</div>
-		</ons-toolbar>
+		<h2 class="menu-title" style="color:#000;"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;color:#000;"></i>Profile</h2>
+		<div class="round_profile_bg">
+		</div>
 		<div>
 			<section style="padding: 8px; padding-bottom:2px; padding-top:0;margin-bottom:40px;">
-				<h2>תמונת פרופיל</h2>
-				<img src="{{userdata.profile_image}}" style="width:100%;"></img>
-				<ons-button modifier="large" ng-click="getUserFile()" style="width:49%;float:left;margin-right:2%;">העלה תמונה מהטלפון</ons-button>
-				<ons-button modifier="large" ng-click="getUserCam()" style="width:49%;float:right;">העלה תמונה מהמצלמה</ons-button>
+				<img src="{{userdata.profile_image}}" class="progile_img"></img>
+				<h2 class="user_name">{{registration.login}}</h2>
+				<!--<ons-button modifier="large" ng-click="getUserFile()" style="width:49%;float:left;margin-right:2%;">העלה תמונה מהטלפון</ons-button>
+				<ons-button modifier="large" ng-click="getUserCam()" style="width:49%;float:right;">העלה תמונה מהמצלמה</ons-button>-->
+				<!--<p class="prof_text">First name<br><input type="text" value="{{registration.name}}"></input></p>
+				<p class="prof_text">Last name<br><input type="text" value="{{registration.last_name}}"></input></p>
+				<p class="prof_text">Email<br><input type="text" value="{{registration.email}}"></input></p>-->
+				<p class="prof_text">Login<br><input type="text" value="{{registration.login}}"></input></p>
 				<div style="clear:both;"></div>
 			</section>
 		</div>
 	</ons-page>
+	<style>
+		.page__background {
+			background-color: #a1e2ff;
+		}
+	</style>
