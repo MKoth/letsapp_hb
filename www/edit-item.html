@@ -11,7 +11,7 @@
 		<div class="editFieldsListHolder" style="display:none;">
 			<div ng-repeat="field in fieldList['fields']">
 				<section ng-if="checkFieldType(field['type'],'google_map')">
-					<input type="text" class="text-input" ng-model="field['value']['address']" placeholder="Address" style="display: block; width: 75%">
+					<input type="text" class="text-input" ng-model="field['value']['address']" placeholder="כתובת" style="display: block; width: 75%">
 					<input type="text" class="text-input" ng-model="field['value']['lng']" placeholder="Longitude" style="display: block; width: 37%; float:right; margin-right:13%;">
 					<input type="text" class="text-input" ng-model="field['value']['lat']" placeholder="Latitude" style="display: block; width: 37%; float:right; margin-right:1%;">
 					<div style="clear:both;"></div>
@@ -24,7 +24,7 @@
 				</section>
 			</div>
 			<section>
-				<button ng-click="updateItemFunc(fieldList)">Update</button>
+				<button ng-click="updateItemFunc(fieldList)">שלח</button>
 			</section>
 		</div>
 	</div>
