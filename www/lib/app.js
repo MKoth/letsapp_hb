@@ -28,9 +28,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 				alert("Not fucking working");
 		}
 		$scope.geolocationSuccess = function(position){
-			alert(position.coords.longitude);
-		  jQuery("#add-item-area input[placeholder='Longitude']").val(position.coords.longitude);
-		  jQuery("#add-item-area input[placeholder='Latitude']").val(position.coords.latitude);
+		  jQuery("#add-item-area input.latitude").val(position.coords.longitude);
+		  jQuery("#add-item-area input.longitude").val(position.coords.latitude);
 		}
 		$scope.geolocationError = function(error){
 			alert(error);
