@@ -9,6 +9,11 @@ module.filter('trustUrl', function ($sce) {
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
 		
+		
+		$scope.openInBrowser=function(link){
+			navigator.app.loadUrl(link, {openExternal : true});
+			window.open(link, '_system');
+		}
 		//function to get picture from library
 		
 	/*navigator.camera.getPicture(onSuccess, onFail, { 
@@ -17,9 +22,13 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
 	});*/
 		$scope.getCurrentPositionFunc = function(){
-			navigator.geolocation.getCurrentPosition($scope.geolocationSuccess,$scope.geolocationError);
+			if(navigator.geolocation)
+				navigator.geolocation.getCurrentPosition($scope.geolocationSuccess,$scope.geolocationError);
+			else
+				alert("Not fucking working");
 		}
 		$scope.geolocationSuccess = function(position){
+			alert(position.coords.longitude);
 		  jQuery("#add-item-area input[placeholder='Longitude']").val(position.coords.longitude);
 		  jQuery("#add-item-area input[placeholder='Latitude']").val(position.coords.latitude);
 		}

@@ -14,7 +14,7 @@
 		</div>
 		<div style="height: 24%;">
 			<button ng-click="startBuildingApp()" class="edit_app_but" style="margin-top:7%;height: 36%;">שמור את כל השינוים</button>
-			<a href="{{appLinkDownload.link}}" class="edit_app_but" style="text-decoration: none;text-align: center;line-height: 53px;height: 36%;">{{appLinkDownload.text}}</a>
+			<a href="{{appLinkDownload.link|trustUrl}}" ng-click="openInBrowser(appLinkDownload.link)" class="edit_app_but" style="text-decoration: none;text-align: center;line-height: 53px;height: 36%;">{{appLinkDownload.text}}</a>
 		</div>
 		<img src="img/editapp-bottom-bg.jpg" class="edit-app-bottom-bg"/>
 	</ons-page>
