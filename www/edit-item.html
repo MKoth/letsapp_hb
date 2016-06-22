@@ -1,5 +1,5 @@
 <ons-page>
-	<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Edit app Item</h2>
+	<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>ערוך נקודת עניין</h2>
 	<img src="img/green-top.jpg" class="select-proj-bg" style="top:0;"/>
 	<div class="tab-holder">
 		<div class="item-tab selected"><i class="fa fa-pencil"></i></div>
@@ -12,8 +12,8 @@
 			<div ng-repeat="field in fieldList['fields']">
 				<section ng-if="checkFieldType(field['type'],'google_map')">
 					<input type="text" class="text-input" ng-model="field['value']['address']" placeholder="כתובת" style="display: block; width: 75%">
-					<input type="text" class="text-input" ng-model="field['value']['lng']" placeholder="Longitude" style="display: block; width: 37%; float:right; margin-right:13%;">
-					<input type="text" class="text-input" ng-model="field['value']['lat']" placeholder="Latitude" style="display: block; width: 37%; float:right; margin-right:1%;">
+					<input type="text" class="text-input" ng-model="field['value']['lng']" placeholder="קו גובה" style="display: block; width: 37%; float:right; margin-right:13%;">
+					<input type="text" class="text-input" ng-model="field['value']['lat']" placeholder="קו רוחב" style="display: block; width: 37%; float:right; margin-right:1%;">
 					<div style="clear:both;"></div>
 				</section>
 				<section ng-if="checkFieldType(field['type'],'text')">
