@@ -6,9 +6,9 @@
 		<div class="item-tab" style="float: right;margin-right: 70px;" ng-click="menu.setMainPage('add-item.html', {closeMenu: true})"><i class="fa fa-plus"></i></div>
 	</div>
 	<div style="margin-top:200px;"></div>
-	<a href="#" ng-click="openInBrowser('https://play.google.com/store/apps/details?id=com.letsgetstartup2')" ng-if="project_id==1374" class="download_app">Download app</a>
-	<a href="#" ng-click="openInBrowser('https://play.google.com/store/apps/details?id=com.letsgetstartup3')" ng-if="project_id==1371" class="download_app">Download app</a>
-	<a href="#" ng-click="openInBrowser('https://play.google.com/store/apps/details?id=com.letsgetstartup4')" ng-if="project_id==1369" class="download_app">Download app</a>
+	<a href="#" ng-click="openInBrowser('https://play.google.com/store/apps/details?id=com.letsgetstartup2')" ng-if="project_id==1374" class="download_app">הורד אפליקציה</a>
+	<a href="#" ng-click="openInBrowser('https://play.google.com/store/apps/details?id=com.letsgetstartup3')" ng-if="project_id==1371" class="download_app">הורד אפליקציה</a>
+	<a href="#" ng-click="openInBrowser('https://play.google.com/store/apps/details?id=com.letsgetstartup4')" ng-if="project_id==1369" class="download_app">הורד אפליקציה</a>
 	<div ng-repeat="(key, fieldList) in editFieldList">
 		<p class="item-edit-name" ng-bind="fieldList['title']" style="padding:15px 10px;text-align:center;" ng-click="editFieldListSection($event)"></p>
 		<div class="editFieldsListHolder" style="display:none;">
