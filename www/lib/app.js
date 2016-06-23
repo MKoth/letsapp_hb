@@ -24,8 +24,6 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.getCurrentPositionFunc = function(){
 			if(navigator.geolocation)
 				navigator.geolocation.getCurrentPosition($scope.geolocationSuccess,$scope.geolocationError);
-			else
-				alert("Not fucking working");
 		}
 		$scope.geolocationSuccess = function(position){
 		  jQuery("#add-item-area input.latitude").val(position.coords.longitude);
@@ -375,6 +373,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		//function sending new task comment to the server
 		$scope.insertTaskComment = function(){
+			jQuery("#loader").fadeIn();
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "POST",
@@ -390,6 +389,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				},
 			}).then(function(response) {
 				//alert(response.data);
+				jQuery("#loader").fadeOut();
 				$scope.getTaskComment($scope.currentCommentsTaskId);
 				$scope.newTaskComment.content = "";
 			});
@@ -416,7 +416,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//checking if set page to login or go to home main page
 		if(localStorage.getItem("login"))
 		{
-			menu.setMainPage('classes-list.html', {closeMenu: true});
+			//menu.setMainPage('classes-list.html', {closeMenu: true});
+			$scope.menuEditClickFunc();
 		}
 		else
 		{
@@ -426,6 +427,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		//function get a list of posts from server or opens a login page if user is not registered
 		$scope.menuEditClickFunc = function(){
+			jQuery("#loader").fadeIn();
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php?proj_id="+localStorage.getItem("project_id"), 
 				method: "get",
@@ -434,6 +436,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					callback:'JSON_CALLBACK'
 				},
 			}).then(function(response) {
+				jQuery("#loader").fadeOut();
 				$scope.editFieldList = response.data;
 				if(localStorage.getItem("login"))
 				{
@@ -449,6 +452,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		//function updates the posts after user clicks update and return renewed list of posts
 		$scope.updateItemFunc = function(update_data){
+			jQuery("#loader").fadeIn();
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "POST",
@@ -461,11 +465,13 @@ module.controller('menuController', function($scope, $http, $sce) {
 				}
 			}).then(function(response) {
 				$scope.menuEditClickFunc();
+				jQuery("#loader").fadeOut();
 			});
 		}
 		
 		//function adds posts to server database through api and renewing the list of posts
 		$scope.addItemFunc = function(name){
+			jQuery("#loader").fadeIn();
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "POST",
@@ -479,6 +485,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					action: "add_mobile_items_data",
 				}
 			}).then(function(response) {
+				jQuery("#loader").fadeOut();
 				//alert(response.data);
 				$scope.menuEditClickFunc();
 			});
@@ -539,7 +546,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 						localStorage.setItem("login",response.data['user_login']);
 						localStorage.setItem("id",response.data['user_id']);
 						localStorage.setItem("project_id",response.data['project_id']);
-						menu.setMainPage('classes-list.html', {closeMenu: true});
+						//menu.setMainPage('classes-list.html', {closeMenu: true});
+						$scope.menuEditClickFunc();
 						$scope.swappable = true;
 						$scope.user_login = response.data['user_login'];
 						$scope.addClassesToLeftMenu();
