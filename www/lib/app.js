@@ -143,7 +143,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				//alert('Done!');
 				//alert(r.response.toString());
 				jQuery("#loader").fadeOut();
-				alert('Photo saved!');
+				alert('התמונה שהוספת נשמרה');
 			}
 		 
 			var fail = function (error) {
@@ -244,7 +244,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}).then(function(response) {
 				jQuery("#loader").fadeOut();
 				//alert(response.data);
-				alert("Changes of app saved");
+				alert("השינוים נשמרו באפליקציה שלך");
 			});
 		}
 		
