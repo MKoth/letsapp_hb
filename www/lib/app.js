@@ -8,7 +8,31 @@ module.filter('trustUrl', function ($sce) {
 
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
-		
+		$scope.project_id = localStorage.getItem("project_id");
+		//function get a list of posts from server or opens a login page if user is not registered
+		$scope.menuEditClickFunc = function(){
+			jQuery("#loader").fadeIn();
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php?proj_id="+localStorage.getItem("project_id"), 
+				method: "get",
+				params: {
+					action: "list_edit_arr",
+					callback:'JSON_CALLBACK'
+				},
+			}).then(function(response) {
+				jQuery("#loader").fadeOut();
+				$scope.editFieldList = response.data;
+				if(localStorage.getItem("login"))
+				{
+					menu.setMainPage('edit-item.html', {closeMenu: true});
+				}
+				else
+				{
+					menu.setMainPage('login.html', {closeMenu: true});
+					$scope.swappable = false;
+				}
+			});
+		}
 		
 		$scope.openInBrowser=function(link){
 			navigator.app.loadUrl(link, {openExternal : true});
@@ -425,31 +449,6 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$scope.swappable = false;
 		}
 		
-		//function get a list of posts from server or opens a login page if user is not registered
-		$scope.menuEditClickFunc = function(){
-			jQuery("#loader").fadeIn();
-			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php?proj_id="+localStorage.getItem("project_id"), 
-				method: "get",
-				params: {
-					action: "list_edit_arr",
-					callback:'JSON_CALLBACK'
-				},
-			}).then(function(response) {
-				jQuery("#loader").fadeOut();
-				$scope.editFieldList = response.data;
-				if(localStorage.getItem("login"))
-				{
-					menu.setMainPage('edit-item.html', {closeMenu: true});
-				}
-				else
-				{
-					menu.setMainPage('login.html', {closeMenu: true});
-					$scope.swappable = false;
-				}
-			});
-		}
-		
 		//function updates the posts after user clicks update and return renewed list of posts
 		$scope.updateItemFunc = function(update_data){
 			jQuery("#loader").fadeIn();
@@ -464,6 +463,25 @@ module.controller('menuController', function($scope, $http, $sce) {
 					'action': "update_mobile_items_post",
 				}
 			}).then(function(response) {
+				$scope.menuEditClickFunc();
+				jQuery("#loader").fadeOut();
+			});
+		}
+		
+		$scope.deleteItemFunc = function(post_id){
+			jQuery("#loader").fadeIn();
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					post_id: post_id
+				},
+				params: {
+					'action': "delete_mobile_item_post",
+				}
+			}).then(function(response) {
+				//alert(response);
 				$scope.menuEditClickFunc();
 				jQuery("#loader").fadeOut();
 			});
@@ -518,10 +536,12 @@ module.controller('menuController', function($scope, $http, $sce) {
 						localStorage.setItem("login",response.data['user_login']);
 						localStorage.setItem("id",response.data['user_id']);
 						localStorage.setItem("project_id",response.data['project_id']);
-						menu.setMainPage('login.html', {closeMenu: true});
+						//menu.setMainPage('login.html', {closeMenu: true});
 						//$scope.swappable = true;
 						$scope.user_login = response.data['user_login'];
 						$scope.addClassesToLeftMenu();
+						$scope.menuEditClickFunc();
+						$scope.swappable = true;
 					}
 					$scope.registration_error = response.data['error'];
 				});
