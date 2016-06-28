@@ -250,6 +250,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.getRegUserPictureSuccess=function(fileURI) {
 			jQuery("#loader").fadeIn();
 			var win = function (r) {
+				alert(r.response.toString());
 				$scope.clearCache();
 				retries = 0;
 				$scope.registration.profile_image = r.response.toString();
