@@ -8,6 +8,25 @@ module.filter('trustUrl', function ($sce) {
 
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
+		
+		/*$scope.checkConnection = function checkConnection() {
+			var networkState = navigator.network.connection.type;
+
+			var states = {};
+			states[Connection.UNKNOWN]  = 'Unknown connection';
+			states[Connection.ETHERNET] = 'Ethernet connection';
+			states[Connection.WIFI]     = 'WiFi connection';
+			states[Connection.CELL_2G]  = 'Cell 2G connection';
+			states[Connection.CELL_3G]  = 'Cell 3G connection';
+			states[Connection.CELL_4G]  = 'Cell 4G connection';
+			states[Connection.NONE]     = 'No network connection';
+			if(states[networkState] == 'No network connection')
+				alert(states[networkState]);
+		}
+
+		$scope.checkConnection();*/
+		
+		
 		$scope.project_id = localStorage.getItem("project_id");
 		//function get a list of posts from server or opens a login page if user is not registered
 		$scope.menuEditClickFunc = function(){
@@ -45,10 +64,20 @@ module.controller('menuController', function($scope, $http, $sce) {
 		destinationType: Camera.DestinationType.DATA_URL,
 		//sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
 	});*/
+	
+	
+	
 		$scope.getCurrentPositionFunc = function(){
 			if(navigator.geolocation)
 				navigator.geolocation.getCurrentPosition($scope.geolocationSuccess,$scope.geolocationError);
 		}
+		$scope.addNewItemPage = function(){
+			menu.setMainPage('add-item.html', {closeMenu: true});
+			$scope.getCurrentPositionFunc();
+		}
+		
+		
+		
 		$scope.geolocationSuccess = function(position){
 		  jQuery("#add-item-area input.latitude").val(position.coords.longitude);
 		  jQuery("#add-item-area input.longitude").val(position.coords.latitude);
@@ -116,7 +145,16 @@ module.controller('menuController', function($scope, $http, $sce) {
 			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY	});
 		}
 		
+		$scope.getRegistrationUserCam  = function(){
+			navigator.camera.getPicture($scope.getRegUserPictureSuccess, $scope.onFail, { quality: 30,
+			destinationType: Camera.DestinationType.FILE_URI });
+		}
 		
+		$scope.getRegistrationUserFile  = function(){
+			navigator.camera.getPicture($scope.getRegUserPictureSuccess, $scope.onFail, { quality: 100,
+			destinationType: Camera.DestinationType.FILE_URI,
+			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY	});
+		}
 		
 		$scope.getPicFile = function(){
 			//alert();
@@ -206,6 +244,41 @@ module.controller('menuController', function($scope, $http, $sce) {
 			var ft = new FileTransfer();
 			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
 			//ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+		}
+		
+		
+		$scope.getRegUserPictureSuccess=function(fileURI) {
+			jQuery("#loader").fadeIn();
+			var win = function (r) {
+				$scope.clearCache();
+				retries = 0;
+				$scope.registration.profile_image = r.response.toString();
+				localStorage.setItem("users_profile_image",$scope.registration.profile_image);
+				jQuery("#loader").fadeOut();
+				alert('User Photo saved!');
+			}
+		 
+			var fail = function (error) {
+				if (retries == 0) {
+					retries ++
+					setTimeout(function() {
+						getUserPictureSuccess(fileURI)
+					}, 1000)
+				} else {
+					retries = 0;
+					$scope.clearCache();
+					alert('Ups. Something wrong happens!');
+					jQuery("#loader").fadeIn();
+				}
+			}
+		 
+			var options = new FileUploadOptions();
+			options.fileKey = "file";
+			options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+			options.mimeType = "image/jpeg";
+			options.params = {action:"upload_user_profile", user_id: localStorage.getItem("id")};
+			var ft = new FileTransfer();
+			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
 		}
 		
 		$scope.onFail=function(message) {
@@ -326,9 +399,18 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 		}
 		
-		$scope.addApp = function(){
-			ons.createDialog('add-app-dialog.html', {parentScope: $scope}).then(function(dialog) {
-				$scope.dialog = dialog;
+		$scope.getPhotoDialog = function(){
+			//ons.createDialog('get-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
+			ons.createDialog('get-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
+				//$scope.dialog = dialog;
+				dialog.show();
+			});
+		}
+		
+		$scope.getRegistrationPhotoDialog = function(){
+			//ons.createDialog('get-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
+			ons.createDialog('get-registration-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
+				//$scope.dialog = dialog;
 				dialog.show();
 			});
 		}
@@ -429,7 +511,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 			password: "",
 			repeat_pass: "",
 			name: "",
-			last_name: ""
+			last_name: "",
+			profile_image: ""
 		};
 		
 		if(localStorage.getItem("login"))
@@ -542,6 +625,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 						$scope.addClassesToLeftMenu();
 						$scope.menuEditClickFunc();
 						$scope.swappable = true;
+						$scope.project_id = response.data['project_id'];
 					}
 					$scope.registration_error = response.data['error'];
 				});
@@ -571,6 +655,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 						$scope.swappable = true;
 						$scope.user_login = response.data['user_login'];
 						$scope.addClassesToLeftMenu();
+						$scope.project_id = response.data['project_id'];
 						if(response.data['users_profile_image'])
 						{
 							localStorage.setItem("users_profile_image",response.data['users_profile_image']);

@@ -15,6 +15,19 @@
     height: 100%;
     background: rgba(255, 255, 255, 0.7);
 }
+.get_photo_button {
+    width: 90%;
+    background: #54bcea;
+    border: none;
+    margin-left: 5%;
+    min-height: 60px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    color: #fff;
+    font-size: 22px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
 #loader div{
 	position: absolute;
 	width: 30%;
