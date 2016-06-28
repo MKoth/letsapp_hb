@@ -4,7 +4,7 @@
 		<img src="img/short-logo.png" style="width:100%;max-height: 200px;"></img>
 	</div>
 	<div style="position:relative;">
-		<div class="photo_holder" ng-click="getRegistrationPhotoDialog()"><img width=80 height=80 ng-if="registration.profile_image!=''" src="registration.profile_image"/><i class="fa fa-camera"></i>Add your photo</div>
+		<div class="photo_holder" ng-click="getRegistrationPhotoDialog()"><img width=60 height=60 ng-if="registration.profile_image!=''" src="{{registration.profile_image}}"/><i class="fa fa-camera"></i>Add your photo</div>
 		<i class="fa fa-user username-icon" style="left: 46%;"></i>
 		<input type="text" class="text-input sign-input" ng-model="registration.name" placeholder="שם משתמש" style="width: 45%;float: right;margin-right:13%;">
 		<div style="clear:both;"></div>
