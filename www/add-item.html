@@ -10,6 +10,7 @@
 		<section>
 			<input type="text" class="text-input" ng-model="addNewItemName" placeholder="שם נקודת עניין" style="display: block; width: 75%">
 		</section>
+		<img ng-show="post.addNewItemImage" src="{{post.addNewItemImage}}" class="img-attach" ng-click="getPostPhotoDialog()"/>
 		<div ng-repeat="addField in addNewItemFields">
 			<section id="add-item-area" ng-if="checkFieldType(addField['type'],'google_map')">
 				<input type="text" class="text-input" ng-model="addField['value']['address']" placeholder="כתובת" style="display: block; width: 75%">
@@ -26,7 +27,7 @@
 			</section>
 		</div>
 		<section>
-			<button ng-click="addItemFunc(addNewItemName)">הוסף</button>
+			<button ng-click="addItemFunc(addNewItemName, post.attachment_id)">הוסף</button>
 		</section>
 	</div>
 </ons-page>

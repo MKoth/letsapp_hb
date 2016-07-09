@@ -4,9 +4,9 @@
 		<div id="logo-sign" style="top:5%;">
 			<img src="img/short-logo.png" style="width:100%;"></img>
 		</div>
-		<ons-carousel ng-if="milestonePostmetaMedia" style="height: 650px; width: 100%; text-align:center;" initial-index="0" swipeable overscrollable auto-scroll>
+		<ons-carousel ng-if="milestonePostmetaMedia!='false'" style="height: 650px; width: 100%; text-align:center;" initial-index="0" swipeable overscrollable auto-scroll>
 			<ons-carousel-item ng-repeat="media in milestonePostmetaMedia">
-				<img ng-if="!checkVideo(media)" src="{{media}}" style="width:100%;"></img>
+				<img ng-if="!checkVideo(media)&&!checkYoutube(media)" src="{{media}}" style="width:100%;"></img>
 				<video ng-if="checkVideo(media)" width="320" height="640" controls>
 					<source ng-src="{{trustSrc(media)}}" type="video/mp4">
 				</video>
@@ -14,4 +14,6 @@
 			</ons-carousel-item>
 		</ons-carousel>
 		<p  ng-bind-html="milestone_content" style="padding:10px;font-size:13px;text-align:right;"></p>
+		<button class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuLessonClickFunc(prev)">Previous</button>
+		<button class="next_lesson_but" ng-if="next!='last'" ng-click="menuLessonClickFunc(next)">Next</button>
 	  </ons-page>

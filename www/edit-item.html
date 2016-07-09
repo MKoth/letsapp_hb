@@ -12,6 +12,9 @@
 	<div ng-repeat="(key, fieldList) in editFieldList">
 		<p class="item-edit-name" ng-bind="fieldList['title']" style="padding:15px 10px;text-align:center;" ng-click="editFieldListSection($event)"></p>
 		<div class="editFieldsListHolder" style="display:none;">
+			<img ng-if="fieldList['image_url']!=''&&!post.updateNewItemImage" src="{{fieldList['image_url']}}" class="img-attach" ng-click="getEditPhotoDialog()"/>
+			<img ng-if="fieldList['image_url']==''&&!post.updateNewItemImage" src="new-photo.jpg" class="img-attach" ng-click="getEditPhotoDialog()"/>
+			<img ng-if="post.updateNewItemImage" src="{{post.updateNewItemImage}}" class="img-attach" ng-click="getEditPhotoDialog()"/>
 			<div ng-repeat="field in fieldList['fields']">
 				<section ng-if="checkFieldType(field['type'],'google_map')">
 					<input type="text" class="text-input" ng-model="field['value']['address']" placeholder="כתובת" style="display: block; width: 75%">

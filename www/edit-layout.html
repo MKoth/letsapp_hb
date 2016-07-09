@@ -6,6 +6,18 @@
 			<div style="clear:both;"></div>
 			<input type="text" class="text-input edit_app_input" ng-model="layout.app_title" placeholder="שנה את שם האפליקציה"><button class="edit_app_but_top" ng-click="saveText('app_title',layout.app_title)">טקסט שמור</button>
 			<div style="clear:both;"></div>
+			<form name="myForm">
+				<label>
+					<input type="checkbox" ng-model="checkboxPage.registration" ng-change="addPageToApp(checkboxPage.registration)">
+					Add registration page
+				</label><br/>
+				<label>
+					<input type="checkbox" ng-model="checkboxPage.add_post"
+						ng-true-value="'YES'" ng-false-value="'NO'" ng-change="addPageToApp(checkboxPage.add_post)">
+					Add post adding page
+				</label><br/>
+			</form>
+			<div style="clear:both;"></div>
 		</div>
 		<div style="height: 259px;">
 			<button ng-click="getPicFile()" class="edit_app_but" style="margin-top: 10%;">שמור תמונה</button>

@@ -9,6 +9,41 @@
 .cover-label{
 	color:#000;
 }
+.img-attach{
+	width: 74%;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 2%;
+    border-radius: 10px;
+    border: 1px solid #5f5f5f;
+}
+button.prev_lesson_but.ng-scope {
+    background: #b2d454;
+    border: none;
+    color: #fff;
+    padding: 15px;
+    font-size: 15px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    float: left;
+}
+button.next_lesson_but.ng-scope {
+    background: #b2d454;
+    border: none;
+    color: #fff;
+    padding: 15px;
+    font-size: 15px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    float: right;
+}
+h2.proj_header {
+    color: #41b4dc;
+    text-align: center;
+    font-size: 22px;
+}
 #loader{
 	position: absolute;
     width: 100%;

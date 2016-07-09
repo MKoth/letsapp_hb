@@ -26,6 +26,47 @@ module.controller('menuController', function($scope, $http, $sce) {
 
 		$scope.checkConnection();*/
 		
+		$scope.page = {post_adding:"", registration:""};
+		
+		$scope.addPageToApp = function(item){
+			//alert(item);
+			if(item===true)
+			{
+				$scope.addPageFunc('Registration page', 'www/menu.html', 'add_registration_page');
+			}
+			if(item===false)
+			{
+				$scope.addPageFunc('Registration page', 'www/menu.html', 'remove_registration_page');
+			}
+			if(item==="YES")
+			{
+				$scope.addPageFunc('Add post page', 'www/menu.html', 'add_post_page');
+			}
+			if(item==="NO")
+			{
+				$scope.addPageFunc('Add post page', 'www/menu.html', 'remove_post_page');
+			}
+		}
+		$scope.addPageFunc = function(tag_name, file_path, page_type){
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "change_app_heading",
+				},
+				data: {
+					tag_name: tag_name,
+					file_path: file_path,
+					page_type: page_type,
+					proj_id: localStorage.getItem("project_id")
+				},
+			}).then(function(response) {
+				jQuery("#loader").fadeOut();
+				alert("השינוים נשמרו באפליקציה שלך");
+			});
+		}
+		
 		
 		$scope.project_id = localStorage.getItem("project_id");
 		//function get a list of posts from server or opens a login page if user is not registered
@@ -39,6 +80,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					callback:'JSON_CALLBACK'
 				},
 			}).then(function(response) {
+				//alert(response.data);
 				jQuery("#loader").fadeOut();
 				$scope.editFieldList = response.data;
 				if(localStorage.getItem("login"))
@@ -73,6 +115,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		$scope.addNewItemPage = function(){
 			menu.setMainPage('add-item.html', {closeMenu: true});
+			$scope.post={addNewItemImage:"new-photo.jpg"};
 			$scope.getCurrentPositionFunc();
 		}
 		
@@ -135,22 +178,26 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		
 		$scope.getUserCam  = function(){
+			$scope.dialog.hide();
 			navigator.camera.getPicture($scope.getUserPictureSuccess, $scope.onFail, { quality: 30,
 			destinationType: Camera.DestinationType.FILE_URI });
 		}
 		
 		$scope.getUserFile  = function(){
+			$scope.dialog.hide();
 			navigator.camera.getPicture($scope.getUserPictureSuccess, $scope.onFail, { quality: 100,
 			destinationType: Camera.DestinationType.FILE_URI,
 			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY	});
 		}
 		
 		$scope.getRegistrationUserCam  = function(){
+			$scope.dialog.hide();
 			navigator.camera.getPicture($scope.getRegUserPictureSuccess, $scope.onFail, { quality: 30,
 			destinationType: Camera.DestinationType.FILE_URI });
 		}
 		
 		$scope.getRegistrationUserFile  = function(){
+			$scope.dialog.hide();
 			navigator.camera.getPicture($scope.getRegUserPictureSuccess, $scope.onFail, { quality: 100,
 			destinationType: Camera.DestinationType.FILE_URI,
 			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY	});
@@ -158,6 +205,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		$scope.getPicFile = function(){
 			//alert();
+			$scope.dialog.hide();
 			navigator.camera.getPicture($scope.getPictureSuccess, $scope.onFail, { quality: 100,
 			destinationType: Camera.DestinationType.FILE_URI,
 			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY	});
@@ -165,7 +213,38 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		$scope.getPicCam = function(){
 			//alert();
+			$scope.dialog.hide();
 			navigator.camera.getPicture($scope.getPictureSuccess, $scope.onFail, { quality: 30,
+			destinationType: Camera.DestinationType.FILE_URI });
+		}
+		
+		$scope.getPostUserFile = function(){
+			//alert();
+			$scope.dialog.hide();
+			navigator.camera.getPicture($scope.getPostSuccess, $scope.onFail, { quality: 100,
+			destinationType: Camera.DestinationType.FILE_URI,
+			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY	});
+		}
+		
+		$scope.getPostUserCam = function(){
+			//alert();
+			$scope.dialog.hide();
+			navigator.camera.getPicture($scope.getPostSuccess, $scope.onFail, { quality: 30,
+			destinationType: Camera.DestinationType.FILE_URI });
+		}
+		
+		$scope.getEditUserFile = function(){
+			//alert();
+			$scope.dialog.hide();
+			navigator.camera.getPicture($scope.getEditSuccess, $scope.onFail, { quality: 100,
+			destinationType: Camera.DestinationType.FILE_URI,
+			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY	});
+		}
+		
+		$scope.getEditUserCam = function(){
+			//alert();
+			$scope.dialog.hide();
+			navigator.camera.getPicture($scope.getEditSuccess, $scope.onFail, { quality: 30,
 			destinationType: Camera.DestinationType.FILE_URI });
 		}
     
@@ -250,7 +329,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.getRegUserPictureSuccess=function(fileURI) {
 			jQuery("#loader").fadeIn();
 			var win = function (r) {
-				alert(r.response.toString());
+				//alert(r.response.toString());
 				$scope.clearCache();
 				retries = 0;
 				$scope.registration.profile_image = r.response.toString();
@@ -278,6 +357,90 @@ module.controller('menuController', function($scope, $http, $sce) {
 			options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
 			options.mimeType = "image/jpeg";
 			options.params = {action:"upload_user_profile", user_id: localStorage.getItem("id")};
+			var ft = new FileTransfer();
+			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+		}
+		
+		$scope.getPostSuccess=function(fileURI) {
+			jQuery("#loader").fadeIn();
+			var win = function (r) {
+				//alert(r.response.toString());
+				var str = r.response.toString();
+				var json = JSON.parse(str);
+				alert(json.image_url);
+				$scope.clearCache();
+				retries = 0;
+				$scope.post = {addNewItemImage:json.image_url,attachment_id:json.attachment_id};
+				$scope.$digest();
+				
+				//$("#add-attachment").attr('src',r.response.toString());
+				//localStorage.setItem("upload_post_image",$scope.registration.profile_image);
+				jQuery("#loader").fadeOut();
+				alert('Post Photo saved!');
+				//alert(r);
+			}
+		 
+			var fail = function (error) {
+				if (retries == 0) {
+					retries ++
+					setTimeout(function() {
+						getUserPictureSuccess(fileURI)
+					}, 1000)
+				} else {
+					retries = 0;
+					$scope.clearCache();
+					alert('Ups. Something wrong happens!');
+					jQuery("#loader").fadeIn();
+				}
+			}
+		 
+			var options = new FileUploadOptions();
+			options.fileKey = "file";
+			options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+			options.mimeType = "image/jpeg";
+			options.params = {action:"upload_post_image"};
+			var ft = new FileTransfer();
+			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+		}
+		
+		$scope.getEditSuccess=function(fileURI) {
+			jQuery("#loader").fadeIn();
+			var win = function (r) {
+				//alert(r.response.toString());
+				var str = r.response.toString();
+				var json = JSON.parse(str);
+				alert(json.image_url);
+				$scope.clearCache();
+				retries = 0;
+				$scope.post = {updateNewItemImage:json.image_url,update_attachment_id:json.attachment_id};
+				$scope.$digest();
+				
+				//$("#add-attachment").attr('src',r.response.toString());
+				//localStorage.setItem("upload_post_image",$scope.registration.profile_image);
+				jQuery("#loader").fadeOut();
+				alert('Post Photo saved!');
+				//alert(r);
+			}
+		 
+			var fail = function (error) {
+				if (retries == 0) {
+					retries ++
+					setTimeout(function() {
+						getUserPictureSuccess(fileURI)
+					}, 1000)
+				} else {
+					retries = 0;
+					$scope.clearCache();
+					alert('Ups. Something wrong happens!');
+					jQuery("#loader").fadeIn();
+				}
+			}
+		 
+			var options = new FileUploadOptions();
+			options.fileKey = "file";
+			options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+			options.mimeType = "image/jpeg";
+			options.params = {action:"upload_post_image"};
 			var ft = new FileTransfer();
 			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
 		}
@@ -336,13 +499,16 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}).then(function(response) {
 				jQuery("#loader").fadeOut();
 				$scope.milestoneList = response.data;
+				/*$.each(response.data, function(key,value){
+					alert(key);
+				});*/
 			});
 		}
 		if(localStorage.getItem("login"))
 			$scope.addClassesToLeftMenu();
 		
 		//declaring variable for task commenting form
-		$scope.newTaskComment = {content:""};
+		$scope.newTaskComment = {content:"", final_answer:""};
 		
 		//function getting classes if someone wants to join class
 		$scope.joinClass = function(){
@@ -390,29 +556,58 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$scope.milestone_title=$scope.milestoneList[id].title;
 			$scope.milestone_content=$scope.milestoneList[id].content;
 			$scope.milestone_content=$sce.trustAsHtml($scope.milestone_content);
+			if($scope.milestoneList[id+1]){
+				$scope.next = id+1;
+			}
+			else
+			{
+				$scope.next = "last";
+			}
+			if(id!=0){
+				$scope.prev = id-1;
+			}
+			else
+			{
+				$scope.prev = "first";
+			}
 			if($scope.milestoneList[id].type=="lesson")
 			{
 				$scope.getMilestoneMeta($scope.milestoneList[id].id);
 			}
 			if($scope.milestoneList[id].type=="task")
 			{
+				//if($scope.milestoneList[id].final_answer)
+				//$scope.final_answer=$scope.milestoneList[id].final_answer;
+				$scope.getFinalAnswer($scope.currentCommentsTaskId);
 				$scope.getTaskComment($scope.currentCommentsTaskId);
 			}
 		}
 		
 		$scope.getPhotoDialog = function(){
-			//ons.createDialog('get-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
 			ons.createDialog('get-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
-				//$scope.dialog = dialog;
-				dialog.show();
+				$scope.dialog = dialog;
+				$scope.dialog.show();
 			});
 		}
 		
 		$scope.getRegistrationPhotoDialog = function(){
-			//ons.createDialog('get-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
 			ons.createDialog('get-registration-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
-				//$scope.dialog = dialog;
-				dialog.show();
+				$scope.dialog = dialog;
+				$scope.dialog.show();
+			});
+		}
+		
+		$scope.getPostPhotoDialog = function(){
+			ons.createDialog('get-post-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
+				$scope.dialog = dialog;
+				$scope.dialog.show();
+			});
+		}
+		
+		$scope.getEditPhotoDialog = function(){
+			ons.createDialog('get-edit-photo-dialog.html', {parentScope: $scope}).then(function(dialog) {
+				$scope.dialog = dialog;
+				$scope.dialog.show();
 			});
 		}
 		
@@ -434,6 +629,20 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}).then(function(response) {
 				$scope.currentTaskComments = response.data;
 				menu.setMainPage('task.html', {closeMenu: true});
+			});
+		}
+		
+		$scope.getFinalAnswer = function(task_id){
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "get",
+				params: {
+					action: "get_final_answer_mobile",
+					task_id: task_id,
+					callback:'JSON_CALLBACK'
+				},
+			}).then(function(response) {
+				$scope.final_answer = response.data;
 			});
 		}
 		
@@ -501,6 +710,26 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.newTaskComment.content = "";
 			});
 		}
+		$scope.insertFinalAnswer = function(){
+			jQuery("#loader").fadeIn();
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "insert_final_answer_mobile",
+				},
+				data: {
+					task_id: $scope.currentCommentsTaskId,
+					content: $scope.newTaskComment.final_answer,
+				},
+			}).then(function(response) {
+				$scope.final_answer=response.data;
+				jQuery("#loader").fadeOut();
+				$scope.getTaskComment($scope.currentCommentsTaskId);
+				$scope.newTaskComment.final_answer = "";
+			});
+		}
 		
 		//variable responsible for making the left menu swappable or not
 		$scope.swappable = true;
@@ -536,17 +765,23 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//function updates the posts after user clicks update and return renewed list of posts
 		$scope.updateItemFunc = function(update_data){
 			jQuery("#loader").fadeIn();
+			if(!$scope.post.update_attachment_id){
+				$scope.post = {update_attachment_id:""};
+			}
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				data: {
-					update_data: update_data
+					update_data: update_data,
+					attachment_id: $scope.post.update_attachment_id
 				},
 				params: {
 					'action': "update_mobile_items_post",
 				}
 			}).then(function(response) {
+				//alert(response);
+				$scope.post.updateNewItemImage = false;
 				$scope.menuEditClickFunc();
 				jQuery("#loader").fadeOut();
 			});
@@ -572,7 +807,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		
 		//function adds posts to server database through api and renewing the list of posts
-		$scope.addItemFunc = function(name){
+		$scope.addItemFunc = function(name,image){
 			jQuery("#loader").fadeIn();
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
@@ -581,6 +816,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				data: {
 					add_data: $scope.addNewItemFields,
 					add_name: name,
+					add_image: image,
 					proj_id: localStorage.getItem("project_id")
 				},
 				params: {

@@ -4,6 +4,7 @@
 	<div id="logo-sign" style="top:5%;">
 		<img src="img/short-logo-small.png" style="width:100%;"></img>
 	</div>
+	<h2 class="proj_header">Project id: {{project_id}}</h2>
 	<ul id="lessons-list">
 		<li ng-repeat="(key, value) in milestoneList" modifier="chevron" ng-click="menuLessonClickFunc(key)"  data-type='{{value.type}}' data-id='{{value.id}}'>
 				{{value.title}}

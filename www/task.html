@@ -5,6 +5,11 @@
 			<img src="img/short-logo.png" style="width:100%;"></img>
 		</div>
 		<p class="task_text_holder" ng-bind-html="milestone_content" style="padding:10px;text-align:right;"></p>
+		<b class="task_text_holder" ng-bind-html="final_answer" style="padding:10px;text-align:right;">Final answer is: {{final_answer}}</b>
+		<section style="padding: 8px">
+			<textarea class="edit_item_map_holder comment_text_holder" ng-model="newTaskComment.final_answer" placeholder="Your answer or comment" style="display: block; min-height:150px;">{{newTaskComment.final_answer}}</textarea>
+		</section>
+		<button class="add_comment" ng-click="insertFinalAnswer()">Insert answer</button>
 		<section style="padding: 8px">
 			<textarea class="edit_item_map_holder comment_text_holder" ng-model="newTaskComment.content" placeholder="Your answer or comment" style="display: block; min-height:150px;">{{newTaskComment.content}}</textarea>
 		</section>
@@ -13,4 +18,6 @@
 			<div class="comment_heading">{{taskInfo.comment_author+" "+taskInfo.comment_author_email+" "+taskInfo.comment_date}}<img ng-if="taskInfo.comment_author_avatar" src="{{taskInfo.comment_author_avatar}}" class="comment_image"/><img ng-if="!taskInfo.comment_author_avatar" src="img/anon.gif" class="comment_image"/></div>
 			<div class="comment_content">{{taskInfo.comment_content}}</div>
 		</section>
+		<button class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuLessonClickFunc(prev)">Previous</button>
+		<button class="next_lesson_but" ng-if="next!='last'" ng-click="menuLessonClickFunc(next)">Next</button>
 	</ons-page>
