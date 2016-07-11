@@ -6,15 +6,15 @@
 	<div style="position:relative;">
 		<div class="photo_holder" ng-click="getRegistrationPhotoDialog()"><img width=60 height=60 ng-if="registration.profile_image!=''" src="{{registration.profile_image}}"/><i class="fa fa-camera"></i>Add your photo</div>
 		<i class="fa fa-user username-icon" style="left: 46%;"></i>
-		<input type="text" class="text-input sign-input" ng-model="registration.name" placeholder="שם משתמש" style="width: 45%;float: right;margin-right:13%;">
+		<input type="text" class="text-input sign-input" ng-model="registration.name" placeholder="{{vocabulary[lang]['Username']}}" style="width: 45%;float: right;margin-right:13%;">
 		<div style="clear:both;"></div>
 		<i class="fa fa-envelope-o email-icon"></i>
-		<input type="text" class="text-input sign-input" ng-model="registration.email" placeholder="כתובת דוא״ל">
+		<input type="text" class="text-input sign-input" ng-model="registration.email" placeholder="{{vocabulary[lang]['Your email']}}">
 		<i class="fa fa-lock password-icon" style="top: 83%;"></i>
-		<input type="password" class="text-input sign-input" ng-model="registration.password" placeholder="סיסמה">
+		<input type="password" class="text-input sign-input" ng-model="registration.password" placeholder="{{vocabulary[lang]['Password']}}">
 	</div>
-	<button class="sign-button" ng-click="userRegister()" style="margin-top: 10%;">הצטרף ל</button>
-	<p class="dont_have_message">משתמש קיים? <a href="#" ng-click="menu.setMainPage('login.html', {closeMenu: true})">אני משתמש רשום</a></p>
+	<button class="sign-button" ng-click="userRegister()" style="margin-top: 10%;">{{vocabulary[lang]['Registration']}}</button>
+	<p class="dont_have_message">{{vocabulary[lang]['Already have an account?']}} <a href="#" ng-click="menu.setMainPage('login.html', {closeMenu: true})">{{vocabulary[lang]['login here']}}</a></p>
 	<p style="color:red;margin:0;text-align:center;">{{registration_error}}</p>
 </ons-page>
 <style>

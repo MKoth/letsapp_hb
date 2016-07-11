@@ -1,10 +1,10 @@
 	<ons-page>
-		<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>ערוך אפליקציה</h2>
+		<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>{{vocabulary[lang]['Edit layout']}}</h2>
 		<img src="img/editapp-top-bg.jpg" class="edit-app-top-bg"/>
 		<div style="height: 259px;margin-top: 10%;">
-			<input type="text" class="text-input edit_app_input" ng-model="layout.main_title" placeholder="שנה את כותרת האפליקציה" style="margin-top: 5%;"><button class="edit_app_but_top" ng-click="saveText('main_title',layout.main_title)" style="margin-top: 5%;">טקסט שמור</button>
+			<input type="text" class="text-input edit_app_input" ng-model="layout.main_title" placeholder="{{vocabulary[lang]['Change main page title']}}" style="margin-top: 5%;"><button class="edit_app_but_top" ng-click="saveText('main_title',layout.main_title)" style="margin-top: 5%;">טקסט שמור</button>
 			<div style="clear:both;"></div>
-			<input type="text" class="text-input edit_app_input" ng-model="layout.app_title" placeholder="שנה את שם האפליקציה"><button class="edit_app_but_top" ng-click="saveText('app_title',layout.app_title)">טקסט שמור</button>
+			<input type="text" class="text-input edit_app_input" ng-model="layout.app_title" placeholder="{{vocabulary[lang]['Change apps title']}}"><button class="edit_app_but_top" ng-click="saveText('app_title',layout.app_title)">טקסט שמור</button>
 			<div style="clear:both;"></div>
 			<form name="myForm">
 				<label>
@@ -15,12 +15,12 @@
 			<div style="clear:both;"></div>
 		</div>
 		<div style="height: 259px;">
-			<button ng-click="getPicFile()" class="edit_app_but" style="margin-top: 10%;">שמור תמונה</button>
-			<button ng-click="getPicCam()" class="edit_app_but">העלה תמונה מהמצלמה</button>
+			<button ng-click="getPicFile()" class="edit_app_but" style="margin-top: 10%;">{{vocabulary[lang]['Get image from device']}}</button>
+			<button ng-click="getPicCam()" class="edit_app_but">{{vocabulary[lang]['Get image from Camera']}}</button>
 			<div style="clear:both;"></div>
 		</div>
 		<div style="height: 259px;">
-			<button ng-click="startBuildingApp()" class="edit_app_but" style="margin-top:7%;height: 32%;">שמור את כל השינוים</button>
+			<button ng-click="startBuildingApp()" class="edit_app_but" style="margin-top:7%;height: 32%;">{{vocabulary[lang]['Rebuild applicatio']}}</button>
 			<a href="{{appLinkDownload.link|trustUrl}}" ng-click="openInBrowser(appLinkDownload.link)" class="edit_app_but" style="text-decoration: none;text-align: center;line-height: 86px;height: 32%;">{{appLinkDownload.text}}</a>
 		</div>
 		<img src="img/editapp-bottom-bg.jpg" class="edit-app-bottom-bg"/>

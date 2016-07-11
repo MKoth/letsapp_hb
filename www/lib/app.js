@@ -9,6 +9,102 @@ module.filter('trustUrl', function ($sce) {
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
 		
+		$scope.changeLang = function(lang){
+			localStorage.setItem("lang", lang);
+			$scope.lang = lang;
+		}
+		
+		//translation array
+		if(localStorage.getItem("lang"))
+		{
+			$scope.lang = localStorage.getItem("lang");
+		}
+		else
+		{
+			$scope.lang = 'en';
+		}
+		$scope.vocabulary=[];
+		$scope.vocabulary["en"] = [];
+		$scope.vocabulary["hb"] = [];
+		$scope.vocabulary["en"]["Task"]="Task";
+		$scope.vocabulary["hb"]["Task"]="Task";
+		$scope.vocabulary["en"]["Lessons"]="Lessons";
+		$scope.vocabulary["hb"]["Lessons"]="דף הבית";
+		$scope.vocabulary["en"]["Post list"]="Post list";
+		$scope.vocabulary["hb"]["Post list"]="בניית אפליקציה";
+		$scope.vocabulary["en"]["Edit apps layout"]="Edit apps layout";
+		$scope.vocabulary["hb"]["Edit apps layout"]="פריסה ערוכה יישום";
+		$scope.vocabulary["en"]["Profile page"]="Profile page";
+		$scope.vocabulary["hb"]["Profile page"]="עריכת פרופיל משתמש";
+		$scope.vocabulary["en"]["Logout"]="Logout";
+		$scope.vocabulary["hb"]["Logout"]="יציאה";
+		$scope.vocabulary["en"]["New post name"]="New post name";
+		$scope.vocabulary["hb"]["New post name"]="שם נקודת עניין";
+		$scope.vocabulary["en"]["Address"]="Address";
+		$scope.vocabulary["hb"]["Address"]="כתובת";
+		$scope.vocabulary["en"]["Longitude"]="Longitude";
+		$scope.vocabulary["hb"]["Longitude"]="קו אורך";
+		$scope.vocabulary["en"]["Latitude"]="Latitude";
+		$scope.vocabulary["hb"]["Latitude"]="קו רוחב";
+		$scope.vocabulary["en"]["Add post"]="Add post";
+		$scope.vocabulary["hb"]["Add post"]="הוסף";
+		$scope.vocabulary["en"]["All lessons"]="All lessons";
+		$scope.vocabulary["hb"]["All lessons"]="שעור";
+		$scope.vocabulary["en"]["Edit posts"]="Edit posts";
+		$scope.vocabulary["hb"]["Edit posts"]="ערוך נקודת עניין";
+		$scope.vocabulary["en"]["Update"]="Update";
+		$scope.vocabulary["hb"]["Update"]="שלח";
+		$scope.vocabulary["en"]["Edit layout"]="Edit layout";
+		$scope.vocabulary["hb"]["Edit layout"]="ערוך אפליקציה";
+		$scope.vocabulary["en"]["Change main page title"]="Change main page title";
+		$scope.vocabulary["hb"]["Change main page title"]="שנה את כותרת האפליקציה";
+		$scope.vocabulary["en"]["Change apps title"]="Change apps title";
+		$scope.vocabulary["hb"]["Change apps title"]="שנה את שם האפליקציה";
+		$scope.vocabulary["en"]["Get image from device"]="Get image from device";
+		$scope.vocabulary["hb"]["Get image from device"]="שמור תמונה";
+		$scope.vocabulary["en"]["Get image from Camera"]="Get image from Camera";
+		$scope.vocabulary["hb"]["Get image from Camera"]="העלה תמונה מהמצלמה";
+		$scope.vocabulary["en"]["Rebuild application"]="Rebuild application";
+		$scope.vocabulary["hb"]["Rebuild application"]="שמור את כל השינוים";
+		$scope.vocabulary["en"]["App is building..."]="App is building...";
+		$scope.vocabulary["hb"]["App is building..."]="המתן בבקשה...";
+		$scope.vocabulary["en"]["Download updated application"]="Download updated application";
+		$scope.vocabulary["hb"]["Download updated application"]="הורד האפליקציה שלך כאן";
+		$scope.vocabulary["en"]["Hello"]="Hello";
+		$scope.vocabulary["hb"]["Hello"]="שלום";
+		$scope.vocabulary["en"]["Enter your login"]="Enter your login";
+		$scope.vocabulary["hb"]["Enter your login"]="שם משתמש או כתובת דוא״ל";
+		$scope.vocabulary["en"]["Password"]="Password";
+		$scope.vocabulary["hb"]["Password"]="סיסמה";
+		$scope.vocabulary["en"]["Login"]="Login";
+		$scope.vocabulary["hb"]["Login"]="כניסה";
+		$scope.vocabulary["en"]["Don't have an account?"]="Don't have an account?";
+		$scope.vocabulary["hb"]["Don't have an account?"]="טרם יצרת חשבון?";
+		$scope.vocabulary["en"]["Register"]="Register";
+		$scope.vocabulary["hb"]["Register"]="הרשמה";
+		$scope.vocabulary["en"]["Username"]="Username";
+		$scope.vocabulary["hb"]["Username"]="שם משתמש";
+		$scope.vocabulary["en"]["Your email"]="Your email";
+		$scope.vocabulary["hb"]["Your email"]="כתובת דוא״ל";
+		$scope.vocabulary["en"]["Registration"]="Registration";
+		$scope.vocabulary["hb"]["Registration"]="הצטרף ל";
+		$scope.vocabulary["en"]["Already have an account?"]="Already have an account?";
+		$scope.vocabulary["hb"]["Already have an account?"]="משתמש קיים?";
+		$scope.vocabulary["en"]["login here"]="login here";
+		$scope.vocabulary["hb"]["login here"]="אני משתמש רשום";
+		$scope.vocabulary["en"]["Build your application"]="Build your application";
+		$scope.vocabulary["hb"]["Build your application"]="בית הספר לבניית אפליקציות";
+		$scope.vocabulary["en"]["or"]="or";
+		$scope.vocabulary["hb"]["or"]="או";
+		$scope.vocabulary["en"]["Enter class id"]="Enter class id";
+		$scope.vocabulary["hb"]["Enter class id"]="קוד קורס";
+		$scope.vocabulary["en"]["Join class"]="Join class";
+		$scope.vocabulary["hb"]["Join class"]="הצטרף לקורס";
+		$scope.vocabulary["en"]["Join a trial lesson"]="Join a trial lesson";
+		$scope.vocabulary["hb"]["Join a trial lesson"]="הצטרף לשעורי ניסיון";
+		$scope.vocabulary["en"][""]="";
+		$scope.vocabulary["hb"][""]="";
+		
 		/*$scope.checkConnection = function checkConnection() {
 			var networkState = navigator.network.connection.type;
 
@@ -123,10 +219,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.geolocationError = function(error){
 			alert(error);
 		}
-		$scope.appLinkDownload = {link:"#", text:"המתן בבקשה..."};
+		$scope.appLinkDownload = {link:"#", text:$scope.vocabulary[$scope.lang]['App is building...']};
 		$scope.getAppLink = function(){
 			$scope.appLinkDownload.link = "#";
-			$scope.appLinkDownload.text = "המתן בבקשה...";
+			$scope.appLinkDownload.text = $scope.vocabulary[$scope.lang]['App is building...'];
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "GET",
@@ -142,7 +238,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					//$scope.appLinkDownload.link = trustSrc(response.data.location);
 					//trustSrc(response.data.location);
 					$scope.appLinkDownload.link = response.data.location;
-					$scope.appLinkDownload.text = "הורד האפליקציה שלך כאן";
+					$scope.appLinkDownload.text = $scope.vocabulary[$scope.lang]['Download updated application'];
 				}
 				else
 				{
@@ -938,6 +1034,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			if(!jQuery($event.target).next().is(":visible"))
 				jQuery($event.target).next().slideDown();
 		}
+		
 	});
 });
 module.controller('AppController', function($scope) { });

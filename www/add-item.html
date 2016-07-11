@@ -8,14 +8,14 @@
 	<div style="margin-top:200px;"></div>
 	<div class="editFieldsListHolder">
 		<section>
-			<input type="text" class="text-input" ng-model="addNewItemName" placeholder="שם נקודת עניין" style="display: block; width: 75%">
+			<input type="text" class="text-input" ng-model="addNewItemName" placeholder="{{vocabulary[lang]['Profile page']}}" style="display: block; width: 75%">
 		</section>
 		<img ng-show="post.addNewItemImage" src="{{post.addNewItemImage}}" class="img-attach" ng-click="getPostPhotoDialog()"/>
 		<div ng-repeat="addField in addNewItemFields">
 			<section id="add-item-area" ng-if="checkFieldType(addField['type'],'google_map')">
-				<input type="text" class="text-input" ng-model="addField['value']['address']" placeholder="כתובת" style="display: block; width: 75%">
-				<input type="text" class="text-input longitude" ng-model="addField['value']['lng']" placeholder="קו אורך" style="display: block; width: 37%; float:right; margin-right:13%;">
-				<input type="text" class="text-input latitude" ng-model="addField['value']['lat']" placeholder="קו רוחב" style="display: block; width: 37%; float:right; margin-right:1%;">
+				<input type="text" class="text-input" ng-model="addField['value']['address']" placeholder="{{vocabulary[lang]['Address']}}" style="display: block; width: 75%">
+				<input type="text" class="text-input longitude" ng-model="addField['value']['lng']" placeholder="{{vocabulary[lang]['Longitude']}}" style="display: block; width: 37%; float:right; margin-right:13%;">
+				<input type="text" class="text-input latitude" ng-model="addField['value']['lat']" placeholder="{{vocabulary[lang]['Latitude']}}" style="display: block; width: 37%; float:right; margin-right:1%;">
 				<!--<button ng-click="getCurrentPositionFunc()">הוסף מיקום נוכחי</button>-->
 				<div style="clear:both;"></div>
 			</section>
@@ -27,7 +27,7 @@
 			</section>
 		</div>
 		<section>
-			<button ng-click="addItemFunc(addNewItemName, post.attachment_id)">הוסף</button>
+			<button ng-click="addItemFunc(addNewItemName, post.attachment_id)">{{vocabulary[lang]['Add post']}}</button>
 		</section>
 	</div>
 </ons-page>

@@ -5,13 +5,13 @@
 	</div>
 	<div style="position:relative;">
 		<i class="fa fa-user username-icon"></i>
-		<input type="text" class="text-input sign-input" ng-model="registration.login" placeholder="שם משתמש או כתובת דוא״ל">
+		<input type="text" class="text-input sign-input" ng-model="registration.login" placeholder="{{vocabulary[lang]['Enter your login']}}">
 		<i class="fa fa-lock password-icon"></i>
-		<input type="password" class="text-input sign-input" ng-model="registration.password" placeholder="סיסמה">
+		<input type="password" class="text-input sign-input" ng-model="registration.password" placeholder="{{vocabulary[lang]['Password']}}">
 	</div>
-	<button class="sign-button" ng-click="userLogin()">כניסה</button>
+	<button class="sign-button" ng-click="userLogin()">{{vocabulary[lang]['Login']}}</button>
 	<p style="color:red;margin:0;text-align:center;">{{registration_error}}</p>
-	<p class="dont_have_message">טרם יצרת חשבון? <a href="#" ng-click="joinClass()">הרשמה</a></p>
+	<p class="dont_have_message">{{vocabulary[lang]["Don't have an account?"]}} <a href="#" ng-click="joinClass()">{{vocabulary[lang]['Register']}}</a></p>
 </ons-page>
 <style>
 	.page__background {

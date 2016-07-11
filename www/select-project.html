@@ -3,9 +3,9 @@
 	<div id="logo" style="top:10%;">
 		<img src="img/lets-logo-w.png" style="width:100%;"></img>
 	</div>
-	<input type="number" class="text-input sign-input" style="padding-left:5px;margin-top:50%;text-align:center;" ng-model="registration.proj_id" placeholder="קוד קורס">
-	<button ng-click="projChooseFunc(registration.proj_id)" class="sign_button" style="background:#b2d454;margin-top:5%;">הצטרף לקורס</button>
-	<p class="or_class" style="margin-top:14%;margin-bottom:6%;">- הצטרף לשעורי ניסיון -</p>
+	<input type="number" class="text-input sign-input" style="padding-left:5px;margin-top:50%;text-align:center;" ng-model="registration.proj_id" placeholder="{{vocabulary[lang]['Enter class id']}}">
+	<button ng-click="projChooseFunc(registration.proj_id)" class="sign_button" style="background:#b2d454;margin-top:5%;">{{vocabulary[lang]['Join class']}}</button>
+	<p class="or_class" style="margin-top:14%;margin-bottom:6%;">- {{vocabulary[lang]['Join a trial lesson']}} -</p>
 	<ul id="choose_project">
 		<li ng-repeat="(key, value) in allProjTemplates" ng-click="projChooseFunc(value.ID)">
 			{{value.post_title}}

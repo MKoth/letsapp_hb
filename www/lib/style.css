@@ -38,7 +38,6 @@ button.next_lesson_but.ng-scope {
     padding: 15px;
     font-size: 20px;
     margin-bottom: 20px;
-    border-radius: 5px;
     float: right;
     width: 50%;
     min-height: 70px;
@@ -268,6 +267,7 @@ button.add_comment.small_comment_button {
     background-image: url('../img/add_comment.png');
     background-repeat: no-repeat;
     background-position: center center;
+	background-size: contain;
 }
 input.sign-input {
 	width: 74%;
@@ -286,7 +286,7 @@ h3.lesson-header{
     font-size: 21px;
     width: 100%;
     padding: 20px;
-    margin-top: 13%;
+    margin-top: 37px;
     color: #fff;
 }
 .username-icon {
@@ -436,7 +436,7 @@ h1.first_page_heading {
     color: #3ab6e8;
     font-size: 32px;
     margin: 0;
-	margin-bottom: 10%;
+	margin-bottom: 5%;
 }
 button.sign_button {
     margin: 0 auto;

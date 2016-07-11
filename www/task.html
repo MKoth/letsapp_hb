@@ -1,6 +1,6 @@
 	<ons-page>
-		<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Task</h2>
-		<img src="img/elliptic_sign_bg.png" style="width:100%;height: 25%;"></img>
+		<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>{{vocabulary[lang]['Task']}}</h2>
+		<img src="img/elliptic_sign_bg.png" style="width:100%;height: 110px;"></img>
 		<button class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuLessonClickFunc(prev)">< Previous</button>
 		<button class="next_lesson_but" ng-if="next!='last'" ng-click="menuLessonClickFunc(next)">Next ></button>
 		<p class="task_text_holder" ng-bind-html="milestone_content" style="padding:10px;text-align:right;"></p>
