@@ -32,28 +32,21 @@ module.controller('menuController', function($scope, $http, $sce) {
 			//alert(item);
 			if(item===true)
 			{
-				$scope.addPageFunc('Registration page', 'www/menu.html', 'add_registration_page');
+				$scope.addPageFunc('Add post page', 'www/menu.html', 'add_registration_page');
 			}
 			if(item===false)
 			{
-				$scope.addPageFunc('Registration page', 'www/menu.html', 'remove_registration_page');
-			}
-			if(item==="YES")
-			{
-				$scope.addPageFunc('Add post page', 'www/menu.html', 'add_post_page');
-			}
-			if(item==="NO")
-			{
-				$scope.addPageFunc('Add post page', 'www/menu.html', 'remove_post_page');
+				$scope.addPageFunc('Add post page', 'www/menu.html', 'remove_registration_page');
 			}
 		}
 		$scope.addPageFunc = function(tag_name, file_path, page_type){
+			jQuery("#loader").fadeIn();
 			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
-					action: "change_app_heading",
+					action: "change_app_page",
 				},
 				data: {
 					tag_name: tag_name,
@@ -63,7 +56,9 @@ module.controller('menuController', function($scope, $http, $sce) {
 				},
 			}).then(function(response) {
 				jQuery("#loader").fadeOut();
-				alert("השינוים נשמרו באפליקציה שלך");
+				alert(response);
+				alert("Page adding done!");
+				//alert("Page removing done!");
 			});
 		}
 		

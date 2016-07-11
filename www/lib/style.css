@@ -18,26 +18,33 @@
     border: 1px solid #5f5f5f;
 }
 button.prev_lesson_but.ng-scope {
-    background: #b2d454;
+    background: #e6e6e6;
     border: none;
-    color: #fff;
+    color: #b3b3b3;
     padding: 15px;
-    font-size: 15px;
-    margin-left: 30px;
+    font-size: 20px;
     margin-bottom: 20px;
-    border-radius: 5px;
     float: left;
+    width: 50%;
+    min-height: 70px;
+    border-right: 1px solid #c1c1c1;
+    margin-top: -70px;
+    position: relative;
 }
 button.next_lesson_but.ng-scope {
-    background: #b2d454;
+    background: #e6e6e6;
     border: none;
-    color: #fff;
+    color: #b3b3b3;
     padding: 15px;
-    font-size: 15px;
-    margin-right: 30px;
+    font-size: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
     float: right;
+    width: 50%;
+    min-height: 70px;
+    border-left: 1px solid;
+    margin-top: -70px;
+    position: relative;
 }
 h2.proj_header {
     color: #41b4dc;
@@ -111,6 +118,14 @@ p.task_text_holder {
     width: 80%;
     margin: 0 auto;
     border: 1px solid #c7c7c7;
+}
+textarea.comment_small_holder {
+	display: block;
+    min-height: 90px;
+    width: 58%;
+    float: left;
+    margin-left: 10%;
+    margin-right: 0;
 }
 .comment_image{
 	width: 70px;
@@ -243,6 +258,17 @@ button.add_comment {
     margin-top: 5px;
     margin-bottom: 20px;
 }
+button.add_comment.small_comment_button {
+    width: 20%;
+    float: right;
+    margin-right: 9%;
+    margin-left: 0;
+    min-height: 94px;
+    margin-top: 0;
+    background-image: url('../img/add_comment.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
 input.sign-input {
 	width: 74%;
     display: block;
@@ -252,6 +278,16 @@ input.sign-input {
     border-radius: 10px;
     padding-left: 12%;
     font-size: 19px;
+}
+h3.lesson-header{
+    position: absolute;
+    background: #c7c7c7;
+    font-weight: normal;
+    font-size: 21px;
+    width: 100%;
+    padding: 20px;
+    margin-top: 13%;
+    color: #fff;
 }
 .username-icon {
     position: absolute;
