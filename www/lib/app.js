@@ -102,8 +102,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.vocabulary["hb"]["Join class"]="הצטרף לקורס";
 		$scope.vocabulary["en"]["Join a trial lesson"]="Join a trial lesson";
 		$scope.vocabulary["hb"]["Join a trial lesson"]="הצטרף לשעורי ניסיון";
-		$scope.vocabulary["en"][""]="";
-		$scope.vocabulary["hb"][""]="";
+		$scope.vocabulary["en"]["Save text"]="Save text";
+		$scope.vocabulary["hb"]["Save text"]="טקסט שמור";
 		
 		/*$scope.checkConnection = function checkConnection() {
 			var networkState = navigator.network.connection.type;
