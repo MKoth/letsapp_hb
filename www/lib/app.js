@@ -9,6 +9,37 @@ module.filter('trustUrl', function ($sce) {
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
 		
+		$scope.item = {pages:[]};
+		$scope.item.pages[0] = {name:"Page0"};
+		$scope.item.pages[1] = {name:"Page1"};
+		$scope.codeline = {newcode:""};
+		$scope.codelines = [];
+		
+		/*/^createPage\(([a-z+A-Z- ]+)\) *$/g*/
+		/*/^addElem\(([a-z+A-Z- ]+,[a-z+A-Z- ]+)\) *$/g*/
+		
+		$scope.execCode = function(){
+			var result = $scope.codeline.newcode.match( /ой/i );
+			
+			//alert($scope.codeline.newcode);
+			$scope.codelines.push($scope.codeline.newcode);
+			//$scope.codelines[$scope.codelines.length]=$scope.codeline.newcode;
+			$scope.addNewPage($scope.codeline.newcode);
+			$scope.codeline.newcode = "";
+		}
+		
+		$scope.addNewPage = function(name){
+			$scope.item.pages[$scope.item.pages.length] = {name:name};
+			//$scope.$digest();
+			$scope.codelines.push("Page with name '"+name+"' has been created");
+		}
+		
+		$scope.addNewElem = function(pageId, name){
+			$scope.item.pages[pageId] = {name:name};
+			//$scope.$digest();
+			$scope.codelines.push("Page with name '"+name+"' has been created");
+		}
+		
 		$scope.changeLang = function(lang){
 			localStorage.setItem("lang", lang);
 			$scope.lang = lang;
@@ -33,7 +64,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.vocabulary["en"]["Post list"]="Post list";
 		$scope.vocabulary["hb"]["Post list"]="בניית אפליקציה";
 		$scope.vocabulary["en"]["Edit apps layout"]="Edit apps layout";
-		$scope.vocabulary["hb"]["Edit apps layout"]="פריסה ערוכה יישום";
+		$scope.vocabulary["hb"]["Edit apps layout"]="ערוך תבנית אפליקציה";
 		$scope.vocabulary["en"]["Profile page"]="Profile page";
 		$scope.vocabulary["hb"]["Profile page"]="עריכת פרופיל משתמש";
 		$scope.vocabulary["en"]["Logout"]="Logout";
@@ -844,8 +875,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//checking if set page to login or go to home main page
 		if(localStorage.getItem("login"))
 		{
-			//menu.setMainPage('classes-list.html', {closeMenu: true});
-			$scope.menuEditClickFunc();
+			menu.setMainPage('classes-list.html', {closeMenu: true});
+			//$scope.menuEditClickFunc();
 		}
 		else
 		{
@@ -951,7 +982,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 						//$scope.swappable = true;
 						$scope.user_login = response.data['user_login'];
 						$scope.addClassesToLeftMenu();
-						$scope.menuEditClickFunc();
+						//$scope.menuEditClickFunc();
+						menu.setMainPage('classes-list.html', {closeMenu: true});
 						$scope.swappable = true;
 						$scope.project_id = response.data['project_id'];
 					}
@@ -978,8 +1010,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 						localStorage.setItem("login",response.data['user_login']);
 						localStorage.setItem("id",response.data['user_id']);
 						localStorage.setItem("project_id",response.data['project_id']);
-						//menu.setMainPage('classes-list.html', {closeMenu: true});
-						$scope.menuEditClickFunc();
+						menu.setMainPage('classes-list.html', {closeMenu: true});
+						//$scope.menuEditClickFunc();
 						$scope.swappable = true;
 						$scope.user_login = response.data['user_login'];
 						$scope.addClassesToLeftMenu();
