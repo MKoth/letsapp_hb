@@ -18,6 +18,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 		/*/^createPage\(([a-z+A-Z- ]+)\) *$/g*/
 		/*/^addElem\(([a-z+A-Z- ]+,[a-z+A-Z- ]+)\) *$/g*/
 		
+		
+		
 		$scope.execCode = function(){
 			var result = $scope.codeline.newcode.match( /ой/i );
 			
@@ -796,6 +798,16 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		$scope.checkYoutube = function(link){
 			var matches = link.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/);
+			if (matches) {
+				//$scope.trustSrc(link);
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		$scope.checkGoogle = function(link){
+			var matches = link.match(/^(http(s)?:\/\/)?docs.([\w-]+\.)+[\w-]+(\/[\w- ;,./?%&=]*)?$/);
 			if (matches) {
 				//$scope.trustSrc(link);
 				return true;

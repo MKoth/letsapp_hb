@@ -4,11 +4,12 @@
 		<img src="img/elliptic_sign_bg.png" style="height:96px;width: 100%;"></img>
 		<ons-carousel ng-if="milestonePostmetaMedia!='false'" style="height: 315px; width: 100%; text-align:center;" initial-index="0" swipeable overscrollable auto-scroll>
 			<ons-carousel-item ng-repeat="media in milestonePostmetaMedia">
-				<img ng-if="!checkVideo(media)&&!checkYoutube(media)" src="{{media}}" style="width:100%;"></img>
+				<img ng-if="!checkVideo(media)&&!checkYoutube(media)&&!checkGoogle(media)" src="{{media}}" style="width:100%;"></img>
 				<video ng-if="checkVideo(media)" width="320" height="640" controls>
 					<source ng-src="{{trustSrc(media)}}" type="video/mp4">
 				</video>
 				<iframe ng-if="checkYoutube(media)" width="100%" height="315" src="{{trustSrc(media)}}" frameborder="0" allowfullscreen></iframe>
+				<iframe ng-if="checkGoogle(media)"  src="{{trustSrc(media)}}" frameborder="0" width="100%" height="315" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 			</ons-carousel-item>
 		</ons-carousel>
 		<button class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuLessonClickFunc(prev)" style="margin-top:0;">Previous</button>
