@@ -1,14 +1,14 @@
 <ons-page>
 	<ul ng-model="item.pages">
 		<li ng-repeat="(key, page) in item.pages">{{page.name}}
-			<!--<ul>
+			<ul>
 				<li ng-repeat="elem in page.elems" ng-if="elem.type=='form'">{{elem.name}}
 					<ul>
 						<li ng-repeat="formelem in elem.formelems">{{formelem.name}}</li>
 					</ul>
 				</li>
 				<li ng-repeat="elem in page.elems" ng-if="elem.type!='form'">{{elem.name}}</li>
-			</ul>-->
+			</ul>
 		</li>
 	</ul>
 	<div class="codelines_holder">

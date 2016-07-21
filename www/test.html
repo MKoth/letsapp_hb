@@ -1,0 +1,16 @@
+<ons-page>
+	<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>{{vocabulary[lang]['Edit posts']}}</h2>
+	<img src="img/green-top.jpg" class="select-proj-bg" style="top:0;"/>
+	<p style="margin-top:90px; margin-bottom:50px;">testing here</p>
+	<ul ng-model="items.pages">
+	   <li ng-repeat="page in items.pages">
+			<div>{{page.name}}</div>
+			<ul ng-model="page.fields">
+			   <li ng-repeat="field in page.fields">
+				  <div>{{field.name}}</div>
+			   </li>
+			</ul>
+	   </li>
+	</ul>
+	<h2>Click here if you want to add page!</h2>
+</ons-page>

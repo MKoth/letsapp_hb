@@ -8,38 +8,63 @@ module.filter('trustUrl', function ($sce) {
 
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
-		
 		$scope.item = {pages:[]};
 		$scope.item.pages[0] = {name:"Page0"};
-		$scope.item.pages[1] = {name:"Page1"};
+		$scope.item.pages[1] = {name:"Page1", elems:[{name:'Form0',type:'form'}]};
 		$scope.codeline = {newcode:""};
 		$scope.codelines = [];
 		
-		/*/^createPage\(([a-z+A-Z- ]+)\) *$/g*/
-		/*/^addElem\(([a-z+A-Z- ]+,[a-z+A-Z- ]+)\) *$/g*/
-		
-		
-		
 		$scope.execCode = function(){
-			var result = $scope.codeline.newcode.match( /ой/i );
-			
-			//alert($scope.codeline.newcode);
+			//var result = $scope.codeline.newcode.match( /addPage(\([a-zA-Z1-9-]+\))/g );
+			var addPageRegexp = /^ *addPage\(([a-zA-Z1-9- ]+)\) *$/;
+			var match = addPageRegexp.exec($scope.codeline.newcode);
+			alert(match[1]);
 			$scope.codelines.push($scope.codeline.newcode);
-			//$scope.codelines[$scope.codelines.length]=$scope.codeline.newcode;
-			$scope.addNewPage($scope.codeline.newcode);
+			//$scope.addNewPage($scope.codeline.newcode);
+			//$scope.addNewElem(1,$scope.codeline.newcode);
+			//$scope.addNewFormElem(1, 0, $scope.codeline.newcode);
 			$scope.codeline.newcode = "";
 		}
 		
 		$scope.addNewPage = function(name){
 			$scope.item.pages[$scope.item.pages.length] = {name:name};
-			//$scope.$digest();
 			$scope.codelines.push("Page with name '"+name+"' has been created");
 		}
 		
 		$scope.addNewElem = function(pageId, name){
-			$scope.item.pages[pageId] = {name:name};
-			//$scope.$digest();
-			$scope.codelines.push("Page with name '"+name+"' has been created");
+			if($scope.item.pages[pageId].elems)
+			{
+				$scope.item.pages[pageId].elems[$scope.item.pages[pageId].elems.length]={name:name,type:'elems'};
+			}
+			else
+			{
+				$scope.item.pages[pageId].elems=[];
+				$scope.item.pages[pageId].elems[0]={name:name};
+			}
+		}
+		
+		$scope.addNewForm = function(pageId, name){
+			if($scope.item.pages[pageId].elems)
+			{
+				$scope.item.pages[pageId].elems[$scope.item.pages[pageId].elems.length]={name:name,type:'form'};
+			}
+			else
+			{
+				$scope.item.pages[pageId].elems=[];
+				$scope.item.pages[pageId].elems[0]={name:name};
+			}
+		}
+		
+		$scope.addNewFormElem = function(pageId, formId, name){
+			if($scope.item.pages[pageId].elems[formId].formelems)
+			{
+				$scope.item.pages[pageId].elems[formId].formelems[$scope.item.pages[pageId].elems[formId].formelems.length]={name:name};
+			}
+			else
+			{
+				$scope.item.pages[pageId].elems[formId].formelems=[];
+				$scope.item.pages[pageId].elems[formId].formelems[0]={name:name};
+			}
 		}
 		
 		$scope.changeLang = function(lang){
