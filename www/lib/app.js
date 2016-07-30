@@ -5,57 +5,163 @@ module.filter('trustUrl', function ($sce) {
       return $sce.trustAsResourceUrl(url);
     };
 });
-
+function arrayObjectIndexOf(myArray, searchTerm, property) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+		
+        if (myArray[i][property] === searchTerm) return i;
+    }
+    return -1;
+}
+function arrayObjectIndexOfForm(myArray, searchTerm, property) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+		
+        if (myArray[i][property] === searchTerm)
+		{
+			if(myArray[i].type=="form")
+				return i;
+		}
+    }
+    return -1;
+}
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
 		$scope.item = {pages:[]};
-		$scope.item.pages[0] = {name:"Page0"};
-		$scope.item.pages[1] = {name:"Page1", elems:[{name:'Form0',type:'form'}]};
+		//$scope.item.pages[0] = {name:"Page0"};
+		//$scope.item.pages[1] = {name:"Page1", elems:[{name:'Form0',type:'form'}]};
 		$scope.codeline = {newcode:""};
 		$scope.codelines = [];
 		
 		$scope.execCode = function(){
-			//var result = $scope.codeline.newcode.match( /addPage(\([a-zA-Z1-9-]+\))/g );
-			var addPageRegexp = /^ *addPage\(([a-zA-Z1-9- ]+)\) *$/;
-			var match = addPageRegexp.exec($scope.codeline.newcode);
-			alert(match[1]);
 			$scope.codelines.push($scope.codeline.newcode);
-			//$scope.addNewPage($scope.codeline.newcode);
-			//$scope.addNewElem(1,$scope.codeline.newcode);
-			//$scope.addNewFormElem(1, 0, $scope.codeline.newcode);
+			var addPageRegexp = /^ *addPage\(([a-zA-Z1-9- ]+)\) *$/;
+			var matchPage = addPageRegexp.exec($scope.codeline.newcode);
+			var pageNameRegexp = /^ *selectPage\(([a-zA-Z1-9- ]+)\) *$/;
+			var matchPageName = pageNameRegexp.exec($scope.codeline.newcode);
+			var addTextRegexp = /^ *addText\(([a-zA-Z1-9- ]+)\) *$/;
+			var matchText = addTextRegexp.exec($scope.codeline.newcode);
+			var addFormRegexp = /^ *addForm\(([a-zA-Z1-9- ]+)\) *$/;
+			var matchForm = addFormRegexp.exec($scope.codeline.newcode);
+			var formNameRegexp = /^ *selectForm\(([a-zA-Z1-9- ]+)\) *$/;
+			var matchFormName = formNameRegexp.exec($scope.codeline.newcode);
+			var addFormElementRegexp = /^ *addFormElement\(([a-zA-Z1-9- ]+),([a-zA-Z1-9- ]+)\) *$/;
+			var matchFormElement = addFormElementRegexp.exec($scope.codeline.newcode);
+			if(matchPage)
+			{
+				if(arrayObjectIndexOf($scope.item.pages, matchPage[1], 'name')==-1)
+				{
+					$scope.addNewPage(matchPage[1]);
+				}
+				else
+				{
+					$scope.codelines.push("This page is already existed!");
+				}
+			}
+			else if(matchPageName)
+			{
+				$scope.currentPage = arrayObjectIndexOf($scope.item.pages, matchPageName[1], 'name');
+				if($scope.currentPage!=-1)
+				{
+					$scope.codelines.push("You selected page name '"+matchPageName[1]+"'");
+				}
+				else
+				{
+					$scope.codelines.push("You selected wrong page name!");
+				}
+			}
+			else if(matchText)
+			{
+				if($scope.currentPage!=-1)
+				{
+					$scope.addNewText($scope.currentPage,matchText[1]);
+				}
+			}
+			else if(matchForm)
+			{
+				if($scope.currentPage!=-1)
+				{
+					$scope.addNewForm($scope.currentPage,matchForm[1]);
+				}
+			}
+			else if(matchFormName)
+			{
+				if($scope.currentPage!=-1)
+				{
+					$scope.currentForm = arrayObjectIndexOfForm($scope.item.pages[$scope.currentPage].elems, matchFormName[1], 'name');
+					if($scope.currentForm == -1)
+						$scope.codelines.push("The name you selected is wrong");
+					else
+						$scope.codelines.push("You selected form name '"+matchFormName[1]+"'");
+				}
+				else
+				{
+					$scope.codelines.push("You need to select page!");
+				}
+			}
+			else if(matchFormElement)
+			{
+				if($scope.currentPage!=-1)
+				{
+					if($scope.currentForm != -1)
+					{
+						$scope.addNewFormElem($scope.currentPage, $scope.currentForm, matchFormElement[1], matchFormElement[2]);
+					}
+					else
+						$scope.codelines.push("You need to select form!");
+				}
+				else
+				{
+					$scope.codelines.push("You need to select page!");
+				}
+			}
 			$scope.codeline.newcode = "";
 		}
 		
 		$scope.addNewPage = function(name){
-			$scope.item.pages[$scope.item.pages.length] = {name:name};
+			if($scope.item.pages[0])
+			{
+				$scope.currentPage = $scope.item.pages.length;
+				$scope.item.pages[$scope.item.pages.length] = {name:name};
+			}
+			else
+			{
+				$scope.item.pages[0] = {name:name};
+				$scope.currentPage = 0;
+			}
+			$scope.buildRequest(name, 'create_page', '');
 			$scope.codelines.push("Page with name '"+name+"' has been created");
 		}
 		
-		$scope.addNewElem = function(pageId, name){
+		$scope.addNewText = function(pageId, name){
 			if($scope.item.pages[pageId].elems)
 			{
 				$scope.item.pages[pageId].elems[$scope.item.pages[pageId].elems.length]={name:name,type:'elems'};
+				$scope.codelines.push("Element with name '"+name+"' added to page");
 			}
 			else
 			{
 				$scope.item.pages[pageId].elems=[];
 				$scope.item.pages[pageId].elems[0]={name:name};
+				$scope.codelines.push("Element with name '"+name+"' added to page");
 			}
+			$scope.buildRequest($scope.item.pages[pageId].name, 'add_text', name);
 		}
 		
 		$scope.addNewForm = function(pageId, name){
 			if($scope.item.pages[pageId].elems)
 			{
+				$scope.currentForm = $scope.item.pages[pageId].elems.length;
 				$scope.item.pages[pageId].elems[$scope.item.pages[pageId].elems.length]={name:name,type:'form'};
 			}
 			else
 			{
+				$scope.currentForm = 0;
 				$scope.item.pages[pageId].elems=[];
-				$scope.item.pages[pageId].elems[0]={name:name};
+				$scope.item.pages[pageId].elems[0]={name:name,type:'form'};
 			}
+			$scope.buildRequest($scope.item.pages[pageId].name, 'add_form', name);
 		}
 		
-		$scope.addNewFormElem = function(pageId, formId, name){
+		$scope.addNewFormElem = function(pageId, formId, name, type){
 			if($scope.item.pages[pageId].elems[formId].formelems)
 			{
 				$scope.item.pages[pageId].elems[formId].formelems[$scope.item.pages[pageId].elems[formId].formelems.length]={name:name};
@@ -65,6 +171,38 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.item.pages[pageId].elems[formId].formelems=[];
 				$scope.item.pages[pageId].elems[formId].formelems[0]={name:name};
 			}
+			var formData={ pageName: $scope.item.pages[pageId].name, formName: $scope.item.pages[pageId].elems[formId].name };
+			if(type=='text')
+			{
+				$scope.buildRequest(name, 'add_form_text', formData);
+			}
+			else if(type=='textarea')
+			{
+				$scope.buildRequest(name, 'add_form_textarea', formData);
+			}
+			else if(type=='coord')
+			{
+				$scope.buildRequest(name, 'add_form_coord', formData);
+			}
+		}
+		
+		$scope.buildRequest = function(name, command, data)
+		{
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "execute_command",
+					callback:'JSON_CALLBACK'
+				},data: {
+					name: name,
+					data: data,
+					command: command,
+				},
+			}).then(function(response) {
+				alert(response.data);
+			});
 		}
 		
 		$scope.changeLang = function(lang){

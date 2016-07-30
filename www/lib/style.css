@@ -490,3 +490,74 @@ p.or_class {
     font-size: 22px;
     margin: 7px;
 }
+.codelines_holder {
+    background: #000;
+    padding: 10px;
+    height: 40%;
+    overflow-y: auto;
+}
+.codelines_holder p {
+    color: #fff;
+    margin: 0;
+    font-size: 13px;
+}
+.coding-tree-wrapper {
+    height: 45%;
+    overflow-y: auto;
+}
+input.codeline-text-field {
+    height: 7%;
+    width: 80%;
+}
+button.codeline-button {
+    height: 8%;
+    width: 18%;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: #00849a;
+}
+ul.coding-tree-holder {
+    padding-left: 30px;
+}
+ul.coding-tree-holder li {
+    list-style: none;
+}
+ul.coding-tree-holder>li>p {
+    background: #2b87d8;
+    padding: 5px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+	max-width: 100px;
+}
+ul.coding-tree-holder>li>ul>li>p {
+    background: #ff6262;
+    max-width: 100px;
+    padding: 5px;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+ul.coding-tree-holder>li>ul>li>ul>li>p {
+    background: #68b143;
+    max-width: 100px;
+    padding: 5px;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+ul.coding-tree-holder>li>ul>li>p.form_elment{
+	background: #ffba62!important;
+}
+h1.coding-tree-heading {
+    font-size: 20px;
+    text-align: center;
+    padding: 0;
+    margin: 10px 0;
+}
