@@ -13,6 +13,13 @@
 				</ul>
 			</li>
 		</ul>
+		<ul class="coding-tree-holder" ng-model="item.posts">
+			<li ng-repeat="(key, post) in item.posts"><p>{{post.formName+":"+post.name}}</p>
+				<ul>
+					<li ng-repeat="postItem in post.postItems"><p>{{postItem.name}}</p></li>
+				</ul>
+			</li>
+		</ul>
 	</div>
 	<div class="codelines_holder">
 		<p ng-repeat="line in codelines track by $index" class="codeline">>> {{line}}</p>
