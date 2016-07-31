@@ -47,7 +47,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			var matchFormElement = addFormElementRegexp.exec($scope.codeline.newcode);
 			var addPostsPageRegexp = /^ *addPostsPage\(([a-zA-Z1-9- ]+)\) *$/;
 			var matchPostsPage = addPostsPageRegexp.exec($scope.codeline.newcode);
-			var addPostsItemRegexp = /^ *addPostsItem\(([a-zA-Z1-9- ]+)\) *$/;
+			var addPostsItemRegexp = /^ *addPostsItem\(([a-zA-Z1-9- ]+),([a-zA-Z1-9- ]+)\) *$/;
 			var matchPostsItem = addPostsItemRegexp.exec($scope.codeline.newcode);
 			if(matchPage)
 			{
@@ -136,7 +136,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			else if(matchPostsItem)
 			{
 				if($scope.currentPostPage){
-					
+					$scope.addNewPostsPageItem(matchPostsItem[1], $scope.currentPostPage, matchPostsItem[2]);
 				}
 			}
 			$scope.codeline.newcode = "";
@@ -217,14 +217,14 @@ module.controller('menuController', function($scope, $http, $sce) {
 			{
 				$scope.currentPostsPage = $scope.item.posts.length;
 				$scope.item.posts[$scope.item.posts.length] = {name:name,formName:$scope.item.pages[currentPageId].elems[currentFormId].name};
-			}	
+			}
 			else
 			{
 				$scope.currentPostsPage = 0;
 				$scope.item.posts[0] = {name:name,formName:$scope.item.pages[currentPageId].elems[currentFormId].name};
 			}
 		}
-		$scope.addNewPostsPageItem = function(name, currentPostPage)
+		$scope.addNewPostsPageItem = function(name, currentPostPage, type)
 		{
 			if($scope.item.posts[currentPostPage].postItems)
 				$scope.item.posts[currentPostPage].postItems[$scope.item.posts[currentPostPage].postItems.length] = {name: name};
