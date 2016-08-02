@@ -1,5 +1,5 @@
 <ons-page>
-	<h1 class="coding-tree-heading">App's elements tree</h1>
+	<h1 class="coding-tree-heading">App's elements tree<button class="preview-button" ng-click="goToPreview()"><i class="fa fa-eye" aria-hidden="true"></i></button></h1>
 	<div class="coding-tree-wrapper">
 		<ul class="coding-tree-holder" ng-model="item.pages">
 			<li ng-repeat="(key, page) in item.pages"><p>{{page.name}}</p>
@@ -22,8 +22,9 @@
 		</ul>
 	</div>
 	<div class="codelines_holder">
-		<p ng-repeat="line in codelines track by $index" class="codeline">>> {{line}}</p>
+		<div class="line_in_code"></div>
+		<p ng-repeat="line in codelines track by $index" class="codeline"><span>{{$index+1}}.</span>{{line}}</p>
 	</div>
 	<input type="text" ng-model="codeline.newcode" class="codeline-text-field"/>
-	<button ng-click="execCode()" class="codeline-button">Execute</button>
+	<button ng-click="execCode()" class="codeline-button">Go</button>
 </ons-page>

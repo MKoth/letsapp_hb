@@ -30,7 +30,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//$scope.item.pages[1] = {name:"Page1", elems:[{name:'Form0',type:'form'}]};
 		$scope.codeline = {newcode:""};
 		$scope.codelines = [];
-		
+		$scope.goToPreview = function (){
+			$("#preview_screen").attr("src",jQuery("#preview_screen").attr("src"));
+			menu.setMainPage('preview.html', {closeMenu: true});
+		}
 		$scope.execCode = function(){
 			$scope.codelines.push($scope.codeline.newcode);
 			var addPageRegexp = /^ *addPage\(([a-zA-Z1-9- ]+)\) *$/;
@@ -119,7 +122,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 			else if(matchPostsPage)
 			{
-				if($scope.currentForm&&$scope.currentForm != -1)
+				if($scope.currentForm!=undefined&&$scope.currentForm != -1)
 				{
 					if(arrayObjectIndexOf($scope.item.posts, matchPostsPage[1], 'name')==-1)
 					{
@@ -135,9 +138,11 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 			else if(matchPostsItem)
 			{
-				if($scope.currentPostPage){
-					$scope.addNewPostsPageItem(matchPostsItem[1], $scope.currentPostPage, matchPostsItem[2]);
+				if($scope.currentPostsPage!=-1&&$scope.currentPostsPage!=undefined){
+					$scope.addNewPostsPageItem(matchPostsItem[1], $scope.currentPostsPage, matchPostsItem[2]);
 				}
+				else
+					$scope.codelines.push("You need to select Posts page!");
 			}
 			$scope.codeline.newcode = "";
 		}
@@ -223,20 +228,32 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.currentPostsPage = 0;
 				$scope.item.posts[0] = {name:name,formName:$scope.item.pages[currentPageId].elems[currentFormId].name};
 			}
+			var pageFormName = $scope.item.pages[currentPageId].elems[currentFormId].name + "_" + $scope.item.pages[currentPageId].name;
+			$scope.buildRequest(name, 'add_posts_page', pageFormName);
 		}
-		$scope.addNewPostsPageItem = function(name, currentPostPage, type)
+		$scope.addNewPostsPageItem = function(name, currentPostsPage, type)
 		{
-			if($scope.item.posts[currentPostPage].postItems)
-				$scope.item.posts[currentPostPage].postItems[$scope.item.posts[currentPostPage].postItems.length] = {name: name};
+			//$scope.codelines.push("And You here!");
+			if($scope.item.posts[currentPostsPage].postItems)
+				$scope.item.posts[currentPostsPage].postItems[$scope.item.posts[currentPostsPage].postItems.length] = {name: name};
 			else
 			{
-				$scope.item.posts[currentPostPage] = {postItems: []};
-				$scope.item.posts[currentPostPage].postItems[0] = {name: name};
+				$scope.item.posts[currentPostsPage] = {name:$scope.item.posts[currentPostsPage].name,formName:$scope.item.posts[currentPostsPage].formName,postItems: []};
+				$scope.item.posts[currentPostsPage].postItems[0] = {name: name};
+			}
+			var postsPageName = $scope.item.posts[currentPostsPage].name;
+			if(type=='header')
+			{
+				$scope.buildRequest(name, 'add_posts_header', postsPageName);
+			}
+			else if(type=='description')
+			{
+				$scope.buildRequest(name, 'add_posts_description', postsPageName);
 			}
 		}
 		$scope.buildRequest = function(name, command, data)
 		{
-			/*$http({
+			$http({
 				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -249,8 +266,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 					command: command,
 				},
 			}).then(function(response) {
-				alert(response.data);
-			});*/
+				//alert(response.data);
+			});
 		}
 		
 		$scope.changeLang = function(lang){

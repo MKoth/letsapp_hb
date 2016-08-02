@@ -491,32 +491,66 @@ p.or_class {
     margin: 7px;
 }
 .codelines_holder {
-    background: #000;
+    background: #707070;
     padding: 10px;
     height: 40%;
     overflow-y: auto;
+    position: relative;
+    z-index: -1;
+}
+.line_in_code {
+    width: 30px;
+    height: 100%;
+    background: #dedede;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 .codelines_holder p {
     color: #fff;
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 200;
+}
+.codelines_holder p span {
+    width: 25px;
+    display: block;
+    float: left;
+    margin-left: -10px;
+    color: #707070!important;
+    z-index: 4;
+    margin-right: 10px;
+    text-align: right;
 }
 .coding-tree-wrapper {
-    height: 45%;
+    height: 40%;
     overflow-y: auto;
 }
 input.codeline-text-field {
     height: 7%;
-    width: 80%;
+    width: 83.9%;
 }
 button.codeline-button {
     height: 8%;
-    width: 18%;
+    width: 15%;
     border: none;
     margin: 0;
     padding: 0;
     color: #fff;
-    background: #00849a;
+    background: #69c596;
+    font-size: 16px;
+    float: right;
+}
+button.preview-button {
+    background: #fcd288;
+    color: #fff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+    margin-left: 15px;
+    font-size: 25px;
 }
 ul.coding-tree-holder {
     padding-left: 30px;
@@ -552,6 +586,20 @@ ul.coding-tree-holder>li>ul>li>ul>li>p {
     border-radius: 5px;
     text-align: center;
 }
+button.back_from_prev {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 8%;
+    width: 20%;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: #69c596;
+    font-size: 16px;
+    float: right;
+}
 ul.coding-tree-holder>li>ul>li>p.form_elment{
 	background: #ffba62!important;
 }
@@ -560,4 +608,5 @@ h1.coding-tree-heading {
     text-align: center;
     padding: 0;
     margin: 10px 0;
+    color: #616065;
 }
