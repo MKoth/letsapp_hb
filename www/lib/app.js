@@ -30,10 +30,23 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//$scope.item.pages[1] = {name:"Page1", elems:[{name:'Form0',type:'form'}]};
 		$scope.codeline = {newcode:""};
 		$scope.codelines = [];
+		var noCacheParameter = new Date().getTime();
+		$scope.iframeUrl = "http://www.letsgetstartup.com/app-cloud/blank-app?cach="+noCacheParameter;
 		$scope.goToPreview = function (){
-			$("#preview_screen").attr("src",jQuery("#preview_screen").attr("src"));
 			menu.setMainPage('preview.html', {closeMenu: true});
+			noCacheParameter = new Date().getTime();
+			//alert(noCacheParameter);
+			$scope.iframeUrl = "http://www.letsgetstartup.com/app-cloud/blank-app?cach="+noCacheParameter;
+			//$("#preview_screen").attr("src",iframeUrl);
+			//document.getElementById("preview_screen").setAttribute("src", iframeUrl);
+			$scope.iframeUrl = $sce.trustAsResourceUrl($scope.iframeUrl);
 		}
+		
+		$scope.suggestionArray = {page:[],form:[],postpage:[],singlepost:[]};
+		$scope.suggestionArray.page = ['addPage(pagename)','selectPage(pagename)','addText(Content)'];
+		$scope.suggestionArray.form = ['addForm(Formname)','selectForm(Formname)','addFormElement(Element name,text)','addFormElement(Element name,textarea)','addFormElement(Element name,coord)'];
+		$scope.suggestionArray.postpage = ['addPostsPage(pagename)','addPostsItem(Content,header)','addPostsItem(Content,description)'];
+		
 		$scope.execCode = function(){
 			$scope.codelines.push($scope.codeline.newcode);
 			var addPageRegexp = /^ *addPage\(([a-zA-Z1-9- ]+)\) *$/;
@@ -145,8 +158,36 @@ module.controller('menuController', function($scope, $http, $sce) {
 					$scope.codelines.push("You need to select Posts page!");
 			}
 			$scope.codeline.newcode = "";
+			$scope.itemNotClicked = true;
+			//var strCode = $scope.codelines[$scope.codelines.length-1];
+			//alert($scope.codelines[$scope.codelines.length-1]);
+			//var mainString = "hjk";
+			//alert(mainString.includes(strCode));
 		}
-		
+		$scope.itemNotClicked = true;
+		$(document).on("input",".codeline-text-field",function(){$scope.itemNotClicked = true;});
+		$scope.includeWord = function(string){
+			var subString = $scope.codeline.newcode;
+			return string.includes(subString);
+		}
+		$scope.includeWordArray = function(array){
+			var flag = false;
+			var subString = $scope.codeline.newcode;
+			$.each(array,function(index,value){
+				if(value.includes(subString))
+				{
+					flag = true;
+					return false;
+				}
+				//alert(value.includes(subString));
+			});
+			if($scope.codeline.newcode=="") flag = false;
+			return flag;
+		}
+		$scope.completeText = function(line){
+			$scope.itemNotClicked = false;
+			$scope.codeline.newcode = line;
+		}
 		$scope.addNewPage = function(name){
 			if($scope.item.pages[0])
 			{

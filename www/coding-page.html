@@ -25,6 +25,23 @@
 		<div class="line_in_code"></div>
 		<p ng-repeat="line in codelines track by $index" class="codeline"><span>{{$index+1}}.</span>{{line}}</p>
 	</div>
+	<ul ng-if="itemNotClicked">
+		<li ng-if="includeWordArray(suggestionArray.page)"><p>Page</p>
+			<ul>
+				<li ng-if="includeWord(command)" ng-repeat="command in suggestionArray.page" ng-click="completeText(command)">{{command}}</li>
+			</ul>
+		</li>
+		<li ng-if="includeWordArray(suggestionArray.form)"><p>Form</p>
+			<ul>
+				<li ng-if="includeWord(command)" ng-repeat="command in suggestionArray.form" ng-click="completeText(command)">{{command}}</li>
+			</ul>
+		</li>
+		<li ng-if="includeWordArray(suggestionArray.postpage)"><p>Post page</p>
+			<ul>
+				<li ng-if="includeWord(command)" ng-repeat="command in suggestionArray.postpage" ng-click="completeText(command)">{{command}}</li>
+			</ul>
+		</li>
+	</ul>
 	<input type="text" ng-model="codeline.newcode" class="codeline-text-field"/>
 	<button ng-click="execCode()" class="codeline-button">Go</button>
 </ons-page>
