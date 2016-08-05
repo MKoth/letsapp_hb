@@ -25,18 +25,18 @@
 		<div class="line_in_code"></div>
 		<p ng-repeat="line in codelines track by $index" class="codeline"><span>{{$index+1}}.</span>{{line}}</p>
 	</div>
-	<ul ng-if="itemNotClicked">
-		<li ng-if="includeWordArray(suggestionArray.page)"><p>Page</p>
+	<ul ng-if="itemNotClicked" id="suggestionHolder">
+		<li ng-if="includeWordArray(suggestionArray.page)"><p><img height="20" src="img/page.png" style="margin-right:10px;"/>Page</p>
 			<ul>
 				<li ng-if="includeWord(command)" ng-repeat="command in suggestionArray.page" ng-click="completeText(command)">{{command}}</li>
 			</ul>
 		</li>
-		<li ng-if="includeWordArray(suggestionArray.form)"><p>Form</p>
+		<li ng-if="includeWordArray(suggestionArray.form)"><p><img height="20" src="img/form.png" style="margin-right:10px;"/>Form</p>
 			<ul>
 				<li ng-if="includeWord(command)" ng-repeat="command in suggestionArray.form" ng-click="completeText(command)">{{command}}</li>
 			</ul>
 		</li>
-		<li ng-if="includeWordArray(suggestionArray.postpage)"><p>Post page</p>
+		<li ng-if="includeWordArray(suggestionArray.postpage)"><p><img height="20" src="img/posts.png" style="margin-right:10px;"/>Post page</p>
 			<ul>
 				<li ng-if="includeWord(command)" ng-repeat="command in suggestionArray.postpage" ng-click="completeText(command)">{{command}}</li>
 			</ul>

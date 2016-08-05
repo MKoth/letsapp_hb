@@ -25,6 +25,13 @@ function arrayObjectIndexOfForm(myArray, searchTerm, property) {
 }
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
+		
+		$(document).on("click","ul#suggestionHolder li",function(){
+			$("ul#suggestionHolder li ul").slideUp();
+			$(this).find("ul").slideDown();
+		});
+		
+		
 		$scope.item = {pages:[], posts:[]};
 		//$scope.item.pages[0] = {name:"Page0"};
 		//$scope.item.pages[1] = {name:"Page1", elems:[{name:'Form0',type:'form'}]};
