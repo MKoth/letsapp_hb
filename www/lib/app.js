@@ -26,11 +26,60 @@ function arrayObjectIndexOfForm(myArray, searchTerm, property) {
 module.controller('menuController', function($scope, $http, $sce) {
 	ons.ready(function() {
 		
+		$scope.showCodingPopup = function(){
+			if($scope.dialog)
+				$scope.dialog.hide();
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "get_coding_task_popups",
+					callback:'JSON_CALLBACK'
+				},data: {
+					project_id: localStorage.getItem("project_id"),
+					user_id: localStorage.getItem("id")
+				},
+			}).then(function(response) {
+				//alert(response.data);
+				$scope.popupsData = {popups: response.data};
+				if($scope.popupsData.popups.task_msg)
+				{
+					ons.createDialog('coding-task.html', {parentScope: $scope}).then(function(dialog) {
+						$scope.dialog = dialog;
+						$scope.dialog.show();
+					});
+				}
+			});
+		}
+		
+		$scope.showCodingSuccess = function(){
+			ons.createDialog('coding-task-success.html', {parentScope: $scope}).then(function(dialog) {
+				$scope.dialog = dialog;
+				$scope.dialog.show();
+			});
+		}
+		
+		$scope.showCodingFail = function(){
+			ons.createDialog('coding-task-fail.html', {parentScope: $scope}).then(function(dialog) {
+				$scope.dialog = dialog;
+				$scope.dialog.show();
+			});
+		}
+		
+		$scope.closeDialog = function(){
+			$scope.dialog.hide();
+		}
+		
+		$scope.menuCodingPageClick = function(){
+			menu.setMainPage('coding-page.html', {closeMenu: true});
+			$scope.showCodingPopup();
+		}
+		
 		$(document).on("click","ul#suggestionHolder li",function(){
 			$("ul#suggestionHolder li ul").slideUp();
 			$(this).find("ul").slideDown();
 		});
-		
 		
 		$scope.item = {pages:[], posts:[]};
 		//$scope.item.pages[0] = {name:"Page0"};
@@ -53,6 +102,42 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.suggestionArray.page = ['addPage(pagename)','selectPage(pagename)','addText(Content)'];
 		$scope.suggestionArray.form = ['addForm(Formname)','selectForm(Formname)','addFormElement(Element name,text)','addFormElement(Element name,textarea)','addFormElement(Element name,coord)'];
 		$scope.suggestionArray.postpage = ['addPostsPage(pagename)','addPostsItem(Content,header)','addPostsItem(Content,description)'];
+		
+		$scope.markCodingDone = function(){
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "set_coding_task_answer",
+					callback:'JSON_CALLBACK'
+				},data: {
+					project_id: localStorage.getItem("project_id"),
+					user_id: localStorage.getItem("id"),
+					task_id: $scope.popupsData.popups.post_id
+				},
+			}).then(function(response) {
+				//alert(response.data);
+				$scope.showCodingPopup();
+			});
+		}
+		
+		$scope.startExec = function(){
+			if(!$scope.popupsData.popups.task_msg)
+			{
+				$scope.execCode();
+			}
+			else if($scope.codeline.newcode == $scope.popupsData.popups.ct_code)
+			{
+				$scope.execCode();
+				$scope.showCodingSuccess();
+				$scope.markCodingDone();
+			}
+			else if($scope.codeline.newcode != $scope.popupsData.popups.ct_code)
+			{
+				$scope.showCodingFail();
+			}
+		}
 		
 		$scope.execCode = function(){
 			$scope.codelines.push($scope.codeline.newcode);
@@ -251,15 +336,15 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.item.pages[pageId].elems[formId].formelems[0]={name:name};
 			}
 			var formData={ pageName: $scope.item.pages[pageId].name, formName: $scope.item.pages[pageId].elems[formId].name };
-			if(type=='text')
+			if(jQuery.trim(type)=='text')
 			{
 				$scope.buildRequest(name, 'add_form_text', formData);
 			}
-			else if(type=='textarea')
+			else if(jQuery.trim(type)=='textarea')
 			{
 				$scope.buildRequest(name, 'add_form_textarea', formData);
 			}
-			else if(type=='coord')
+			else if(jQuery.trim(type)=='coord')
 			{
 				$scope.buildRequest(name, 'add_form_coord', formData);
 			}
@@ -290,11 +375,11 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.item.posts[currentPostsPage].postItems[0] = {name: name};
 			}
 			var postsPageName = $scope.item.posts[currentPostsPage].name;
-			if(type=='header')
+			if(jQuery.trim(type)=='header')
 			{
 				$scope.buildRequest(name, 'add_posts_header', postsPageName);
 			}
-			else if(type=='description')
+			else if(jQuery.trim(type)=='description')
 			{
 				$scope.buildRequest(name, 'add_posts_description', postsPageName);
 			}
