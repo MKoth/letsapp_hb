@@ -651,3 +651,147 @@ h1.coding-tree-heading {
     margin: 10px 0;
     color: #616065;
 }
+#task-pop-up .dialog {
+    background: #ffd285;
+    border-radius: 15px;
+    width: 90%;
+    height: 220px;
+}
+#task-pop-up .saying {
+    background: #fff;
+    width: 63%;
+    left: 80px;
+    top: 15px;
+    height: 60px;
+    position: absolute;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: monospace;
+    padding: 6px;
+}
+#task-pop-up .saying  span{
+	width: 0;
+    height: 0;
+    border-left: 0px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 17px solid #ffffff;
+    position: absolute;
+    bottom: -17px;
+    left: 15px;
+}
+#task-pop-up div#task-green-bottom {
+    background: #6ac295;
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    z-index: -2;
+}
+#task-pop-up div#task-girl {
+    background-image: url('../img/girl.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 63px;
+    height: 160px;
+    position: absolute;
+    left: 10px;
+    top: 50px;
+    z-index: -1;
+}
+#task-pop-up .edit-image {
+    width: 65%;
+    height: 30px;
+    background: #fff;
+    position: absolute;
+    top: 100px;
+    left: 85px;
+}
+#task-pop-up .edit-button {
+    background: #6ac295;
+    width: 20%;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    line-height: 30px;
+    float: right;
+}
+#task-pop-up button#task-button {
+    background: #6ac295;
+    border: 0;
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+    border: 5px solid #fff;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 50px;
+    bottom: 26px;
+    right: 20px;
+    position: absolute;
+}
+ons-dialog#coding-success .dialog {
+    width: 90%;
+    height: 300px;
+    background-image: url('../img/success_window.png');
+    background-size: contain;
+    background-color: #ffe4c400;
+    background-repeat: no-repeat;
+    background-color: rgba(255, 255, 255, 0);
+    box-shadow: none;
+}
+div#coding-success-holder {
+    width: 100%;
+    height: 100%;
+}
+ons-dialog#coding-fail .dialog {
+    background: #d7d2d0;
+    width: 80%;
+    height: 180px;
+    border-radius: 16px;
+}
+div#wrong-cloud {
+    width: 130px;
+    height: 130px;
+    top: 25px;
+    left: 10px;
+    position: absolute;
+    background-image: url('../img/wrong-cloud.png');
+    background-size: contain;
+    z-index: -1;
+    background-repeat: no-repeat;
+}
+div#fail-text {
+    background: #e2e2e2;
+    width: 45%;
+    right: 10px;
+    top: 30px;
+    position: absolute;
+    padding: 4px;
+    font-size: 12px;
+    color: #565656;
+	height: 70px;
+}
+div#fail-button {
+    background: #62b7de;
+    color: #fff;
+    width: 40%;
+    position: absolute;
+    right: 12px;
+    bottom: 20px;
+    padding: 5px;
+    border-radius: 4px;
+    height: 30px;
+    font-size: 18px;
+    line-height: 30px;
+}
+div#fail-button span {
+    background-image: url('../img/wrong-button.png');
+    background-size: cover;
+    width: 36px;
+    height: 36px;
+    display: block;
+    position: absolute;
+    right: 5px;
+    top: 2px;
+}

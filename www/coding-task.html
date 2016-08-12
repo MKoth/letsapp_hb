@@ -1,4 +1,11 @@
-<ons-dialog cancelable>
-	<h3>{{popupsData.popups.task_msg}}</h3>
-	<button ng-click="closeDialog()">Continue</button>
+<ons-dialog id="task-pop-up" cancelable>
+	<div class="saying">{{popupsData.popups.task_msg}}
+		<span></span>
+	</div>
+	<div class="edit-image">
+		<div class="edit-button">Go</div>
+	</div>
+	<div id="task-girl"></div>
+	<button id="task-button" ng-click="closeDialog()">OK<div></div></button>
+	<div id="task-green-bottom"></div>
 </ons-dialog>

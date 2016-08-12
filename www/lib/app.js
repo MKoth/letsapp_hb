@@ -72,6 +72,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		
 		$scope.menuCodingPageClick = function(){
+			$scope.getHiearchy();
+			$scope.getSelectedHiearchy();
 			menu.setMainPage('coding-page.html', {closeMenu: true});
 			$scope.showCodingPopup();
 		}
@@ -81,7 +83,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$(this).find("ul").slideDown();
 		});
 		
-		$scope.item = {pages:[], posts:[]};
+		
 		//$scope.item.pages[0] = {name:"Page0"};
 		//$scope.item.pages[1] = {name:"Page1", elems:[{name:'Form0',type:'form'}]};
 		$scope.codeline = {newcode:""};
@@ -92,7 +94,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			menu.setMainPage('preview.html', {closeMenu: true});
 			noCacheParameter = new Date().getTime();
 			//alert(noCacheParameter);
-			$scope.iframeUrl = "http://www.letsgetstartup.com/app-cloud/blank-app?cach="+noCacheParameter;
+			$scope.iframeUrl = "http://www.letsgetstartup.com/app-cloud/"+localStorage.getItem("project_id")+"_"+localStorage.getItem("id")+"?cach="+noCacheParameter;
 			//$("#preview_screen").attr("src",iframeUrl);
 			//document.getElementById("preview_screen").setAttribute("src", iframeUrl);
 			$scope.iframeUrl = $sce.trustAsResourceUrl($scope.iframeUrl);
@@ -118,7 +120,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				},
 			}).then(function(response) {
 				//alert(response.data);
-				$scope.showCodingPopup();
+				//$scope.showCodingPopup();
 			});
 		}
 		
@@ -174,6 +176,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				if($scope.currentPage!=-1)
 				{
 					$scope.codelines.push("You selected page name '"+matchPageName[1]+"'");
+					$scope.saveHiearchy();
 				}
 				else
 				{
@@ -202,7 +205,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 					if($scope.currentForm == -1)
 						$scope.codelines.push("The name you selected is wrong");
 					else
+					{
 						$scope.codelines.push("You selected form name '"+matchFormName[1]+"'");
+						$scope.saveHiearchy();
+					}	
 				}
 				else
 				{
@@ -280,6 +286,78 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$scope.itemNotClicked = false;
 			$scope.codeline.newcode = line;
 		}
+		$scope.getSelectedHiearchy = function(){
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "get_selected_hiearchy",
+					callback:'JSON_CALLBACK'
+				},data: {
+					project_id: localStorage.getItem("project_id"),
+					user_id: localStorage.getItem("id"),
+				},
+			}).then(function(response) {
+				//alert();
+				//alert(response.data);
+				$scope.currentPage = response.data[0];
+				$scope.currentForm = response.data[1];
+				$scope.currentPostsPage = response.data[2];
+				//alert("Current form "+$scope.currentForm);
+				//alert("Current page "+$scope.currentPage);
+				//alert("Current post page "+$scope.currentPostsPage);
+			});
+		}
+		$scope.saveHiearchy = function(){
+			if($scope.currentPage==undefined)
+				$scope.currentPage = -1;
+			if($scope.currentPostsPage==undefined)
+				$scope.currentPostsPage = -1;
+			if($scope.currentForm==undefined)
+				$scope.currentForm = -1;
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "save_coding_hiearchy",
+					callback:'JSON_CALLBACK'
+				},data: {
+					hiearchy: $scope.item,
+					project_id: localStorage.getItem("project_id"),
+					user_id: localStorage.getItem("id"),
+					currentPage: $scope.currentPage,
+					currentForm: $scope.currentForm,
+					currentPostsPage: $scope.currentPostsPage,
+				},
+			}).then(function(response) {
+				//alert();
+				//alert(response.data);
+			});
+		}
+		$scope.getHiearchy = function(){
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "get_coding_hiearchy",
+					callback:'JSON_CALLBACK'
+				},data: {
+					project_id: localStorage.getItem("project_id"),
+					user_id: localStorage.getItem("id"),
+				},
+			}).then(function(response) {
+				//alert(response.data);
+				if(response.data!=0)
+					$scope.item = response.data;
+				else
+				{
+					$scope.item = {pages:[], posts:[]};
+				}
+			});
+		}
 		$scope.addNewPage = function(name){
 			if($scope.item.pages[0])
 			{
@@ -293,6 +371,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 			$scope.buildRequest(name, 'create_page', '');
 			$scope.codelines.push("Page with name '"+name+"' has been created");
+			
+			$scope.saveHiearchy();
 		}
 		
 		$scope.addNewText = function(pageId, name){
@@ -308,6 +388,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.codelines.push("Element with name '"+name+"' added to page");
 			}
 			$scope.buildRequest($scope.item.pages[pageId].name, 'add_text', name);
+			$scope.saveHiearchy();
 		}
 		
 		$scope.addNewForm = function(pageId, name){
@@ -323,6 +404,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.item.pages[pageId].elems[0]={name:name,type:'form'};
 			}
 			$scope.buildRequest($scope.item.pages[pageId].name, 'add_form', name);
+			$scope.saveHiearchy();
 		}
 		
 		$scope.addNewFormElem = function(pageId, formId, name, type){
@@ -348,6 +430,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			{
 				$scope.buildRequest(name, 'add_form_coord', formData);
 			}
+			$scope.saveHiearchy();
 		}
 		$scope.addNewPostsPage = function(name, currentFormId, currentPageId)
 		{
@@ -363,6 +446,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 			var pageFormName = $scope.item.pages[currentPageId].elems[currentFormId].name + "_" + $scope.item.pages[currentPageId].name;
 			$scope.buildRequest(name, 'add_posts_page', pageFormName);
+			$scope.saveHiearchy();
 		}
 		$scope.addNewPostsPageItem = function(name, currentPostsPage, type)
 		{
@@ -383,6 +467,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			{
 				$scope.buildRequest(name, 'add_posts_description', postsPageName);
 			}
+			$scope.saveHiearchy();
 		}
 		$scope.buildRequest = function(name, command, data)
 		{
@@ -397,6 +482,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 					name: name,
 					data: data,
 					command: command,
+					user_id: localStorage.getItem("id"),
+					project_id: localStorage.getItem("project_id")
 				},
 			}).then(function(response) {
 				//alert(response.data);

@@ -1,4 +1,5 @@
-<ons-dialog cancelable>
-	<h3>{{popupsData.popups.fail_msg}}</h3>
-	<button ng-click="closeDialog()">Continue</button>
+<ons-dialog id="coding-fail" cancelable>
+	<div id="wrong-cloud"></div>
+	<div id="fail-text">{{popupsData.popups.fail_msg}}</div>
+	<div id="fail-button" ng-click="closeDialog()">Try Again<span></span></div>
 </ons-dialog>
