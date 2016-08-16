@@ -132,6 +132,15 @@ module.controller('menuController', function($scope, $http, $sce) {
 			else if($scope.codeline.newcode == $scope.popupsData.popups.ct_code)
 			{
 				$scope.execCode();
+				if($scope.milestoneList[$scope.currentTaskLessonId].status=="unlocked")
+				{
+					$scope.setTaskUnlockedDone($scope.currentTaskLessonId, "done");
+					if($scope.next!="last")
+					{
+						if($scope.milestoneList[$scope.next].status=="locked")
+							$scope.setTaskUnlockedDone($scope.next, "unlocked");
+					}
+				}
 				$scope.showCodingSuccess();
 				$scope.markCodingDone();
 			}
@@ -1066,9 +1075,11 @@ module.controller('menuController', function($scope, $http, $sce) {
 				params: {
 					action: "list_lesson_menu",
 					project_id: localStorage.getItem("project_id"),
+					user_id: localStorage.getItem("id"),
 					callback:'JSON_CALLBACK'
 				},
 			}).then(function(response) {
+				//alert(response.data);
 				jQuery("#loader").fadeOut();
 				$scope.milestoneList = response.data;
 				/*$.each(response.data, function(key,value){
@@ -1124,35 +1135,84 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		//function which fires after clicking to the left menu lesson or task item
 		$scope.menuLessonClickFunc = function(id){
-			$scope.currentCommentsTaskId = $scope.milestoneList[id].id;
-			$scope.milestone_title=$scope.milestoneList[id].title;
-			$scope.milestone_content=$scope.milestoneList[id].content;
-			$scope.milestone_content=$sce.trustAsHtml($scope.milestone_content);
-			if($scope.milestoneList[id+1]){
-				$scope.next = id+1;
+			if($scope.dialog)
+				$scope.dialog.hide();
+			if($scope.milestoneList[id].status != "locked")
+			{
+				if($scope.milestoneList[id].status != "done"||$scope.milestoneList[id].type!="coding-task")
+				{
+					//alert(id);
+					//alert($scope.milestoneList[id].type);
+					$scope.currentCommentsTaskId = $scope.milestoneList[id].id;
+					$scope.currentTaskLessonId = id;
+					$scope.milestone_title=$scope.milestoneList[id].title;
+					$scope.milestone_content=$scope.milestoneList[id].content;
+					$scope.milestone_content=$sce.trustAsHtml($scope.milestone_content);
+					if($scope.milestoneList[id+1]){
+						$scope.next = id+1;
+					}
+					else
+					{
+						$scope.next = "last";
+					}
+					if(id!=0){
+						$scope.prev = id-1;
+					}
+					else
+					{
+						$scope.prev = "first";
+					}
+					if($scope.milestoneList[id].type=="lesson")
+					{
+						$scope.setTaskUnlockedDone(id, "done");
+						$scope.getMilestoneMeta($scope.milestoneList[id].id);
+						if($scope.next != "last")
+						{
+							if($scope.milestoneList[$scope.next].status=="locked")
+								$scope.setTaskUnlockedDone($scope.next, "unlocked");
+						}
+					}
+					else if($scope.milestoneList[id].type=="task")
+					{
+						//if($scope.milestoneList[id].final_answer)
+						//$scope.final_answer=$scope.milestoneList[id].final_answer;
+						$scope.getFinalAnswer($scope.currentCommentsTaskId);
+						$scope.getTaskComment($scope.currentCommentsTaskId);
+					}
+					else if($scope.milestoneList[id].type=="coding-task")
+					{
+						$scope.menuCodingPageClick();
+					}
+				}
+				else if($scope.milestoneList[id].status == "done"&&$scope.milestoneList[id].type=="coding-task")
+				{
+					menu.setMainPage('classes-list.html', {closeMenu: true});
+				}
 			}
 			else
 			{
-				$scope.next = "last";
+				alert("The task you trying to reach out is locked, you need to finish current task first!");
 			}
-			if(id!=0){
-				$scope.prev = id-1;
-			}
-			else
-			{
-				$scope.prev = "first";
-			}
-			if($scope.milestoneList[id].type=="lesson")
-			{
-				$scope.getMilestoneMeta($scope.milestoneList[id].id);
-			}
-			if($scope.milestoneList[id].type=="task")
-			{
-				//if($scope.milestoneList[id].final_answer)
-				//$scope.final_answer=$scope.milestoneList[id].final_answer;
-				$scope.getFinalAnswer($scope.currentCommentsTaskId);
-				$scope.getTaskComment($scope.currentCommentsTaskId);
-			}
+			//menuCodingPageClick()
+		}
+		
+		$scope.setTaskUnlockedDone =function(id, new_status){
+			$scope.milestoneList[id].status = new_status;
+			$http({
+				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "change_status",
+				},
+				data: {
+					task_id: $scope.milestoneList[id].id,
+					status: new_status,
+					user_id: localStorage.getItem("id"),
+				},
+			}).then(function(response) {
+				//alert(response.data);
+			});
 		}
 		
 		$scope.getPhotoDialog = function(){
@@ -1290,6 +1350,15 @@ module.controller('menuController', function($scope, $http, $sce) {
 				jQuery("#loader").fadeOut();
 				$scope.getTaskComment($scope.currentCommentsTaskId);
 				$scope.newTaskComment.content = "";
+				if($scope.milestoneList[$scope.currentTaskLessonId].status=="unlocked")
+				{
+					$scope.setTaskUnlockedDone($scope.currentTaskLessonId, "done");
+					if($scope.next!="last")
+					{
+						if($scope.milestoneList[$scope.next].status=="locked")
+							$scope.setTaskUnlockedDone($scope.next, "unlocked");
+					}
+				}	 
 			});
 		}
 		$scope.insertFinalAnswer = function(){
