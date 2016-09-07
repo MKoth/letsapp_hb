@@ -15,11 +15,11 @@
   </div>
 </div>
 	<button class="sign_button" style="background: #b2d454;" ng-click="menu.setMainPage('login.html', {closeMenu: true})">{{vocabulary[lang]['Login']}}</button>
-	<p class="or_class">- {{vocabulary[lang]['or']}} -</p>
-	<button class="sign_button" ng-click="joinClass()" style="margin-bottom:20px;">{{vocabulary[lang]['Register']}}</button>
-	<!--<section style="padding: 0 8px 8px">
-		<ons-button modifier="large" ng-click="createClass()">Create new class</ons-button>
-	</section>-->
+	<p class="or_class">- {{vocabulary[lang]['or']}} register as -</p>
+	<button class="sign_button" ng-click="joinClass()" style="margin-bottom:20px;">Student</button>
+	<section style="padding: 0 8px 8px">
+		<button class="sign_button" ng-click="createClass()">Teacher</button>
+	</section>
 	<!--<section style="padding: 0 8px 8px">
 		<ons-button modifier="large" ng-click="menu.setMainPage('login.html', {closeMenu: true})">Login</ons-button>
 	</section>-->

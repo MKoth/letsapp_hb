@@ -13,7 +13,8 @@
 		<i class="fa fa-lock password-icon" style="top: 83%;"></i>
 		<input type="password" class="text-input sign-input" ng-model="registration.password" placeholder="{{vocabulary[lang]['Password']}}">
 	</div>
-	<button class="sign-button" ng-click="userRegister()" style="margin-top: 10%;">{{vocabulary[lang]['Registration']}}</button>
+	<button ng-if="registrationType=='join'" class="sign-button" ng-click="userRegister()" style="margin-top: 10%;">{{vocabulary[lang]['Registration']}}</button>
+	<button ng-if="registrationType=='create'" class="sign-button" ng-click="menu.setMainPage('teachers-form.html')" style="margin-top: 10%;">Continue</button>
 	<p class="dont_have_message">{{vocabulary[lang]['Already have an account?']}} <a href="#" ng-click="menu.setMainPage('login.html', {closeMenu: true})">{{vocabulary[lang]['login here']}}</a></p>
 	<p style="color:red;margin:0;text-align:center;">{{registration_error}}</p>
 </ons-page>

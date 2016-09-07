@@ -90,6 +90,7 @@ h2.proj_header {
     color: #41b4dc;
     text-align: center;
     font-size: 22px;
+	margin-top: 60px;
 }
 #loader{
 	position: absolute;
@@ -116,18 +117,15 @@ h2.menu-title.lessons-title {
     margin: 0;
     width: 100%;
 }
-#loader div{
-	position: absolute;
-	width: 30%;
-	height:30%;
-	left:35%;
-	top:35%;
-	//top: 35%;
-	background: url('../img/proloader.gif') no-repeat center center;
-	background-size: cover;
-	opacity:0.7;
-	//background-repeat:no-repeat;
-	
+#loader div {
+    position: absolute;
+    width: 40%;
+    height: 40%;
+    left: 30%;
+    top: 35%;
+    background: url('../img/proloader.gif') no-repeat center center;
+    background-size: contain;
+    opacity: 0.7;
 }
 div#logo {
     position: absolute;
@@ -455,7 +453,13 @@ ul#lessons-list li span {
 }
 ul#lessons-list li:hover{
     background: #e2b45b;
-}             
+}   
+ul#lessons-list li[data-enabled-by-teacher]{
+	display:none;
+}  
+ul#lessons-list li[data-enabled-by-teacher=enabled]{
+	display:block;
+}       
 .green-top-bg{
 	position:absolute;
 	width:100%;
@@ -855,4 +859,252 @@ div#fail-button span {
     position: absolute;
     right: 5px;
     top: 2px;
+}
+.info-block .info-form-number {
+    float: left;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    border: 2px solid #ffa44c;
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffa44c;
+    margin-left: 5px;
+    margin-right: 10px;
+}
+.info-form-number.current i {
+    display: none;
+}
+.info-block h2 {
+    color: #ffb063;
+    font-size: 20px;
+    line-height: 30px;
+}
+.info-form-holder input {
+    width: 90%;
+    margin-left: 5%;
+    height: 20px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding: 5px;
+    padding-right: 0;
+    border: 2px solid #ffe3c8;
+    border-radius: 12px;
+}
+.info-form-holder select {
+    width: 90%;
+    margin-left: 5%;
+    height: 35px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding: 5px;
+    padding-right: 0;
+    border: 2px solid #ffe3c8;
+    border-radius: 12px;
+}
+.info-form-holder .next {
+    width: 45%;
+    height: 35px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: none;
+    background: #b4d8b5;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-left: 1px solid #ffefe0;
+}
+.info-form-holder .prev {
+    width: 45%;
+    margin-left: 5%;
+    height: 35px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border: none;
+    background: #ffb063;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-right: 1px solid #ffefe0;
+}
+.info-form-holder label {
+    margin-left: 5%;
+    color: #8a8a8a;
+}
+.info-form-holder {
+    display: none;
+}
+.info-form-holder input.error {
+    background: #ffebeb;
+}
+h1.forms-header {
+    font-size: 18px;
+    font-weight: 100;
+    text-align: center;
+    margin: 0;
+    background: #ffb063;
+    color: #fff;
+    padding: 5px 0;
+}
+h2.course-title {
+    margin: 0;
+    border: 3px solid #f3a575;
+    border-radius: 20px;
+    color: #f3a575;
+    margin: 0px 10px;
+    padding: 4px;
+	background: #fff5ef;
+}
+h2.course-title .delete-course {
+    color: #ff7f7f;
+    font-weight: bold;
+    float: right;
+    padding-right: 6px;
+    padding-left: 6px;
+}
+h2.course-title span {
+    float: right;
+    color: #81dc81;
+}
+.course-items-managing {
+    padding: 0px 15px;
+}
+.course-holder h3 {
+    color: #f3a575;
+    margin: 0;
+    margin: 10px 0px;
+    border: 1px solid #f3a575;
+    border-radius: 5px;
+    padding: 3px;
+}
+.course-holder h3 span {
+    float: right;
+    margin-right: 10px;
+	color: #81dc81;
+}
+.course-holder h3 span.delete-lesson {
+	color: #ff7f7f;
+}
+.course-holder input {
+    width: 100%;
+    padding: 7px 0px;
+    margin-bottom: 10px;
+    border: 1px solid #f3a575;
+    border-radius: 7px;
+    background: #fff5ef;
+    color: #585858;
+}
+.course-holder select {
+    width: 100%;
+    padding: 7px 0px;
+    margin-bottom: 10px;
+    border: 1px solid #f3a575;
+    border-radius: 7px;
+    background: #fff5ef;
+    color: #585858;
+}
+.course-holder textarea {
+    width: 99%;
+    border-radius: 10px;
+    min-height: 60px;
+    border: 1px solid #f3a575;
+    background: #fff5ef;
+    color: #585858;
+}
+.course-holder button {
+    width: 100%;
+    background: #f3a575;
+    border: none;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.lesson-attachment input {
+    width: 90%;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.lesson-attachment span {
+    background: #ff8080;
+    width: 9%;
+    height: 31px;
+    display: block;
+    float: right;
+    line-height: 26px;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.lesson-attachment input {
+    width: 90%;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.course-holder button.lesson-attachment-button{
+	background:#84dc84;
+}
+.course-udate-holder{
+	display:none;
+}
+.course-items-managing{
+	display:none;
+}
+.course-holder {
+    margin: 10px 0px;
+}
+input.teacher_enabling {
+    position: absolute;
+    margin-left: -65px;
+    width: 20px;
+    height: 20px;
+}
+.comments-refresh {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    background: #b2d454;
+    color: #fff;
+    font-size: 25px;
+    line-height: 0px;
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.info-holder {
+    margin-left: 20px;
+	position:relative;
+}
+.info-holder span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: #427bff;
+    position: relative;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 15px;
+    color: #fff;
+}
+.info-holder p {
+    position: absolute;
+    left: 30px;
+    top: 0px;
+    background: #87abff;
+    color: #fff;
+    font-size: 18px;
+    padding: 5px;
+	display:none;
+}
+.info-holder:hover p{
+	display:block;
 }

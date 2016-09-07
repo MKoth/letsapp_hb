@@ -30,7 +30,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			if($scope.dialog)
 				$scope.dialog.hide();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -89,12 +89,12 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.codeline = {newcode:""};
 		$scope.codelines = [];
 		var noCacheParameter = new Date().getTime();
-		$scope.iframeUrl = "http://www.letsgetstartup.com/app-cloud/blank-app?cach="+noCacheParameter;
+		$scope.iframeUrl = "http://www.letsgetstartup.com/blank-app?cach="+noCacheParameter;
 		$scope.goToPreview = function (){
 			menu.setMainPage('preview.html', {closeMenu: true});
 			noCacheParameter = new Date().getTime();
 			//alert(noCacheParameter);
-			$scope.iframeUrl = "http://www.letsgetstartup.com/app-cloud/"+localStorage.getItem("project_id")+"_"+localStorage.getItem("id")+"?cach="+noCacheParameter;
+			$scope.iframeUrl = "http://www.letsgetstartup.com/"+localStorage.getItem("project_id")+"_"+localStorage.getItem("id")+"?cach="+noCacheParameter;
 			//$("#preview_screen").attr("src",iframeUrl);
 			//document.getElementById("preview_screen").setAttribute("src", iframeUrl);
 			$scope.iframeUrl = $sce.trustAsResourceUrl($scope.iframeUrl);
@@ -107,7 +107,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		$scope.markCodingDone = function(){
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -125,6 +125,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		
 		$scope.startExec = function(){
+			//alert($scope.popupsData.popups.ct_code);
 			if(!$scope.popupsData.popups.task_msg)
 			{
 				$scope.execCode();
@@ -168,6 +169,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 			var matchPostsPage = addPostsPageRegexp.exec($scope.codeline.newcode);
 			var addPostsItemRegexp = /^ *addPostsItem\(([a-zA-Z1-9- ]+),([a-zA-Z1-9- ]+)\) *$/;
 			var matchPostsItem = addPostsItemRegexp.exec($scope.codeline.newcode);
+			var addSinglePostRegexp = /^ *addSinglePost\(([a-zA-Z1-9- ]+)\) *$/;
+			var matchSinglePost = addSinglePostRegexp.exec($scope.codeline.newcode);
+			var addSinglePostItemRegexp = /^ *addSinglePostItem\(([a-zA-Z1-9- ]+),([a-zA-Z1-9- ]+)\) *$/;
+			var matchSinglePostItem = addSinglePostItemRegexp.exec($scope.codeline.newcode);
 			if(matchPage)
 			{
 				if(arrayObjectIndexOf($scope.item.pages, matchPage[1], 'name')==-1)
@@ -262,7 +267,25 @@ module.controller('menuController', function($scope, $http, $sce) {
 					$scope.addNewPostsPageItem(matchPostsItem[1], $scope.currentPostsPage, matchPostsItem[2]);
 				}
 				else
-					$scope.codelines.push("You need to select Posts page!");
+					$scope.codelines.push("You need to create/select Posts page!");
+			}
+			else if(matchSinglePost)
+			{
+				if($scope.currentPostsPage!=undefined&&$scope.currentPostsPage != -1)
+				{
+					$scope.addNewSinglePostPage(matchSinglePost[1], $scope.currentPostsPage);
+				}
+				else
+					$scope.codelines.push("You need to create/select Posts page!");
+			}
+			else if(matchSinglePostItem)
+			{
+				alert($scope.currentSinglePostPage);
+				if($scope.currentSinglePostPage!=-1&&$scope.currentSinglePostPage!=undefined){
+					$scope.addSinglePostPageItem(matchSinglePostItem[1], $scope.currentSinglePostPage, matchSinglePostItem[2]);
+				}
+				else
+					$scope.codelines.push("You need to create/select SinglePostPage page!");
 			}
 			$scope.codeline.newcode = "";
 			$scope.itemNotClicked = true;
@@ -297,7 +320,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		$scope.getSelectedHiearchy = function(){
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -313,6 +336,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.currentPage = response.data[0];
 				$scope.currentForm = response.data[1];
 				$scope.currentPostsPage = response.data[2];
+				$scope.currentSinglePostPage = response.data[3];
 				//alert("Current form "+$scope.currentForm);
 				//alert("Current page "+$scope.currentPage);
 				//alert("Current post page "+$scope.currentPostsPage);
@@ -325,8 +349,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.currentPostsPage = -1;
 			if($scope.currentForm==undefined)
 				$scope.currentForm = -1;
+			if($scope.currentSinglePostPage==undefined)
+				$scope.currentSinglePostPage = -1;
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -339,6 +365,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					currentPage: $scope.currentPage,
 					currentForm: $scope.currentForm,
 					currentPostsPage: $scope.currentPostsPage,
+					currentSinglePostPage: $scope.currentSinglePostPage
 				},
 			}).then(function(response) {
 				//alert();
@@ -347,7 +374,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		$scope.getHiearchy = function(){
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -363,7 +390,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					$scope.item = response.data;
 				else
 				{
-					$scope.item = {pages:[], posts:[]};
+					$scope.item = {pages:[], posts:[], singles:[]};
 				}
 			});
 		}
@@ -478,10 +505,45 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 			$scope.saveHiearchy();
 		}
+		$scope.addNewSinglePostPage = function(name, currentPostsId)
+		{
+			if($scope.item.singles)
+			{
+				$scope.currentSinglePostPage = $scope.item.singles.length;
+				$scope.item.singles[$scope.item.singles.length] = {name:name,postsPage:$scope.item.posts[currentPostsId].name};
+			}
+			else
+			{
+				$scope.item.singles = [];
+				$scope.currentSinglePostPage = 0;
+				$scope.item.singles[0] = {name:name,postsPage:$scope.item.posts[currentPostsId].name};
+			}
+			$scope.buildRequest(name, 'add_single_post_page', $scope.item.posts[currentPostsId].name);
+			$scope.saveHiearchy();
+		}
+		$scope.addSinglePostPageItem = function(name, currentSinglePostPage, type)
+		{
+			if($scope.item.singles[currentSinglePostPage].singleItems)
+				$scope.item.singles[currentSinglePostPage].singleItems[$scope.item.singles[currentSinglePostPage].singleItems.length] = {name: name};
+			else
+			{
+				$scope.item.singles[currentSinglePostPage] = {name:$scope.item.singles[currentSinglePostPage].name,postsPage:$scope.item.singles[currentSinglePostPage].postsPage,singleItems: []};
+				$scope.item.singles[currentSinglePostPage].singleItems[0] = {name: name};
+			}
+			if(jQuery.trim(type)=='header')
+			{
+				$scope.buildRequest(name, 'add_single_post_header', $scope.item.singles[currentSinglePostPage].name);
+			}
+			else if(jQuery.trim(type)=='description')
+			{
+				$scope.buildRequest(name, 'add_single_post_description', $scope.item.singles[currentSinglePostPage].name);
+			}
+			$scope.saveHiearchy();
+		}
 		$scope.buildRequest = function(name, command, data)
 		{
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -594,6 +656,29 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.vocabulary["hb"]["Join a trial lesson"]="הצטרף לשעורי ניסיון";
 		$scope.vocabulary["en"]["Save text"]="Save text";
 		$scope.vocabulary["hb"]["Save text"]="טקסט שמור";
+		$scope.vocabulary["en"]["Page adding done!"]="Page adding done!";
+		$scope.vocabulary["hb"]["Page adding done!"]="הודעה הנתונים נשמרו אישור";
+		$scope.vocabulary["en"]["Coding page"]="Coding page";
+		$scope.vocabulary["hb"]["Coding page"]="פיתוח אפליקציה";
+		$scope.vocabulary["en"]["Add post adding and registration page"]="Add post adding and registration page";
+		$scope.vocabulary["hb"]["Add post adding and registration page"]="אפשר למשתמשים להוסיף נקודות עניין";
+		$scope.vocabulary["en"]["App's elements tree"]="App's elements tree";
+		$scope.vocabulary["hb"]["App's elements tree"]="עץ האפליקציה";
+		$scope.vocabulary["en"]["The task you trying to reach out is locked, you need to finish current task first!"]="The task you trying to reach out is locked, you need to finish current task first!";
+		$scope.vocabulary["hb"]["The task you trying to reach out is locked, you need to finish current task first!"]="הודעה עליך לכתוב את התשובה שלך בטרם תוכל להמשיך למשימה הבאה. אישור";
+		$scope.vocabulary["en"]["Next"]="Next";
+		$scope.vocabulary["hb"]["Next"]="הבא";
+		$scope.vocabulary["en"]["Previous"]="Previous";
+		$scope.vocabulary["hb"]["Previous"]="קודם";
+		$scope.vocabulary["en"]["Your final answer"]="Your final answer";
+		$scope.vocabulary["hb"]["Your final answer"]="לאחר סיעור מוחות, יש כתוב כאן את התשובה הקבוצתית";
+		$scope.vocabulary["en"]["Your answer or comment"]="Your answer or comment";
+		$scope.vocabulary["hb"]["Your answer or comment"]="כתוב כאן את התשובה שלך";
+		$scope.vocabulary["en"]["Insert answer"]="Insert answer";
+		$scope.vocabulary["hb"]["Insert answer"]="שמור תשובה הקבוצתית";
+		$scope.vocabulary["en"]["Final answer is"]="Final answer is";
+		$scope.vocabulary["hb"]["Final answer is"]="התשובה הסופית היא";
+		
 		
 		/*$scope.checkConnection = function checkConnection() {
 			var networkState = navigator.network.connection.type;
@@ -628,7 +713,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.addPageFunc = function(tag_name, file_path, page_type){
 			jQuery("#loader").fadeIn();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -642,8 +727,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 				},
 			}).then(function(response) {
 				jQuery("#loader").fadeOut();
-				alert(response);
-				alert("Page adding done!");
+				//alert(response);
+				alert($scope.vocabulary[$scope.lang]["Page adding done!"]);
 				//alert("Page removing done!");
 			});
 		}
@@ -654,7 +739,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.menuEditClickFunc = function(){
 			jQuery("#loader").fadeIn();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php?proj_id="+localStorage.getItem("project_id"), 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php?proj_id="+localStorage.getItem("project_id"), 
 				method: "get",
 				params: {
 					action: "list_edit_arr",
@@ -714,7 +799,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$scope.appLinkDownload.link = "#";
 			$scope.appLinkDownload.text = $scope.vocabulary[$scope.lang]['App is building...'];
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "GET",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -742,7 +827,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.startBuildingApp = function(){
 			jQuery("#loader").fadeIn();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -864,8 +949,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 			options.mimeType = "image/jpeg";
 			options.params = {action:"change_app_image", 'proj_id':localStorage.getItem("project_id")}; // if we need to send parameters to the server request
 			var ft = new FileTransfer();
-			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
-			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+			ft.upload(fileURI, encodeURI("http://letsgetstartup.com/wp-admin/admin-ajax.php"), win, fail, options);
+			ft.upload(fileURI, encodeURI("http://letsgetstartup.com/wp-admin/admin-ajax.php"), win, fail, options);
 		}
 		
 		$scope.getUserPictureSuccess=function(fileURI) {
@@ -902,8 +987,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 			options.mimeType = "image/jpeg";
 			options.params = {action:"upload_user_profile", user_id: localStorage.getItem("id")}; // if we need to send parameters to the server request
 			var ft = new FileTransfer();
-			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
-			//ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+			ft.upload(fileURI, encodeURI("http://letsgetstartup.com/wp-admin/admin-ajax.php"), win, fail, options);
+			//ft.upload(fileURI, encodeURI("http://letsgetstartup.com/wp-admin/admin-ajax.php"), win, fail, options);
 		}
 		
 		
@@ -939,7 +1024,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			options.mimeType = "image/jpeg";
 			options.params = {action:"upload_user_profile", user_id: localStorage.getItem("id")};
 			var ft = new FileTransfer();
-			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+			ft.upload(fileURI, encodeURI("http://letsgetstartup.com/wp-admin/admin-ajax.php"), win, fail, options);
 		}
 		
 		$scope.getPostSuccess=function(fileURI) {
@@ -981,7 +1066,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			options.mimeType = "image/jpeg";
 			options.params = {action:"upload_post_image"};
 			var ft = new FileTransfer();
-			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+			ft.upload(fileURI, encodeURI("http://letsgetstartup.com/wp-admin/admin-ajax.php"), win, fail, options);
 		}
 		
 		$scope.getEditSuccess=function(fileURI) {
@@ -1023,7 +1108,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			options.mimeType = "image/jpeg";
 			options.params = {action:"upload_post_image"};
 			var ft = new FileTransfer();
-			ft.upload(fileURI, encodeURI("http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php"), win, fail, options);
+			ft.upload(fileURI, encodeURI("http://letsgetstartup.com/wp-admin/admin-ajax.php"), win, fail, options);
 		}
 		
 		$scope.onFail=function(message) {
@@ -1047,7 +1132,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.new_title = $scope.layout.app_title;
 			}
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -1070,7 +1155,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.addClassesToLeftMenu = function(){
 			jQuery("#loader").fadeIn();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "get",
 				params: {
 					action: "list_lesson_menu",
@@ -1088,7 +1173,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 			});
 		}
 		if(localStorage.getItem("login"))
+		{
+			//if(localStorage.getItem("type")=="student")
 			$scope.addClassesToLeftMenu();
+		}
 		
 		//declaring variable for task commenting form
 		$scope.newTaskComment = {content:"", final_answer:""};
@@ -1098,7 +1186,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			//localStorage.setItem("chosen_proj_id", proj_id);
 			$scope.registrationType = 'join';
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "get",
 				params: {
 					action: "get_proj_api",
@@ -1115,7 +1203,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			//localStorage.setItem("chosen_proj_id", proj_id);
 			$scope.registrationType = 'create';
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "get",
 				params: {
 					action: "get_proj_api",
@@ -1135,6 +1223,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		//function which fires after clicking to the left menu lesson or task item
 		$scope.menuLessonClickFunc = function(id){
+			if($scope.milestoneList[id].block_status!="enabled")
+				return
 			if($scope.dialog)
 				$scope.dialog.hide();
 			if($scope.milestoneList[id].status != "locked")
@@ -1191,15 +1281,56 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 			else
 			{
-				alert("The task you trying to reach out is locked, you need to finish current task first!");
+				alert($scope.vocabulary[$scope.lang]["The task you trying to reach out is locked, you need to finish current task first!"]);
 			}
 			//menuCodingPageClick()
+		}
+		
+		$scope.menuTeacherLessonClickFunc = function(id,$event){
+			if(jQuery($event.target).attr("type")=="checkbox")
+				return;
+			if($scope.dialog)
+				$scope.dialog.hide();
+			$scope.currentCommentsTaskId = $scope.milestoneList[id].id;
+			$scope.currentTaskLessonId = id;
+			$scope.milestone_title=$scope.milestoneList[id].title;
+			$scope.milestone_content=$scope.milestoneList[id].content;
+			$scope.milestone_content=$sce.trustAsHtml($scope.milestone_content);
+			$scope.milestone_info=$scope.milestoneList[id].info;
+			$scope.milestone_info=$sce.trustAsHtml($scope.milestone_info);
+			if($scope.milestoneList[id+1]){
+				$scope.next = id+1;
+			}
+			else
+			{
+				$scope.next = "last";
+			}
+			if(id!=0){
+				$scope.prev = id-1;
+			}
+			else
+			{
+				$scope.prev = "first";
+			}
+			if($scope.milestoneList[id].type=="lesson")
+			{
+				$scope.getMilestoneMeta($scope.milestoneList[id].id);
+			}
+			else if($scope.milestoneList[id].type=="task")
+			{
+				$scope.getFinalAnswer($scope.currentCommentsTaskId);
+				$scope.getTaskComment($scope.currentCommentsTaskId);
+			}
+			else if($scope.milestoneList[id].type=="coding-task")
+			{
+				//$scope.menuCodingPageClick();
+			}
 		}
 		
 		$scope.setTaskUnlockedDone =function(id, new_status){
 			$scope.milestoneList[id].status = new_status;
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -1251,7 +1382,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//function which fires if task menu item from left menu clicked
 		$scope.getTaskComment = function(task_id){
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "get",
 				params: {
 					action: "list_task_comments_mobile",
@@ -1266,7 +1397,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		$scope.getFinalAnswer = function(task_id){
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "get",
 				params: {
 					action: "get_final_answer_mobile",
@@ -1281,7 +1412,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//function that getting media links for milestone click that will be attached to the carousel
 		$scope.getMilestoneMeta = function(milestone_id){
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "get",
 				params: {
 					action: "get_milestone_postmeta",
@@ -1329,11 +1460,16 @@ module.controller('menuController', function($scope, $http, $sce) {
 			return $sce.trustAsResourceUrl(src);
 		}
 		
+		$scope.refreshComments = function(){
+			$scope.getFinalAnswer($scope.currentCommentsTaskId);
+			$scope.getTaskComment($scope.currentCommentsTaskId);
+		}
+		
 		//function sending new task comment to the server
 		$scope.insertTaskComment = function(){
 			jQuery("#loader").fadeIn();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -1364,7 +1500,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.insertFinalAnswer = function(){
 			jQuery("#loader").fadeIn();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				params: {
@@ -1399,12 +1535,16 @@ module.controller('menuController', function($scope, $http, $sce) {
 		if(localStorage.getItem("login"))
 		{
 			$scope.registration.login = localStorage.getItem("login");
+			$scope.user_type = localStorage.getItem("type");
 		}
 		
 		//checking if set page to login or go to home main page
 		if(localStorage.getItem("login"))
 		{
-			menu.setMainPage('classes-list.html', {closeMenu: true});
+			if(localStorage.getItem("type")=="student")
+				menu.setMainPage('classes-list.html', {closeMenu: true});
+			else
+				menu.setMainPage('teacher-classes-list.html', {closeMenu: true});
 			//$scope.menuEditClickFunc();
 		}
 		else
@@ -1420,7 +1560,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				$scope.post = {update_attachment_id:""};
 			}
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				data: {
@@ -1441,7 +1581,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.deleteItemFunc = function(post_id){
 			jQuery("#loader").fadeIn();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				data: {
@@ -1461,7 +1601,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.addItemFunc = function(name,image){
 			jQuery("#loader").fadeIn();
 			$http({
-				url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 				method: "POST",
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 				data: {
@@ -1488,8 +1628,9 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		//registering the new student user attaching it to the existing project
 		$scope.userRegister = function(){
+				jQuery("#loader").fadeIn();
 				$http({
-					url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+					url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 					method: "POST",
 					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 					data: {
@@ -1507,23 +1648,35 @@ module.controller('menuController', function($scope, $http, $sce) {
 						localStorage.setItem("login",response.data['user_login']);
 						localStorage.setItem("id",response.data['user_id']);
 						localStorage.setItem("project_id",response.data['project_id']);
+						localStorage.setItem("type",response.data['user_type']);
+						$scope.user_type = response.data['user_type'];
+						$scope.user_login = response.data['user_login'];
+						if($scope.registrationType=="join")
+						{
+							$scope.addClassesToLeftMenu();
+							//$scope.menuEditClickFunc();
+							menu.setMainPage('classes-list.html', {closeMenu: true});
+						}
+						else
+						{
+							$scope.addClassesToLeftMenu();
+							menu.setMainPage('teacher-classes-list.html', {closeMenu: true});
+						}
 						//menu.setMainPage('login.html', {closeMenu: true});
 						//$scope.swappable = true;
-						$scope.user_login = response.data['user_login'];
-						$scope.addClassesToLeftMenu();
-						//$scope.menuEditClickFunc();
-						menu.setMainPage('classes-list.html', {closeMenu: true});
 						$scope.swappable = true;
 						$scope.project_id = response.data['project_id'];
 					}
 					$scope.registration_error = response.data['error'];
+					jQuery("#loader").fadeOut();
 				});
 		}
 		
 		//logging in the student user
 		$scope.userLogin = function(){
+				jQuery("#loader").fadeIn();
 				$http({
-					url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+					url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 					method: "POST",
 					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 					data: {
@@ -1539,17 +1692,28 @@ module.controller('menuController', function($scope, $http, $sce) {
 						localStorage.setItem("login",response.data['user_login']);
 						localStorage.setItem("id",response.data['user_id']);
 						localStorage.setItem("project_id",response.data['project_id']);
-						menu.setMainPage('classes-list.html', {closeMenu: true});
+						localStorage.setItem("type",response.data['user_type']);
+						$scope.user_type = response.data['user_type'];
+						if(response.data['user_type'] == "student")
+						{
+							$scope.addClassesToLeftMenu();
+							menu.setMainPage('classes-list.html', {closeMenu: true});
+						}
+						else
+						{
+							$scope.addClassesToLeftMenu();
+							menu.setMainPage('teacher-classes-list.html', {closeMenu: true});
+						}
 						//$scope.menuEditClickFunc();
 						$scope.swappable = true;
 						$scope.user_login = response.data['user_login'];
-						$scope.addClassesToLeftMenu();
 						$scope.project_id = response.data['project_id'];
 						if(response.data['users_profile_image'])
 						{
 							localStorage.setItem("users_profile_image",response.data['users_profile_image']);
 							$scope.userdata = {profile_image: localStorage.getItem("users_profile_image")};
 						}
+						jQuery("#loader").fadeOut();
 					}
 					$scope.registration_error = response.data['error'];
 				});
@@ -1561,13 +1725,14 @@ module.controller('menuController', function($scope, $http, $sce) {
 		//logout the user and pushing the login page
 		$scope.menuLogoutClickFunc = function(){
 			$scope.swappable = false;
-			localStorage.removeItem("login","Michael");
+			localStorage.removeItem("login");
+			localStorage.removeItem("type");
 			menu.setMainPage('login.html', {closeMenu: true});
 		}
 		
 		//listing the posts
 		$http({
-			url: "http://www.letsgetstartup.com/app-cloud/wp-admin/admin-ajax.php", 
+			url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
 			method: "get",
 			params: {
 				action: "add_mobile_items_post",
@@ -1595,7 +1760,93 @@ module.controller('menuController', function($scope, $http, $sce) {
 			if(!jQuery($event.target).next().is(":visible"))
 				jQuery($event.target).next().slideDown();
 		}
-		
+		$scope.setFormInfoTab = function(destId,currentId)
+		{
+			jQuery(".info-form-holder input").removeClass("error");
+			var error = 0;
+			jQuery(".info-block[data-info-block="+currentId+"] .info-form-holder input").each(function(){
+				//alert(jQuery(this).val());
+				if(jQuery(this).val()=="")
+				{
+					error++;
+					jQuery(this).addClass("error");
+				}
+			});
+			if(error == 0)
+			{
+				jQuery(".info-form-holder").slideUp();
+				jQuery(".info-block[data-info-block="+destId+"] .info-form-holder").slideDown();
+				if(destId==5)
+				{
+					$scope.userRegister();
+				}
+			}
+		}
+		$scope.toggleCourseContent = function(courseId)
+		{
+			if(jQuery(".course-items-managing[data-course-id="+courseId+"]").is(":visible"))
+			{
+				jQuery(".course-items-managing[data-course-id="+courseId+"]").slideUp();
+				jQuery(".display-course-content[ng-click='toggleCourseContent("+courseId+")']").text("+");
+			}
+			else
+			{
+				jQuery(".course-items-managing[data-course-id="+courseId+"]").slideDown();
+				jQuery(".display-course-content[ng-click='toggleCourseContent("+courseId+")']").text("-");
+			}
+		}
+		$scope.toggleCourseItemContent = function(itemId)
+		{
+			if(jQuery(".course-udate-holder[data-item-id="+itemId+"]").is(":visible"))
+			{
+				jQuery(".course-udate-holder[data-item-id="+itemId+"]").slideUp();
+				jQuery(".display-item-content[ng-click='toggleCourseItemContent("+itemId+")']").text("+");
+			}
+			else
+			{
+				jQuery(".course-udate-holder[data-item-id="+itemId+"]").slideDown();
+				jQuery(".display-item-content[ng-click='toggleCourseItemContent("+itemId+")']").text("-");
+			}
+		}
+		jQuery(document).on("click",".teacher_enabling", function(e){
+			//if("")
+			var id = jQuery(this).attr("data-id");
+			var value = "";
+			var key = "block_status";
+			menu.setMainPage('teacher-classes-list.html', {closeMenu: true});
+			if(jQuery(this).is(":checked"))
+			{
+				value = "enabled";
+				$scope.addPostMeta(id,key,value);
+				$scope.milestoneList[jQuery(this).attr("data-arr-id")].block_status = value;
+				menu.setMainPage('teacher-classes-list.html', {closeMenu: true});
+			}
+			else
+			{
+				value = "disabled";
+				$scope.addPostMeta(id,key,value);
+				$scope.milestoneList[jQuery(this).attr("data-arr-id")].block_status = value;
+				menu.setMainPage('teacher-classes-list.html', {closeMenu: true});
+			}
+		});
+		$scope.addPostMeta = function(id,key,value){
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					id: id,
+					key: key,
+					value: value
+				},
+				params: {
+					'action': "insert_postmeta_mobile",
+					//callback:'JSON_CALLBACK'
+				}
+			}).then(function(response) {
+				//alert(response.data);
+			});
+		}
 	});
 });
 module.controller('AppController', function($scope) { });

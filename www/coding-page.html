@@ -1,5 +1,5 @@
 <ons-page>
-	<h1 class="coding-tree-heading">App's elements tree<button class="preview-button" ng-click="goToPreview()"><i class="fa fa-eye" aria-hidden="true"></i></button></h1>
+	<h1 class="coding-tree-heading">{{vocabulary[lang]["App's elements tree"]}}<button class="preview-button" ng-click="goToPreview()"><i class="fa fa-eye" aria-hidden="true"></i></button></h1>
 	<div class="coding-tree-wrapper">
 		<ul class="coding-tree-holder" ng-model="item.pages">
 			<li ng-repeat="(key, page) in item.pages"><p>{{page.name}}</p>
@@ -17,6 +17,13 @@
 			<li ng-repeat="(key, post) in item.posts"><p>{{post.formName+":"+post.name}}</p>
 				<ul>
 					<li ng-repeat="postItem in post.postItems"><p>{{postItem.name}}</p></li>
+				</ul>
+			</li>
+		</ul>
+		<ul class="coding-tree-holder" ng-model="item.singles">
+			<li ng-repeat="(key, single) in item.singles"><p>{{single.postsPage+":"+single.name}}</p>
+				<ul>
+					<li ng-repeat="singleItem in single.singleItems"><p>{{singleItem.name}}</p></li>
 				</ul>
 			</li>
 		</ul>

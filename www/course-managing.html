@@ -1,0 +1,80 @@
+<ons-page>
+	<h2 class="menu-title lessons-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Course managing</h2>
+	<div class="course-holder">
+		<h2 class="course-title" style="margin-top: 50px;">Course 1<span class="delete-course"><i class="fa fa-trash-o" aria-hidden="true"></i></span><span class="display-course-content" ng-click="toggleCourseContent(1)">+</span></h2>
+		<div class="course-items-managing" data-course-id=1>
+			<div class="course-lesson">
+				<h3 class="lesson-title">Lesson title<span class="delete-lesson"><i class="fa fa-trash-o" aria-hidden="true"></i></span><span class="display-item-content" ng-click="toggleCourseItemContent(2)">+</span></h3>
+				<div class="course-udate-holder lesson-update-holder" data-item-id=2>
+					<input type="text" value="Lesson title"></input>
+					<textarea class="lesson-description">Some description</textarea>
+					<div class="lesson-attachment">
+						<input type="text" value="image.jpg"></input><span>-</span>
+						<input type="text" value="youtube link"></input><span>-</span>
+						<button class="lesson-attachment-button">Add attachment</button>
+					</div>
+					<button>Update Lesson</button>
+				</div>
+			</div>
+			<div class="course-task">
+				<h3 class="task-title">Task title<span class="delete-lesson"><i class="fa fa-trash-o" aria-hidden="true"></i></span><span class="display-item-content" ng-click="toggleCourseItemContent(3)">+</span></h3>
+				<div class="course-udate-holder task-update-holder" data-item-id=3>
+					<input class="task-title" type="text" value="Task title"></input>
+					<textarea class="task-description">Some description</textarea>
+					<button>Update Task</button>
+				</div>
+			</div>
+			<div class="course-coding-task">
+				<h3 class="coding-task-title">Coding task title<span class="delete-lesson"><i class="fa fa-trash-o" aria-hidden="true"></i></span><span class="display-item-content" ng-click="toggleCourseItemContent(4)">+</span></h3>
+				<div class="course-udate-holder coding-task-update-holder" data-item-id=4>
+					<input class="coding-task-title" type="text" value="Coding task title"></input>
+					<input class="coding-task-code" type="text" value="addPage(Name)"></input>
+					<textarea class="coding-task-message">Message description</textarea>
+					<textarea class="coding-task-success">Success description</textarea>
+					<textarea class="coding-task-fail">Fail description</textarea>
+					<textarea class="coding-task-description">Some description</textarea>
+					<button>Update Task</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="course-holder">
+		<h2 class="course-title">Course 2<span class="delete-course"><i class="fa fa-trash-o" aria-hidden="true"></i></span><span class="display-course-content" ng-click="toggleCourseContent(4)">+</span></h2>
+		<div class="course-items-managing" data-course-id=4>
+			<div class="course-lesson">
+				<h3 class="lesson-title">Lesson title<span class="delete-lesson"><i class="fa fa-trash-o" aria-hidden="true"></i></span><span class="display-item-content" ng-click="toggleCourseItemContent(5)">+</span></h3>
+				<div class="course-udate-holder lesson-update-holder" data-item-id=5>
+					<input type="text" value="Lesson title"></input>
+					<textarea class="lesson-description">Some description</textarea>
+					<div class="lesson-attachment">
+						<input type="text" value="image.jpg"></input><span>-</span>
+						<input type="text" value="youtube link"></input><span>-</span>
+						<button class="lesson-attachment-button">Add attachment</button>
+					</div>
+					<button>Update Lesson</button>
+				</div>
+			</div>
+			<div class="course-task">
+				<h3 class="task-title">Task title<span class="delete-lesson"><i class="fa fa-trash-o" aria-hidden="true"></i></span><span class="display-item-content" ng-click="toggleCourseItemContent(6)">+</span></h3>
+				<div class="course-udate-holder task-update-holder" data-item-id=6>
+					<input class="task-title" type="text" value="Task title"></input>
+					<textarea class="task-description">Some description</textarea>
+					<button>Update Task</button>
+				</div>
+			</div>
+			<div class="course-coding-task">
+				<h3 class="coding-task-title">Coding task title<span class="delete-lesson"><i class="fa fa-trash-o" aria-hidden="true"></i></span><span class="display-item-content" ng-click="toggleCourseItemContent(7)">+</span></h3>
+				<div class="course-udate-holder coding-task-update-holder" data-item-id=7>
+					<input class="coding-task-title" type="text" value="Coding task title"></input>
+					<input class="coding-task-code" type="text" value="addPage(Name)"></input>
+					<textarea class="coding-task-message">Message description</textarea>
+					<textarea class="coding-task-success">Success description</textarea>
+					<textarea class="coding-task-fail">Fail description</textarea>
+					<textarea class="coding-task-description">Some description</textarea>
+					<button>Update Task</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</ons-page>

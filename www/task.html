@@ -1,16 +1,19 @@
 	<ons-page>
 		<h2 class="menu-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>{{vocabulary[lang]['Task']}}</h2>
 		<img src="img/elliptic_sign_bg.png" style="width:100%;height: 110px;"></img>
-		<button class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuLessonClickFunc(prev)">< Previous</button>
-		<button class="next_lesson_but" ng-if="next!='last'" ng-click="menuLessonClickFunc(next)">Next ></button>
+		<button ng-if="user_type=='student'" class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuLessonClickFunc(prev)">< {{vocabulary[lang]['Previous']}}</button>
+		<button ng-if="user_type=='student'" class="next_lesson_but" ng-if="next!='last'" ng-click="menuLessonClickFunc(next)">{{vocabulary[lang]['Next']}} ></button>
+		<button ng-if="user_type=='teacher'" class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuTeacherLessonClickFunc(prev)">< {{vocabulary[lang]['Previous']}}</button>
+		<button ng-if="user_type=='teacher'" class="next_lesson_but" ng-if="next!='last'" ng-click="menuTeacherLessonClickFunc(next)">{{vocabulary[lang]['Next']}} ></button>
+		<div class="comments-refresh" ng-click="refreshComments()"><i class="fa fa-refresh" aria-hidden="true"></i></div>
 		<p class="task_text_holder" ng-bind-html="milestone_content" style="padding:10px;text-align:right;"></p>
-		<b class="task_text_holder" ng-bind-html="final_answer" style="padding:10px;text-align:right;">Final answer is: {{final_answer}}</b>
+		<b class="task_text_holder" ng-bind-html="final_answer" style="padding:10px;text-align:right;">{{vocabulary[lang]['Final answer is']}}: {{final_answer}}</b>
 		<section style="padding: 8px">
-			<textarea class="edit_item_map_holder comment_text_holder" ng-model="newTaskComment.final_answer" placeholder="Your answer or comment" style="display: block; min-height:150px;">{{newTaskComment.final_answer}}</textarea>
+			<textarea class="edit_item_map_holder comment_text_holder" ng-model="newTaskComment.final_answer" placeholder="{{vocabulary[lang]['Your final answer']}}" style="display: block; min-height:150px;">{{newTaskComment.final_answer}}</textarea>
 		</section>
-		<button class="add_comment" ng-click="insertFinalAnswer()">Insert answer</button>
+		<button class="add_comment" ng-click="insertFinalAnswer()">{{vocabulary[lang]['Insert answer']}}</button>
 		<section style="padding: 8px">
-			<textarea class="edit_item_map_holder comment_text_holder comment_small_holder" ng-model="newTaskComment.content" placeholder="Your answer or comment" style="display: block; min-height:88px;">{{newTaskComment.content}}</textarea>
+			<textarea class="edit_item_map_holder comment_text_holder comment_small_holder" ng-model="newTaskComment.content" placeholder="{{vocabulary[lang]['Your answer or comment']}}" style="display: block; min-height:88px;">{{newTaskComment.content}}</textarea>
 			<button class="add_comment small_comment_button" ng-click="insertTaskComment()"></button>
 			<div style="clear:both;"></div>
 		</section>

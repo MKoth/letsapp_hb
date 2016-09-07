@@ -1,0 +1,59 @@
+<ons-page>
+	<h1 class="forms-header">Teacher's Information</h1>
+	<input type="text" class="text-input sign-input" ng-model="registration.project_name" placeholder="Your project name">
+	<div class="info-block" data-info-block="1">
+		<div class="info-form-number current"><span>1</span><i class="fa fa-check"></i></div>
+		<h2>Contact info</h2>
+		<div class="info-form-holder" style="display:block;">
+			<input name="full-name" ng-model="registration.full_name" type="text" placeholder="Enter your Full name"></input>
+			<input name="address" type="text" ng-model="registration.address" placeholder="Enter your Address"></input>
+			<input name="city" type="text" ng-model="registration.city" placeholder="Enter your City"></input>
+			<input name="country" type="text" ng-model="registration.country" placeholder="Enter your Country"></input>
+			<button class="prev">Back to form</button><button class="next" ng-click="setFormInfoTab(2,1)">Next</button>
+		</div>
+	</div>
+	<div class="info-block" data-info-block="2">
+		<div class="info-form-number current"><span>2</span><i class="fa fa-check"></i></div>
+		<h2>Gender/Birth info</h2>
+		<div class="info-form-holder">
+			<p><label>Select your gender:</label><br>
+				<select name="gender" ng-model="registration.gender">
+					<option value="male" selected="selected">Male</option>
+					<option value="female">Female</option>
+				</select>
+			</p>
+			<p><label>Enter your birth date:</label><br>
+				<!--<input name="day" type="number" placeholder="day" min="1" max="31" style="margin-left: 3%;width: 30%;border-top-right-radius: 0px;border-bottom-right-radius: 0px;"></input>
+				<input name="month" type="number" placeholder="month" min="1" max="12" style="margin-left:0px;width: 30%;border-radius: 0px;margin-left: -3%;"></input>
+				<input name="year" type="number" placeholder="year" min="1950" max="1998" style="margin-left:0px;width: 30%;border-top-left-radius: 0px;border-bottom-left-radius: 0px;margin-left: -3%;"></input>-->
+				<input name="birth-date" ng-model="registration.birth_date" type="date"></input>
+			</p>
+			<button class="prev" ng-click="setFormInfoTab(1,2)">Previous</button><button class="next" ng-click="setFormInfoTab(3,2)">Next</button>
+		</div>
+	</div>
+	<div class="info-block" data-info-block="3">
+		<div class="info-form-number current"><span>3</span><i class="fa fa-check"></i></div>
+		<h2>Type in 5 subjects you would like to tutor</h2>
+		<div class="info-form-holder">
+			<input name="subject1" type="text" ng-model="registration.subject1" placeholder="First subject"></input>
+			<input name="subject2" type="text" ng-model="registration.subject2" placeholder="Second subject"></input>
+			<input name="subject3" type="text" ng-model="registration.subject3" placeholder="Third subject"></input>
+			<input name="subject4" type="text" ng-model="registration.subject4" placeholder="Fourth subject"></input>
+			<input name="subject5" type="text" ng-model="registration.subject5" placeholder="Fifth subject"></input>
+			<button class="prev" ng-click="setFormInfoTab(2,3)">Previous</button><button class="next" ng-click="setFormInfoTab(4,3)">Next</button>
+		</div>
+	</div>
+	<div class="info-block" data-info-block="4">
+		<div class="info-form-number current"><span>4</span><i class="fa fa-check"></i></div>
+		<h2>How many hours you would like to tutor per week:<h2>
+		<div class="info-form-holder">
+			<input name="hours" type="number" placeholder="day" min="1" max="40" ng-model="registration.hours"></input>
+			<button class="prev" ng-click="setFormInfoTab(3,4)">Previous</button><button class="next" style="background: #65c168;" ng-click="setFormInfoTab(5,4)">Register</button>
+		</div>
+	</div>
+	<style>
+		.page__background {
+			background-color: #ffefe0;
+		}
+	</style>
+</ons-page>
