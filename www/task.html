@@ -3,8 +3,8 @@
 		<img src="img/elliptic_sign_bg.png" style="width:100%;height: 110px;"></img>
 		<button ng-if="user_type=='student'" class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuLessonClickFunc(prev)">< {{vocabulary[lang]['Previous']}}</button>
 		<button ng-if="user_type=='student'" class="next_lesson_but" ng-if="next!='last'" ng-click="menuLessonClickFunc(next)">{{vocabulary[lang]['Next']}} ></button>
-		<button ng-if="user_type=='teacher'" class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuTeacherLessonClickFunc(prev)">< {{vocabulary[lang]['Previous']}}</button>
-		<button ng-if="user_type=='teacher'" class="next_lesson_but" ng-if="next!='last'" ng-click="menuTeacherLessonClickFunc(next)">{{vocabulary[lang]['Next']}} ></button>
+		<button ng-if="user_type=='teacher'" class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuTeacherLessonClickFunc(prev,$event)">< {{vocabulary[lang]['Previous']}}</button>
+		<button ng-if="user_type=='teacher'" class="next_lesson_but" ng-if="next!='last'" ng-click="menuTeacherLessonClickFunc(next,$event)">{{vocabulary[lang]['Next']}} ></button>
 		<div class="comments-refresh" ng-click="refreshComments()"><i class="fa fa-refresh" aria-hidden="true"></i></div>
 		<p class="task_text_holder" ng-bind-html="milestone_content" style="padding:10px;text-align:right;"></p>
 		<b class="task_text_holder" ng-bind-html="final_answer" style="padding:10px;text-align:right;">{{vocabulary[lang]['Final answer is']}}: {{final_answer}}</b>
@@ -18,7 +18,7 @@
 			<div style="clear:both;"></div>
 		</section>
 		<section style="padding: 8px 20px" ng-repeat="taskInfo in currentTaskComments">
-			<div class="comment_heading">{{taskInfo.comment_author+" "+taskInfo.comment_author_email+" "+taskInfo.comment_date}}<img ng-if="taskInfo.comment_author_avatar" src="{{taskInfo.comment_author_avatar}}" class="comment_image"/><img ng-if="!taskInfo.comment_author_avatar" src="img/anon.gif" class="comment_image"/></div>
+			<div class="comment_heading">{{taskInfo.comment_author_name+" "+taskInfo.comment_date}}<img ng-if="taskInfo.comment_author_avatar" src="{{taskInfo.comment_author_avatar}}" class="comment_image"/><img ng-if="!taskInfo.comment_author_avatar" src="img/anon.gif" class="comment_image"/></div>
 			<div class="comment_content">{{taskInfo.comment_content}}</div>
 		</section>
 	</ons-page>

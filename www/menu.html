@@ -6,6 +6,12 @@
 		<ons-list-item ng-if="user_type=='teacher'" modifier="chevron" ng-click="menu.setMainPage('teacher-classes-list.html', {closeMenu: true})" style="background: #f8a772;color: #fff;">
 			{{vocabulary[lang]['Lessons']}}
 		</ons-list-item>
+		<ons-list-item modifier="chevron" ng-if="user_type=='teacher'" ng-click="getUsersPerProject()" style="background:#f6f5f3;">
+			Users
+		</ons-list-item>
+		<ons-list-item modifier="chevron" ng-if="user_type=='teacher'" ng-click="getProjectSwitchIds()" style="background:#f6f5f3;">
+			Switch project
+		</ons-list-item>
 		<ons-list-item modifier="chevron" ng-click="menu.setMainPage('edit-layout.html', {closeMenu: true})" style="background:#f6f5f3;">
 			{{vocabulary[lang]['Edit apps layout']}}
 		</ons-list-item>
@@ -17,6 +23,9 @@
 		</ons-list-item>
 		<ons-list-item modifier="chevron" ng-click="menu.setMainPage('profile-page.html', {closeMenu: true})" style="background:#f69791;color: #fff;">
 			{{vocabulary[lang]['Profile page']}}
+		</ons-list-item>
+		<ons-list-item ng-if="students_status=='super_student'" modifier="chevron" ng-click="switchStudent()" style="background:#fed587;color: #fff;">
+			Switch student
 		</ons-list-item>
 		<ons-list-item modifier="chevron" ng-click="menuLogoutClickFunc()" style="background:#f6f5f3;">
 			{{vocabulary[lang]['Logout']}}
@@ -32,6 +41,7 @@
     <button class="button-bar__button">עִברִית</button>
   </div>
 </div>
+<div class="login" ng-if="students_login">Current user {{students_name}}</div>
 	  <style>
 		.list__header {
 			background-color: #fff;

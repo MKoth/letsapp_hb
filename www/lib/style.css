@@ -1108,3 +1108,23 @@ input.teacher_enabling {
 .info-holder:hover p{
 	display:block;
 }
+td.first-cell {
+    /* display: block; */
+    width: 90%;
+    padding: 5px;
+    padding-left: 5%;
+    background: #ffe9dc;
+}
+td.second-cell input {
+    width: 20px;
+    height: 20px;
+}
+table.student-list {
+    margin-top: 75px;
+}
+.students_list{
+	margin-top: 75px;
+}
+table.courses_id_holder {
+    margin-top: 60px;
+}

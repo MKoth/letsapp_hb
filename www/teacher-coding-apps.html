@@ -1,0 +1,31 @@
+<ons-page>
+	<h2 class="menu-title lessons-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Select student to review his app</h2>
+	<table class="student-list">
+		<tr>
+			<td>Student name</td>
+			<td>Course ID</td>
+			<td>Main user</td>
+		</tr>
+		<tr ng-repeat="student in projStudents">
+			<td class="first-cell" ng-click="goToTeachCodingPage(student.data.ID)">
+				<img ng-if="student.data.users_profile_image" src="{{student.users_profile_image}}" class="comment_image"/>
+				<img ng-if="!student.data.users_profile_image" src="img/anon.gif" class="comment_image"/>
+				{{student.data.users_name}}
+			</td>
+			<td class="second-cell" align="center">
+				<select name="current-user-id" data-user-id="{{student.data.ID}}">
+					<option ng-repeat="course in coursesIDs" ng-if="student.data.users_course_id==course.ID" selected>{{course.ID}}</option>
+					<option ng-repeat="course in coursesIDs" ng-if="student.data.users_course_id!=course.ID">{{course.ID}}</option>
+				</select>
+			</td>
+			<td class="second-cell" align="center">
+				<input ng-if="student.data.status=='super_student'" checked='checked' class="mark-student" data-id="{{student.data.ID}}" type="checkbox"></input>
+				<input ng-if="student.data.status!='super_student'" class="mark-student" data-id="{{student.data.ID}}" type="checkbox"></input>
+			</td>
+		</tr>
+	</table>
+	<div class="new_user_holder">
+		<input type="text" ng-model="new_user.name" placeholder="New User's name">
+		<button ng-click="addNewUser()">Add new user</button>
+	</div>
+</ons-page>

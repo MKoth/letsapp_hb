@@ -1,0 +1,6 @@
+<ons-page>
+	<h2 class="menu-title lessons-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Switch the project here</h2>
+	<table class="courses_id_holder">
+		<tr ng-repeat="course in teacherCourses" ng-click="switchCourse(course.ID)"><td>Id: {{course.ID}}. Name: {{course.post_title}}</td></tr>
+	</table>
+</ons-page>

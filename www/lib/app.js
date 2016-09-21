@@ -153,26 +153,41 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		$scope.execCode = function(){
 			$scope.codelines.push($scope.codeline.newcode);
-			var addPageRegexp = /^ *addPage\(([a-zA-Z1-9- ]+)\) *$/;
+			//Page commands
+			var addPageRegexp = /^ *addPage\((.+)\) *$/;
 			var matchPage = addPageRegexp.exec($scope.codeline.newcode);
-			var pageNameRegexp = /^ *selectPage\(([a-zA-Z1-9- ]+)\) *$/;
+			var pageNameRegexp = /^ *selectPage\((.+)\) *$/;
 			var matchPageName = pageNameRegexp.exec($scope.codeline.newcode);
-			var addTextRegexp = /^ *addText\(([a-zA-Z1-9- ]+)\) *$/;
+			var addTextRegexp = /^ *addText\((.+)\) *$/;
 			var matchText = addTextRegexp.exec($scope.codeline.newcode);
-			var addFormRegexp = /^ *addForm\(([a-zA-Z1-9- ]+)\) *$/;
+			var addPageStyleRegexp = /^ *addPageStyle\((.+),([a-zA-Z0-9-:;%# ]+)\) *$/;
+			var matchPageStyle = addPageStyleRegexp.exec($scope.codeline.newcode);
+			//Form commands
+			var addFormRegexp = /^ *addForm\((.+)\) *$/;
 			var matchForm = addFormRegexp.exec($scope.codeline.newcode);
-			var formNameRegexp = /^ *selectForm\(([a-zA-Z1-9- ]+)\) *$/;
+			var formNameRegexp = /^ *selectForm\((.+)\) *$/;
 			var matchFormName = formNameRegexp.exec($scope.codeline.newcode);
-			var addFormElementRegexp = /^ *addFormElement\(([a-zA-Z1-9- ]+),([a-zA-Z1-9- ]+)\) *$/;
+			var addFormElementRegexp = /^ *addFormElement\('(.+)',([a-zA-Z0-9- ]+)\) *$/;
 			var matchFormElement = addFormElementRegexp.exec($scope.codeline.newcode);
-			var addPostsPageRegexp = /^ *addPostsPage\(([a-zA-Z1-9- ]+)\) *$/;
+			//Posts commands
+			var addPostsPageRegexp = /^ *addPostsPage\((.+)\) *$/;
 			var matchPostsPage = addPostsPageRegexp.exec($scope.codeline.newcode);
-			var addPostsItemRegexp = /^ *addPostsItem\(([a-zA-Z1-9- ]+),([a-zA-Z1-9- ]+)\) *$/;
+			var addPostsItemRegexp = /^ *addPostsItem\('(.+)',([a-zA-Z0-9- ]+)\) *$/;
 			var matchPostsItem = addPostsItemRegexp.exec($scope.codeline.newcode);
-			var addSinglePostRegexp = /^ *addSinglePost\(([a-zA-Z1-9- ]+)\) *$/;
+			var postsNameRegexp = /^ *selectPosts\((.+)\) *$/;
+			var matchPosts = postsNameRegexp.exec($scope.codeline.newcode);
+			var addPostsStyleRegexp = /^ *addPostsStyle\((.+),([a-zA-Z0-9-:;%# ]+)\) *$/;
+			var matchPostsStyle = addPostsStyleRegexp.exec($scope.codeline.newcode);
+			//Single posts commands
+			var addSinglePostRegexp = /^ *addSinglePost\((.+)\) *$/;
 			var matchSinglePost = addSinglePostRegexp.exec($scope.codeline.newcode);
-			var addSinglePostItemRegexp = /^ *addSinglePostItem\(([a-zA-Z1-9- ]+),([a-zA-Z1-9- ]+)\) *$/;
+			var addSinglePostItemRegexp = /^ *addSinglePostItem\('(.+)',([a-zA-Z0-9- ]+)\) *$/;
 			var matchSinglePostItem = addSinglePostItemRegexp.exec($scope.codeline.newcode);
+			var singlePostNameRegexp = /^ *selectSinglePost\((.+)\) *$/;
+			var matchSinglePostName = singlePostNameRegexp.exec($scope.codeline.newcode);
+			var addSinglePostStyleRegexp = /^ *addSinglePostStyle\((.+),([a-zA-Z0-9-:;%# ]+)\) *$/;
+			var matchSinglePostStyle = addSinglePostStyleRegexp.exec($scope.codeline.newcode);
+			
 			if(matchPage)
 			{
 				if(arrayObjectIndexOf($scope.item.pages, matchPage[1], 'name')==-1)
@@ -217,7 +232,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				{
 					$scope.currentForm = arrayObjectIndexOfForm($scope.item.pages[$scope.currentPage].elems, matchFormName[1], 'name');
 					if($scope.currentForm == -1)
-						$scope.codelines.push("The name you selected is wrong");
+						$scope.codelines.push("The name you selected is wrong!!!");
 					else
 					{
 						$scope.codelines.push("You selected form name '"+matchFormName[1]+"'");
@@ -269,6 +284,20 @@ module.controller('menuController', function($scope, $http, $sce) {
 				else
 					$scope.codelines.push("You need to create/select Posts page!");
 			}
+			else if(matchPosts)
+			{
+				
+				if(arrayObjectIndexOf($scope.item.posts, matchPosts[1], 'name')!=-1)
+				{
+					$scope.currentPostsPage = arrayObjectIndexOf($scope.item.posts, matchPosts[1], 'name');
+					$scope.codelines.push("You selected form name '"+matchPosts[1]+"'");
+					$scope.saveHiearchy();
+				}
+				else
+				{
+					$scope.codelines.push("The name you selected is wrong!!!");
+				}
+			}
 			else if(matchSinglePost)
 			{
 				if($scope.currentPostsPage!=undefined&&$scope.currentPostsPage != -1)
@@ -280,12 +309,61 @@ module.controller('menuController', function($scope, $http, $sce) {
 			}
 			else if(matchSinglePostItem)
 			{
-				alert($scope.currentSinglePostPage);
+				//alert($scope.currentSinglePostPage);
 				if($scope.currentSinglePostPage!=-1&&$scope.currentSinglePostPage!=undefined){
 					$scope.addSinglePostPageItem(matchSinglePostItem[1], $scope.currentSinglePostPage, matchSinglePostItem[2]);
 				}
 				else
 					$scope.codelines.push("You need to create/select SinglePostPage page!");
+			}
+			else if(matchSinglePostName)
+			{
+				if(arrayObjectIndexOf($scope.item.singles, matchSinglePostName[1], 'name')!=-1)
+				{
+					$scope.currentSinglePostPage = arrayObjectIndexOf($scope.item.singles, matchSinglePostName[1], 'name');
+					$scope.codelines.push("You selected form name '"+matchSinglePostName[1]+"'");
+					$scope.saveHiearchy();
+				}
+				else
+				{
+					$scope.codelines.push("The name you selected is wrong!!!");
+				}
+			}
+			else if(matchPageStyle)
+			{
+				if($scope.currentPage!=-1)
+				{
+					var pageStyleData = {name:matchPageStyle[1], style:matchPageStyle[2]}
+					$scope.buildRequest($scope.item.pages[$scope.currentPage].name, 'add_page_style', pageStyleData);
+				}
+				else
+				{
+					$scope.codelines.push("Please, select page first!");
+				}
+			}
+			else if(matchPostsStyle)
+			{
+				if($scope.currentPostsPage!=-1)
+				{
+					var postsStyleData = {name:matchPostsStyle[1], style:matchPostsStyle[2]}
+					$scope.buildRequest($scope.item.posts[$scope.currentPostsPage].name, 'add_posts_style', postsStyleData);
+				}
+				else
+				{
+					$scope.codelines.push("Please, select posts page first!");
+				}
+			}
+			else if(matchSinglePostStyle)
+			{
+				if($scope.currentSinglePostPage!=-1)
+				{
+					var singlePostStyleData = {name:matchSinglePostStyle[1], style:matchSinglePostStyle[2]}
+					$scope.buildRequest($scope.item.singles[$scope.currentSinglePostPage].name, 'add_single_post_style', singlePostStyleData);
+				}
+				else
+				{
+					$scope.codelines.push("Please, select posts page first!");
+				}
 			}
 			$scope.codeline.newcode = "";
 			$scope.itemNotClicked = true;
@@ -466,6 +544,14 @@ module.controller('menuController', function($scope, $http, $sce) {
 			{
 				$scope.buildRequest(name, 'add_form_coord', formData);
 			}
+			else if(jQuery.trim(type)=='image')
+			{
+				$scope.buildRequest(name, 'add_form_image', formData);
+			}
+			else if(jQuery.trim(type)=='youtube')
+			{
+				$scope.buildRequest(name, 'add_form_youtube', formData);
+			}
 			$scope.saveHiearchy();
 		}
 		$scope.addNewPostsPage = function(name, currentFormId, currentPageId)
@@ -503,6 +589,22 @@ module.controller('menuController', function($scope, $http, $sce) {
 			{
 				$scope.buildRequest(name, 'add_posts_description', postsPageName);
 			}
+			else if(jQuery.trim(type)=='coord')
+			{
+				$scope.buildRequest(name, 'add_posts_coord', postsPageName);
+			}
+			else if(jQuery.trim(type)=='image')
+			{
+				$scope.buildRequest(name, 'add_posts_image', postsPageName);
+			}
+			else if(jQuery.trim(type)=='link')
+			{
+				$scope.buildRequest(name, 'add_posts_link', postsPageName);
+			}
+			else if(jQuery.trim(type)=='youtube')
+			{
+				$scope.buildRequest(name, 'add_posts_youtube', postsPageName);
+			}
 			$scope.saveHiearchy();
 		}
 		$scope.addNewSinglePostPage = function(name, currentPostsId)
@@ -537,6 +639,22 @@ module.controller('menuController', function($scope, $http, $sce) {
 			else if(jQuery.trim(type)=='description')
 			{
 				$scope.buildRequest(name, 'add_single_post_description', $scope.item.singles[currentSinglePostPage].name);
+			}
+			else if(jQuery.trim(type)=='coord')
+			{
+				$scope.buildRequest(name, 'add_single_post_coord', $scope.item.singles[currentSinglePostPage].name);
+			}
+			else if(jQuery.trim(type)=='image')
+			{
+				$scope.buildRequest(name, 'add_single_post_image', $scope.item.singles[currentSinglePostPage].name);
+			}
+			else if(jQuery.trim(type)=='link')
+			{
+				$scope.buildRequest(name, 'add_single_post_link', $scope.item.singles[currentSinglePostPage].name);
+			}
+			else if(jQuery.trim(type)=='youtube')
+			{
+				$scope.buildRequest(name, 'add_single_post_youtube', $scope.item.singles[currentSinglePostPage].name);
 			}
 			$scope.saveHiearchy();
 		}
@@ -573,7 +691,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		else
 		{
-			$scope.lang = 'en';
+			$scope.lang = 'hb';
 		}
 		$scope.vocabulary=[];
 		$scope.vocabulary["en"] = [];
@@ -1223,8 +1341,13 @@ module.controller('menuController', function($scope, $http, $sce) {
 		
 		//function which fires after clicking to the left menu lesson or task item
 		$scope.menuLessonClickFunc = function(id){
+			if($scope.milestoneList[id].block_status==undefined)
+			{
+				menu.setMainPage('classes-list.html', {closeMenu: true});
+				return;
+			}
 			if($scope.milestoneList[id].block_status!="enabled")
-				return
+				return;
 			if($scope.dialog)
 				$scope.dialog.hide();
 			if($scope.milestoneList[id].status != "locked")
@@ -1274,6 +1397,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 						$scope.menuCodingPageClick();
 					}
 				}
+				else if($scope.next == "last")
+				{
+					menu.setMainPage('classes-list.html', {closeMenu: true});
+				}
 				else if($scope.milestoneList[id].status == "done"&&$scope.milestoneList[id].type=="coding-task")
 				{
 					menu.setMainPage('classes-list.html', {closeMenu: true});
@@ -1289,6 +1416,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 		$scope.menuTeacherLessonClickFunc = function(id,$event){
 			if(jQuery($event.target).attr("type")=="checkbox")
 				return;
+			if(jQuery($event.target).attr("class")=="data-time")
+				return;
 			if($scope.dialog)
 				$scope.dialog.hide();
 			$scope.currentCommentsTaskId = $scope.milestoneList[id].id;
@@ -1298,6 +1427,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$scope.milestone_content=$sce.trustAsHtml($scope.milestone_content);
 			$scope.milestone_info=$scope.milestoneList[id].info;
 			$scope.milestone_info=$sce.trustAsHtml($scope.milestone_info);
+			$scope.info_video=$scope.milestoneList[id].video;
 			if($scope.milestoneList[id+1]){
 				$scope.next = id+1;
 			}
@@ -1387,9 +1517,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 				params: {
 					action: "list_task_comments_mobile",
 					task_id: task_id,
-					callback:'JSON_CALLBACK'
+					//callback:'JSON_CALLBACK'
 				},
 			}).then(function(response) {
+				alert(response.data);
 				$scope.currentTaskComments = response.data;
 				menu.setMainPage('task.html', {closeMenu: true});
 			});
@@ -1597,6 +1728,63 @@ module.controller('menuController', function($scope, $http, $sce) {
 			});
 		}
 		
+		$scope.getUsersPerProject = function(){
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					user_id: localStorage.getItem("id"),
+				},
+				params: {
+					'action': "get_teacher_courses",
+					callback:'JSON_CALLBACK'
+				}
+			}).then(function(response) {
+				$scope.coursesIDs = response.data;
+			});
+			
+			
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					project_id: localStorage.getItem("project_id")
+				},
+				params: {
+					'action': "get_students_of_proj",
+				}
+			}).then(function(response) {
+				//alert(response.data);
+				//alert(response.data[0].data.status);
+				$scope.projStudents = response.data;
+				menu.setMainPage('teacher-coding-apps.html', {closeMenu: true});
+			});
+		}
+		$scope.switchStudent = function(){
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					project_id: localStorage.getItem("project_id")
+				},
+				params: {
+					'action': "get_students_of_proj",
+				}
+			}).then(function(response) {
+				//alert(response.data);
+				//alert(response.data[0].data.status);
+				$scope.projStudents = response.data;
+				menu.setMainPage('switch-user-page.html', {closeMenu: true});
+			});
+		}
+		
+		$scope.goToTeachCodingPage = function(id){
+			//alert(id);
+		}
+		
 		//function adds posts to server database through api and renewing the list of posts
 		$scope.addItemFunc = function(name,image){
 			jQuery("#loader").fadeIn();
@@ -1646,11 +1834,13 @@ module.controller('menuController', function($scope, $http, $sce) {
 					if(!response.data['error'])
 					{
 						localStorage.setItem("login",response.data['user_login']);
+						localStorage.setItem("first_name",response.data['user_name']);
 						localStorage.setItem("id",response.data['user_id']);
 						localStorage.setItem("project_id",response.data['project_id']);
 						localStorage.setItem("type",response.data['user_type']);
 						$scope.user_type = response.data['user_type'];
 						$scope.user_login = response.data['user_login'];
+						$scope.project_id = response.data['project_id'];
 						if($scope.registrationType=="join")
 						{
 							$scope.addClassesToLeftMenu();
@@ -1665,11 +1855,80 @@ module.controller('menuController', function($scope, $http, $sce) {
 						//menu.setMainPage('login.html', {closeMenu: true});
 						//$scope.swappable = true;
 						$scope.swappable = true;
-						$scope.project_id = response.data['project_id'];
 					}
 					$scope.registration_error = response.data['error'];
 					jQuery("#loader").fadeOut();
 				});
+		}
+		
+		$scope.userRegisterByTeacher = function(){
+				jQuery("#loader").fadeIn();
+				$http({
+					url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+					method: "POST",
+					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+					data: {
+						registration_data: $scope.registration,
+						project_id: $scope.chosenProjId,
+						registration_type: $scope.registrationType
+					},
+					params: {
+						'action': "registration_api",
+						callback:'JSON_CALLBACK'
+					}
+				}).then(function(response) {
+					$scope.getUsersPerProject();
+					jQuery("#loader").fadeOut();
+				});
+		}
+		
+		$scope.getProjectSwitchIds = function(){
+			jQuery("#loader").fadeIn();
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					user_id: localStorage.getItem("id"),
+				},
+				params: {
+					'action': "get_teacher_courses",
+					callback:'JSON_CALLBACK'
+				}
+			}).then(function(response) {
+				//alert(response.data);
+				$scope.teacherCourses = response.data;
+				menu.setMainPage('switch-project-id.html', {closeMenu: true});
+				jQuery("#loader").fadeOut();
+			});
+		}
+		
+		$scope.switchCourse = function(id){
+			localStorage.setItem("project_id",id);
+			$scope.project_id = id;
+			$scope.addClassesToLeftMenu();
+		}
+		
+		$scope.new_user = {name:""};
+		if (!Date.now) {
+			Date.now = function() { return new Date().getTime(); }
+		}
+		
+		$scope.addNewUser = function(){
+			/*data: {
+						registration_data: $scope.registration,
+						project_id: $scope.chosenProjId,
+						registration_type: $scope.registrationType
+					},*/
+			//$scope.userRegister();
+			$scope.registration.name = $scope.new_user.name;
+			$scope.registration.email = Date.now()+"@mail.com";
+			$scope.registration.password = "111222333";
+			$scope.chosenProjId = localStorage.getItem("project_id");
+			$scope.registrationType = "join";
+			$scope.userRegisterByTeacher();
+			//alert($scope.registration.email);
+			$scope.new_user.name = "";
 		}
 		
 		//logging in the student user
@@ -1687,13 +1946,19 @@ module.controller('menuController', function($scope, $http, $sce) {
 						callback:'JSON_CALLBACK'
 					}
 				}).then(function(response) {
+					//alert(response.data);
 					if(!response.data['error'])
 					{
+						jQuery("#loader").fadeOut();
 						localStorage.setItem("login",response.data['user_login']);
+						localStorage.setItem("first_name",response.data['user_name']);
 						localStorage.setItem("id",response.data['user_id']);
 						localStorage.setItem("project_id",response.data['project_id']);
 						localStorage.setItem("type",response.data['user_type']);
+						localStorage.setItem("status",response.data['students_status']);
 						$scope.user_type = response.data['user_type'];
+						$scope.students_status = response.data['students_status'];
+						$scope.students_login = response.data['user_login'];
 						if(response.data['user_type'] == "student")
 						{
 							$scope.addClassesToLeftMenu();
@@ -1718,6 +1983,19 @@ module.controller('menuController', function($scope, $http, $sce) {
 					$scope.registration_error = response.data['error'];
 				});
 		}
+		
+		$scope.switchUser=function(id,login,usersName,profileImage){
+			jQuery("#loader").fadeIn();
+			localStorage.setItem("login",login);
+			localStorage.setItem("first_name",usersName);
+			$scope.students_login = login;
+			$scope.students_name = usersName;
+			localStorage.setItem("id",id);
+			$scope.addClassesToLeftMenu();
+			menu.setMainPage('classes-list.html', {closeMenu: true});
+			if(profileImage!="")
+				localStorage.setItem("users_profile_image",profileImage);
+		}
 		  
 		 if(localStorage.getItem("users_profile_image")) 
 			 $scope.userdata = {profile_image: localStorage.getItem("users_profile_image")};
@@ -1727,6 +2005,8 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$scope.swappable = false;
 			localStorage.removeItem("login");
 			localStorage.removeItem("type");
+			localStorage.removeItem("project_id");
+			localStorage.removeItem("status");
 			menu.setMainPage('login.html', {closeMenu: true});
 		}
 		
@@ -1766,11 +2046,11 @@ module.controller('menuController', function($scope, $http, $sce) {
 			var error = 0;
 			jQuery(".info-block[data-info-block="+currentId+"] .info-form-holder input").each(function(){
 				//alert(jQuery(this).val());
-				if(jQuery(this).val()=="")
+				/*if(jQuery(this).val()=="")
 				{
 					error++;
 					jQuery(this).addClass("error");
-				}
+				}*/
 			});
 			if(error == 0)
 			{
@@ -1829,6 +2109,71 @@ module.controller('menuController', function($scope, $http, $sce) {
 				menu.setMainPage('teacher-classes-list.html', {closeMenu: true});
 			}
 		});
+		jQuery(document).on("click",".mark-student", function(e){
+			var id = jQuery(this).attr("data-id");
+			var value = "";
+			var key = "students_status";
+			if(jQuery(this).is(":checked"))
+			{
+				value = "super_student";
+				$scope.addUserMeta(id,key,value);
+			}
+			else
+			{
+				value = "simple_student";
+				$scope.addUserMeta(id,key,value);
+			}
+		});
+		//data-time
+		$scope.currentTimeId=0;
+		var timeObj = {};
+		var timeSecStr="";
+		var timeMinStr="";
+		setInterval(function(){
+			if($scope.currentTimeId!=0&&$scope.seconds!=0)
+			{
+				$scope.seconds = $scope.seconds-1;
+				timeObj = secondsToTime($scope.seconds);
+				timeSecStr = ":"+timeObj.s;
+				timeMinStr = ":"+timeObj.m;
+				if(timeObj.s>=0&&timeObj.s<=9)
+					timeSecStr = ":0"+timeObj.s;
+				if(timeObj.m>=0&&timeObj.m<=9)
+					timeMinStr = ":0"+timeObj.m;
+				jQuery("div[data-time-id='"+$scope.currentTimeId+"']").find(".data-time-holder").text(timeObj.h+timeMinStr+timeSecStr);
+			}
+			else if($scope.currentTimeId!=0&&$scope.seconds==0)
+			{
+				jQuery("div[data-time-id='"+$scope.currentTimeId+"']").find(".data-time-holder").text("Time expired!");
+			}
+		},1000);
+		jQuery(document).on("click",".data-time", function(e){
+			jQuery(".data-time-holder").text("");
+			jQuery(".data-time").text("Play");
+			jQuery(this).text("");
+			$scope.seconds = jQuery(this).attr("data-time-seconds");
+			$scope.currentTimeId = jQuery(this).parent().attr("data-time-id");
+		});
+		jQuery(document).on("change","select[name=current-user-id]", function(){
+			//alert(jQuery(this).val());
+			var user_id = jQuery(this).attr("data-user-id");
+			var course_id = jQuery(this).val();
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					user_id: user_id,
+					course_id: course_id,
+				},
+				params: {
+					'action': "change_course_for_student",
+					callback:'JSON_CALLBACK'
+				}
+			}).then(function(response) {
+				//alert(response.data);
+			});
+		});
 		$scope.addPostMeta = function(id,key,value){
 			$http({
 				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
@@ -1841,6 +2186,24 @@ module.controller('menuController', function($scope, $http, $sce) {
 				},
 				params: {
 					'action': "insert_postmeta_mobile",
+					//callback:'JSON_CALLBACK'
+				}
+			}).then(function(response) {
+				//alert(response.data);
+			});
+		}
+		$scope.addUserMeta = function(id,key,value){
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					id: id,
+					key: key,
+					value: value
+				},
+				params: {
+					'action': "insert_usermeta_mobile",
 					//callback:'JSON_CALLBACK'
 				}
 			}).then(function(response) {
@@ -1865,4 +2228,22 @@ function onSuccess(imageURI) {
  
 function onFail(message) {
     alert('Failed because: ' + message);
+}
+function secondsToTime(secs)
+{
+    secs = Math.round(secs);
+    var hours = Math.floor(secs / (60 * 60));
+
+    var divisor_for_minutes = secs % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+
+    var divisor_for_seconds = divisor_for_minutes % 60;
+    var seconds = Math.ceil(divisor_for_seconds);
+
+    var obj = {
+        "h": hours,
+        "m": minutes,
+        "s": seconds
+    };
+    return obj;
 }

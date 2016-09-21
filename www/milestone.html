@@ -14,12 +14,13 @@
 		</ons-carousel>
 		<button ng-if="user_type=='student'" class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuLessonClickFunc(prev)" style="margin-top:0;">Previous</button>
 		<button ng-if="user_type=='student'" class="next_lesson_but" ng-if="next!='last'" ng-click="menuLessonClickFunc(next)" style="margin-top:0;">Next</button>
-		<button ng-if="user_type=='teacher'" class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuTeacherLessonClickFunc(prev)" style="margin-top:0;">Previous</button>
-		<button ng-if="user_type=='teacher'" class="next_lesson_but" ng-if="next!='last'" ng-click="menuTeacherLessonClickFunc(next)" style="margin-top:0;">Next</button>
+		<button ng-if="user_type=='teacher'" class="prev_lesson_but" ng-if="prev!='first'" ng-click="menuTeacherLessonClickFunc(prev,$event)" style="margin-top:0;">Previous</button>
+		<button ng-if="user_type=='teacher'" class="next_lesson_but" ng-if="next!='last'" ng-click="menuTeacherLessonClickFunc(next,$event)" style="margin-top:0;">Next</button>
 		<div style="clear:both;"></div>
 		<div class="info-holder">
 			<span>i</span>
 			<p ng-if="user_type=='teacher'" ng-bind-html="milestone_info" style="padding:10px;font-size:13px;text-align:right;"></p>
+			<iframe style="width:80%;height:auto;" src="{{trustSrc(info_video)}}" frameborder="0" allowfullscreen></iframe>
 		</div>
 		<p  ng-bind-html="milestone_content" style="padding:10px;font-size:13px;text-align:right;"></p>
 	  </ons-page>

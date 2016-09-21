@@ -8,6 +8,9 @@
 	<ul id="lessons-list">
 		<li ng-repeat="(key, value) in milestoneList" modifier="chevron" ng-click="menuTeacherLessonClickFunc(key,$event)"  data-type='{{value.type}}' data-id='{{value.id}}'>
 				<input type="checkbox" data-id="{{value.id}}" data-arr-id={{key}} ng-if="value.block_status=='enabled'" checked=checked class="teacher_enabling"></input><input type="checkbox" data-id={{value.id}} data-arr-id={{key}} ng-if="value.block_status!='enabled'" class="teacher_enabling"></input><span>{{key+1}}</span>{{value.title}}
+				<div data-time-id="{{value.id}}">
+					<span data-time-seconds="{{value.time}}" class="data-time">Play</span><span class="data-time-holder"></span>
+				</div>
 		</li>
 	</ul>
 </ons-page>
