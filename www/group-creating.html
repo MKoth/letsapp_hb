@@ -1,0 +1,21 @@
+<ons-page>
+	<h2 class="menu-title lessons-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Create student groups</h2>
+	<ul class="user-list-holder">
+		<li ng-repeat="main in projStudents" ng-if="main.data.status=='super_student'">
+			<img ng-if="main.data.users_profile_image" src="{{main.users_profile_image}}" class="comment_image"/>
+			<img ng-if="!main.data.users_profile_image" src="img/anon.gif" class="comment_image"/>
+			{{main.data.users_name}}
+			<div style="clear:both;"></div>
+			<ul>
+				<li ng-repeat="student in projStudents" ng-if="student.data.status!='super_student'">
+					<input ng-if="student.data.group_user_id==main.data.ID" data-user-id="{{student.data.ID}}" data-main-user-id="{{main.data.ID}}" data-group_user_id="{{student.data.group_user_id}}" checked class="assign-user-to-group" type="checkbox"></input>
+					<input ng-if="student.data.group_user_id!=main.data.ID" data-user-id="{{student.data.ID}}" data-main-user-id="{{main.data.ID}}" data-group_user_id="{{student.data.group_user_id}}" class="assign-user-to-group" type="checkbox"></input>
+					<img ng-if="student.data.users_profile_image" src="{{student.users_profile_image}}" class="comment_image"/>
+					<img ng-if="!student.data.users_profile_image" src="img/anon.gif" class="comment_image"/>
+					{{student.data.users_name}}
+					<div style="clear:both;"></div>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</ons-page>

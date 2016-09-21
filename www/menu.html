@@ -27,6 +27,9 @@
 		<ons-list-item ng-if="students_status=='super_student'" modifier="chevron" ng-click="switchStudent()" style="background:#fed587;color: #fff;">
 			Switch student
 		</ons-list-item>
+		<ons-list-item ng-if="user_type=='teacher'" modifier="chevron" ng-click="getGroup()" style="background:#fed587;color: #fff;">
+			Create groups
+		</ons-list-item>
 		<ons-list-item modifier="chevron" ng-click="menuLogoutClickFunc()" style="background:#f6f5f3;">
 			{{vocabulary[lang]['Logout']}}
 		</ons-list-item>

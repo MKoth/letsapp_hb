@@ -1128,3 +1128,20 @@ table.student-list {
 table.courses_id_holder {
     margin-top: 60px;
 }
+ul.user-list-holder li {
+    list-style: none;
+	padding:8px;
+	    border-bottom: 2px solid #fff;
+}
+ul.user-list-holder{
+	margin-top: 60px;
+    padding-left: 0;
+}
+ul.user-list-holder ul {
+    padding-left: 0;
+    background: #e2e2e2;
+}
+input.assign-user-to-group {
+    width: 20px;
+    height: 20px;
+}

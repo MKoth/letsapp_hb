@@ -101,9 +101,10 @@ module.controller('menuController', function($scope, $http, $sce) {
 		}
 		
 		$scope.suggestionArray = {page:[],form:[],postpage:[],singlepost:[]};
-		$scope.suggestionArray.page = ['addPage(pagename)','selectPage(pagename)','addText(Content)'];
-		$scope.suggestionArray.form = ['addForm(Formname)','selectForm(Formname)','addFormElement(Element name,text)','addFormElement(Element name,textarea)','addFormElement(Element name,coord)'];
-		$scope.suggestionArray.postpage = ['addPostsPage(pagename)','addPostsItem(Content,header)','addPostsItem(Content,description)'];
+		$scope.suggestionArray.page = ['addPage(pagename)','selectPage(pagename)','addText(Content)','addPageStyle(Element,some style)'];
+		$scope.suggestionArray.form = ['addForm(Formname)','selectForm(Formname)',"addFormElement('Element name',text)","addFormElement('Element name',textarea)","addFormElement('Element name',coord)","addFormElement('Element name',image)","addFormElement('Element name',youtube)"];
+		$scope.suggestionArray.postpage = ['addPostsPage(pagename)',"addPostsItem('Content',header)","addPostsItem('Content',description)","addPostsItem('Content',image)","addPostsItem('Content',link)","addPostsItem('Content',youtube)","addPostsStyle(Element,some style)"];
+		$scope.suggestionArray.singlepost = ["addSinglePost(name)","addSinglePostItem('Name',header)","addSinglePostItem('Name',description)","addSinglePostItem('Name',image)","addSinglePostItem('Name',link)","addSinglePostItem('Name',youtube)","selectSinglePost(name)","addSinglePostStyle(Element,some style)"];
 		
 		$scope.markCodingDone = function(){
 			$http({
@@ -130,25 +131,54 @@ module.controller('menuController', function($scope, $http, $sce) {
 			{
 				$scope.execCode();
 			}
-			else if($scope.codeline.newcode == $scope.popupsData.popups.ct_code)
+			else if($scope.popupsData.popups.ct_code.indexOf("*")!=-1)
 			{
-				$scope.execCode();
-				if($scope.milestoneList[$scope.currentTaskLessonId].status=="unlocked")
+				var resArr = $scope.popupsData.popups.ct_code.split("*");
+				if($scope.codeline.newcode.indexOf(resArr[0])!=-1&&$scope.codeline.newcode.indexOf(resArr[1])!=-1)
 				{
-					$scope.setTaskUnlockedDone($scope.currentTaskLessonId, "done");
-					if($scope.next!="last")
+					$scope.execCode();
+					if($scope.milestoneList[$scope.currentTaskLessonId].status=="unlocked")
 					{
-						if($scope.milestoneList[$scope.next].status=="locked")
-							$scope.setTaskUnlockedDone($scope.next, "unlocked");
+						$scope.setTaskUnlockedDone($scope.currentTaskLessonId, "done");
+						if($scope.next!="last")
+						{
+							if($scope.milestoneList[$scope.next].status=="locked")
+								$scope.setTaskUnlockedDone($scope.next, "unlocked");
+						}
 					}
+					$scope.showCodingSuccess();
+					$scope.markCodingDone();
+					$scope.goToNextGroupUser();
 				}
-				$scope.showCodingSuccess();
-				$scope.markCodingDone();
+				else
+				{
+					$scope.showCodingFail();
+				}
 			}
-			else if($scope.codeline.newcode != $scope.popupsData.popups.ct_code)
+			else if($scope.popupsData.popups.ct_code.indexOf("*")==-1)
 			{
-				$scope.showCodingFail();
+				if($scope.codeline.newcode == $scope.popupsData.popups.ct_code)
+				{
+					$scope.execCode();
+					if($scope.milestoneList[$scope.currentTaskLessonId].status=="unlocked")
+					{
+						$scope.setTaskUnlockedDone($scope.currentTaskLessonId, "done");
+						if($scope.next!="last")
+						{
+							if($scope.milestoneList[$scope.next].status=="locked")
+								$scope.setTaskUnlockedDone($scope.next, "unlocked");
+						}
+					}
+					$scope.showCodingSuccess();
+					$scope.markCodingDone();
+					$scope.goToNextGroupUser();
+				}
+				else if($scope.codeline.newcode != $scope.popupsData.popups.ct_code)
+				{
+					$scope.showCodingFail();
+				}
 			}
+			
 		}
 		
 		$scope.execCode = function(){
@@ -1151,7 +1181,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 				//alert(r.response.toString());
 				var str = r.response.toString();
 				var json = JSON.parse(str);
-				alert(json.image_url);
+				//alert(json.image_url);
 				$scope.clearCache();
 				retries = 0;
 				$scope.post = {addNewItemImage:json.image_url,attachment_id:json.attachment_id};
@@ -1520,7 +1550,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 					//callback:'JSON_CALLBACK'
 				},
 			}).then(function(response) {
-				alert(response.data);
+				//alert(response.data);
 				$scope.currentTaskComments = response.data;
 				menu.setMainPage('task.html', {closeMenu: true});
 			});
@@ -1596,6 +1626,32 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$scope.getTaskComment($scope.currentCommentsTaskId);
 		}
 		
+		$scope.goToNextGroupUser = function(){
+			if($scope.groupUsersArray)
+			{
+				$.each($scope.groupUsersArray, function(index,user){
+					//alert(user.data.ID+" == "+localStorage.getItem("id"));
+					if(user.data.ID == localStorage.getItem("id"))
+					{
+						$scope.currentGroupUserIndx = index;
+					}
+				});
+				if($scope.groupUsersArray[$scope.currentGroupUserIndx+1])
+				{
+					alert("Next student's name:"+$scope.groupUsersArray[$scope.currentGroupUserIndx+1].data.users_name);
+					$scope.switchUser($scope.groupUsersArray[$scope.currentGroupUserIndx+1].data.ID,$scope.groupUsersArray[$scope.currentGroupUserIndx+1].data.user_login,$scope.groupUsersArray[$scope.currentGroupUserIndx+1].data.users_name,$scope.groupUsersArray[$scope.currentGroupUserIndx+1].data.users_profile_image);
+				}
+				else
+				{
+					alert("Next student's name:"+$scope.groupUsersArray[0].data.users_name);
+					$scope.switchUser($scope.groupUsersArray[0].data.ID,$scope.groupUsersArray[0].data.user_login,$scope.groupUsersArray[0].data.users_name,$scope.groupUsersArray[0].data.users_profile_image);
+				}
+			}
+			else{
+				alert("No user's array");
+			}
+		}
+		
 		//function sending new task comment to the server
 		$scope.insertTaskComment = function(){
 			jQuery("#loader").fadeIn();
@@ -1625,6 +1681,7 @@ module.controller('menuController', function($scope, $http, $sce) {
 						if($scope.milestoneList[$scope.next].status=="locked")
 							$scope.setTaskUnlockedDone($scope.next, "unlocked");
 					}
+					$scope.goToNextGroupUser();
 				}	 
 			});
 		}
@@ -1781,6 +1838,25 @@ module.controller('menuController', function($scope, $http, $sce) {
 			});
 		}
 		
+		$scope.getGroup = function(){
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: {
+					project_id: localStorage.getItem("project_id")
+				},
+				params: {
+					'action': "get_students_of_proj",
+				}
+			}).then(function(response) {
+				//alert(response.data);
+				//alert(response.data[0].data.status);
+				$scope.projStudents = response.data;
+				menu.setMainPage('group-creating.html', {closeMenu: true});
+			});
+		}
+		
 		$scope.goToTeachCodingPage = function(id){
 			//alert(id);
 		}
@@ -1931,6 +2007,25 @@ module.controller('menuController', function($scope, $http, $sce) {
 			$scope.new_user.name = "";
 		}
 		
+		$scope.getGroupUsers = function(proj_id,group_user_id)
+		{
+			$http({
+				url: "http://letsgetstartup.com/wp-admin/admin-ajax.php", 
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				params: {
+					action: "get_students_of_group",
+				},
+				data: {
+					project_id: proj_id,
+					group_user_id: group_user_id,
+				},
+			}).then(function(response) {
+				
+				$scope.groupUsersArray = response.data;
+			});
+		}
+		
 		//logging in the student user
 		$scope.userLogin = function(){
 				jQuery("#loader").fadeIn();
@@ -1958,6 +2053,11 @@ module.controller('menuController', function($scope, $http, $sce) {
 						localStorage.setItem("status",response.data['students_status']);
 						$scope.user_type = response.data['user_type'];
 						$scope.students_status = response.data['students_status'];
+						if($scope.students_status=='super_student')
+						{
+							$scope.main_user_id = response.data['user_id'];
+							$scope.getGroupUsers(response.data['project_id'],$scope.main_user_id);
+						}
 						$scope.students_login = response.data['user_login'];
 						if(response.data['user_type'] == "student")
 						{
@@ -2210,6 +2310,18 @@ module.controller('menuController', function($scope, $http, $sce) {
 				//alert(response.data);
 			});
 		}
+		jQuery(document).on("click",".assign-user-to-group", function(){
+			var id = jQuery(this).attr("data-main-user-id");
+			var user_id = jQuery(this).attr("data-user-id");
+			if(jQuery(this).is(":checked"))
+			{
+				$scope.addUserMeta(user_id,"group_user_id",id);
+			}
+			else if(!jQuery(this).is(":checked"))
+			{
+				$scope.addUserMeta(user_id,"group_user_id",0);
+			}
+		});
 	});
 });
 module.controller('AppController', function($scope) { });

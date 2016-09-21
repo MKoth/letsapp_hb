@@ -1,10 +1,10 @@
 <ons-page>
 	<h2 class="menu-title lessons-title"><i class="fa fa-bars" ng-click="menu.toggleMenu()" style="margin-right:10px;"></i>Select studen to review his app</h2>
-	<ul class="students_list">
-		<li ng-repeat="student in projStudents" ng-click="switchUser(student.data.ID,student.data.user_login,student.data.users_name,student.data.users_profile_image)">
-			<img ng-if="student.data.users_profile_image" src="{{student.users_profile_image}}" class="comment_image"/>
-			<img ng-if="!student.data.users_profile_image" src="img/anon.gif" class="comment_image"/>
-			{{student.data.users_name}}
-		</li>
-	</ul>
+	<table class="students_list">
+		<tr ng-repeat="student in projStudents" ng-if="student.data.group_user_id == main_user_id||student.data.ID == main_user_id" data-group-user-id="{{student.data.group_user_id}}" data-main-user="{{main_user_id}}" ng-click="switchUser(student.data.ID,student.data.user_login,student.data.users_name,student.data.users_profile_image)">
+			<td><img ng-if="student.data.users_profile_image" src="{{student.users_profile_image}}" class="comment_image"/>
+			<img ng-if="!student.data.users_profile_image" src="img/anon.gif" class="comment_image"/></td>
+			<td>{{student.data.users_name}}</td>
+		</tr>
+	</table>
 </ons-page>
